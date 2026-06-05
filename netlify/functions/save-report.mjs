@@ -37,9 +37,10 @@ export default async (req) => {
 
   const id = body && body.id;
   const pdf = body && body.pdf;
+  console.log('[save-report] POST received | id:', id, '| pdf chars:', pdf ? pdf.length : 0);
   if (!id || typeof id !== 'string' || !/^[\w-]{8,80}$/.test(id)) return json({ error: 'bad id' }, 400);
   if (!pdf || typeof pdf !== 'string') return json({ error: 'missing pdf' }, 400);
-  if (pdf.length > MAX_PDF_CHARS) return json({ error: 'pdf too large' }, 413);
+  if (pdf.length > MAX_PDF_CHARS) { console.error('[save-report] pdf too large:', pdf.length); return json({ error: 'pdf too large' }, 413); }
 
   const record = {
     pdf,
@@ -51,8 +52,10 @@ export default async (req) => {
   try {
     const store = getStore('reports');
     await store.setJSON(id, record);
+    console.log('[save-report] stored OK | id:', id);
   } catch (e) {
-    return json({ error: 'store failed' }, 500);
+    console.error('[save-report] store FAILED | id:', id, '| error:', e && e.message);
+    return json({ error: 'store failed', detail: String((e && e.message) || e) }, 500);
   }
   return json({ ok: true });
 };

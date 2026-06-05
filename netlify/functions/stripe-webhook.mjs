@@ -34,25 +34,37 @@ export default async (req) => {
   try { event = JSON.parse(raw); } catch (e) { return new Response('bad json', { status: 400 }); }
 
   // We only act on a fully completed checkout.
+  console.log('[webhook] event received:', event.type);
   if (event.type !== 'checkout.session.completed') return new Response('ignored', { status: 200 });
 
   const session = event.data && event.data.object ? event.data.object : {};
   const id = session.client_reference_id;
   const email = (session.customer_details && session.customer_details.email) || session.customer_email;
+  console.log('[webhook] client_reference_id:', id, '| email present:', !!email);
 
   if (!id || !email) return new Response('no ref or email', { status: 200 });
 
-  // Fetch the stashed report.
+  // Fetch the stashed report. The browser POSTs it to /api/save-report just
+  // before redirecting to Stripe, so by now it should be there. We read with
+  // STRONG consistency (always the latest write, even across regions) and retry
+  // a few times to absorb the few seconds of propagation lag.
   let record = null;
-  try {
-    const store = getStore('reports');
-    record = await store.get(id, { type: 'json' });
-  } catch (e) { /* fall through */ }
+  let getErr = null;
+  const store = getStore('reports');
+  for (let attempt = 1; attempt <= 5; attempt++) {
+    try {
+      record = await store.get(id, { type: 'json', consistency: 'strong' });
+    } catch (e) { getErr = e; console.error('[webhook] blobs get threw (attempt ' + attempt + '):', e && e.message); }
+    if (record && record.pdf) { console.log('[webhook] report found on attempt', attempt, '| pdf chars:', record.pdf.length); break; }
+    if (attempt < 5) await new Promise((r) => setTimeout(r, 1300));
+  }
 
   if (!record || !record.pdf) {
-    // Nothing stored for this buyer (e.g. fallback path). Acknowledge so Stripe
-    // does not retry forever. You could send a plain "thank you" here instead.
-    return new Response('no report stored', { status: 200 });
+    // Could not find the stored PDF. Either save-report failed to write it, or
+    // it has not propagated yet. Return 500 so Stripe retries this webhook later
+    // (its backoff gives the blob time to appear). The logs above say which.
+    console.warn('[webhook] NO REPORT for id', id, '| getErr:', getErr && getErr.message, '| asking Stripe to retry');
+    return new Response('no report stored', { status: 500 });
   }
 
   const lang = record.lang === 'fr' ? 'fr' : 'en';
@@ -67,8 +79,9 @@ export default async (req) => {
     lang,
   });
 
+  console.log('[webhook] Resend send result:', sent);
   if (sent) {
-    try { const store = getStore('reports'); await store.delete(id); } catch (e) {}
+    try { await store.delete(id); } catch (e) {}
     return new Response('sent', { status: 200 });
   }
   // Returning 500 makes Stripe retry the webhook later (good: transient email errors recover).
@@ -78,7 +91,7 @@ export default async (req) => {
 /* ---- Resend ------------------------------------------------------------ */
 async function sendWithResend({ to, subject, html, text, pdfBase64, lang }) {
   const key = process.env.RESEND_API_KEY;
-  if (!key) return false;
+  if (!key) { console.error('[webhook] RESEND_API_KEY missing'); return false; }
   const from = process.env.MAIL_FROM || '8LovePatterns <support@8lovepatterns.com>';
   const filename = lang === 'fr' ? 'Mon-rapport-8LovePatterns.pdf' : 'My-8LovePatterns-report.pdf';
   try {
@@ -95,8 +108,12 @@ async function sendWithResend({ to, subject, html, text, pdfBase64, lang }) {
         attachments: [{ filename, content: pdfBase64 }],
       }),
     });
+    if (!res.ok) {
+      const body = await res.text().catch(() => '');
+      console.error('[webhook] Resend rejected:', res.status, body.slice(0, 400));
+    }
     return res.ok;
-  } catch (e) { return false; }
+  } catch (e) { console.error('[webhook] Resend threw:', e && e.message); return false; }
 }
 
 /* ---- Stripe signature check (no SDK, Web Crypto HMAC-SHA256) ------------ */
