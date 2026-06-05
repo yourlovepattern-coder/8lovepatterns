@@ -1,0 +1,161 @@
+/* ============================================================================
+   8LovePatterns™ — Foundations: Color + Typography tokens
+   Import this file anywhere to inherit the full 8LovePatterns visual language.
+   <link rel="stylesheet" href="colors_and_type.css">
+   ----------------------------------------------------------------------------
+   Brand idea: a warm, premium "miroir relationnel". Cream paper, deep indigo
+   ink for trust/depth, warm coral for emotional intensity, plus 4 muted
+   family accents for the archetypes. Not childish, not clinical.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap');
+
+:root {
+  /* ---- Brand core ------------------------------------------------------ */
+  --encre:        #211C46;   /* deep indigo — primary ink / trust / depth   */
+  --encre-700:    #2E2960;   /* indigo for surfaces & deep panels           */
+  --encre-500:    #4B4490;   /* lifted indigo                               */
+  --violet:       #6B5CCB;   /* muted violet — interactive / links          */
+  --violet-soft:  #ECE9FB;   /* violet wash                                 */
+  --corail:       #EE6352;   /* warm coral — emotional intensity / primary CTA */
+  --corail-600:   #DE4F3E;   /* coral pressed                               */
+  --corail-soft:  #FCEAE6;   /* coral wash                                  */
+  --or:           #C7973F;   /* gold — the Ancre / integration / premium     */
+  --or-soft:      #F6EDD8;
+
+  /* ---- Neutrals (warm) ------------------------------------------------- */
+  --paper:        #FBF7F1;   /* page background — warm cream                */
+  --paper-2:      #F4EEE4;   /* alt section band                            */
+  --surface:      #FFFFFF;   /* cards                                       */
+  --ink:          #211C46;   /* primary text = encre                        */
+  --ink-2:        #57527A;   /* secondary text                              */
+  --ink-3:        #8A86A3;   /* muted / captions                           */
+  --hairline:     #EAE3D7;   /* borders on paper                           */
+  --hairline-2:   #E3DCF0;   /* borders on violet washes                   */
+
+  /* ---- Archetype family colors ---------------------------------------- */
+  /* Les Intenses — Incendiaire, Guetteur */
+  /* Je poursuis — peur : être abandonné */
+  --fam-poursuis:      #C9433B;
+  --fam-poursuis-soft: #EDD8D8;
+  /* Je fuis — peur : être envahi */
+  --fam-fuis:          #CE9A2E;
+  --fam-fuis-soft:     #F9EED7;
+  /* Je contrôle — peur : être impuissant */
+  --fam-controle:      #8A5AA8;
+  --fam-controle-soft: #E7DFEA;
+  /* Je m'efface — peur : être rejeté */
+  --fam-efface:        #46934A;
+  --fam-efface-soft:   #D6ECE3;
+  /* Je me protège — peur : être blessé */
+  --fam-protege:       #4A7AA8;
+  --fam-protege-soft:  #D8E3ED;
+  /* Ancre — integration */
+  --fam-ancre:         #2C7E91;
+  --fam-ancre-soft:    #E4F0F2;
+
+  /* ---- Per-archetype accent (alias to family) ------------------------- */
+  --arch-inc: var(--fam-poursuis);
+  --arch-gue: var(--fam-poursuis);
+  --arch-fug: var(--fam-fuis);
+  --arch-alc: var(--fam-controle);
+  --arch-sau: var(--fam-efface);
+  --arch-mir: var(--fam-efface);
+  --arch-cam: var(--fam-efface);
+  --arch-bas: var(--fam-protege);
+  --arch-anc: var(--fam-ancre);
+
+  /* ---- State ----------------------------------------------------------- */
+  --focus-ring:  #6B5CCB;
+  --positive:    #3FA06B;
+  --warning:     #C7973F;
+
+  /* ---- Typography families -------------------------------------------- */
+  --font-display: 'Bricolage Grotesque', 'Hanken Grotesk', system-ui, sans-serif;
+  --font-body:    'Hanken Grotesk', system-ui, -apple-system, sans-serif;
+  --font-serif:   'Newsreader', Georgia, 'Times New Roman', serif; /* editorial accents / quotes */
+
+  /* ---- Type scale (fluid-ish, rem) ------------------------------------ */
+  --t-display:  clamp(2.6rem, 1.6rem + 4.4vw, 4.5rem);  /* hero            */
+  --t-h1:       clamp(2.1rem, 1.5rem + 2.6vw, 3.1rem);
+  --t-h2:       clamp(1.6rem, 1.25rem + 1.6vw, 2.25rem);
+  --t-h3:       1.4rem;
+  --t-h4:       1.15rem;
+  --t-lead:     1.2rem;      /* intro paragraphs */
+  --t-body:     1.0625rem;   /* 17px base        */
+  --t-small:    0.9375rem;   /* 15px             */
+  --t-caption:  0.8125rem;   /* 13px             */
+  --t-eyebrow:  0.78rem;     /* labels / kickers */
+
+  --lh-tight:   1.08;
+  --lh-snug:    1.28;
+  --lh-body:    1.62;
+
+  /* ---- Spacing scale (8pt) -------------------------------------------- */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 24px;
+  --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px; --s-10: 128px;
+
+  /* ---- Radii ----------------------------------------------------------- */
+  --r-xs: 8px; --r-sm: 12px; --r-md: 16px; --r-lg: 22px; --r-xl: 30px;
+  --r-pill: 999px;
+
+  /* ---- Shadows (soft, warm-tinted) ------------------------------------ */
+  --sh-xs: 0 1px 2px rgba(33,28,70,.06);
+  --sh-sm: 0 2px 8px rgba(33,28,70,.07);
+  --sh-md: 0 10px 28px -8px rgba(33,28,70,.14);
+  --sh-lg: 0 24px 56px -16px rgba(33,28,70,.22);
+  --sh-cta: 0 10px 22px -6px rgba(238,99,82,.45);
+
+  /* ---- Layout ---------------------------------------------------------- */
+  --maxw: 1160px;
+  --maxw-readable: 720px;
+  --gutter: clamp(20px, 5vw, 64px);
+}
+
+/* ============================================================================
+   Semantic element styles — opt in by importing this file + using .lp-prose
+   or the helper classes. Kept additive so it never fights a host page.
+   ========================================================================== */
+
+.lp-root, .lp-prose {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  line-height: var(--lh-body);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.lp-display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--t-display);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.lp-h1 { font-family: var(--font-display); font-weight: 700; font-size: var(--t-h1); line-height: var(--lh-tight); letter-spacing: -0.015em; text-wrap: balance; }
+.lp-h2 { font-family: var(--font-display); font-weight: 700; font-size: var(--t-h2); line-height: var(--lh-snug); letter-spacing: -0.01em; text-wrap: balance; }
+.lp-h3 { font-family: var(--font-display); font-weight: 600; font-size: var(--t-h3); line-height: var(--lh-snug); }
+.lp-h4 { font-family: var(--font-display); font-weight: 600; font-size: var(--t-h4); line-height: 1.4; }
+.lp-lead { font-size: var(--t-lead); line-height: 1.5; color: var(--ink-2); text-wrap: pretty; }
+.lp-body { font-size: var(--t-body); line-height: var(--lh-body); }
+.lp-small { font-size: var(--t-small); }
+.lp-caption { font-size: var(--t-caption); color: var(--ink-3); }
+.lp-quote { font-family: var(--font-serif); font-style: italic; font-size: 1.5rem; line-height: 1.4; color: var(--encre-700); }
+
+/* Eyebrow / kicker — small uppercase label */
+.lp-eyebrow {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--t-eyebrow);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.lp-prose p { margin: 0 0 1em; text-wrap: pretty; }
+.lp-prose h2 { font-family: var(--font-display); font-weight: 700; font-size: var(--t-h2); margin: 1.6em 0 .5em; letter-spacing: -.01em; }
+.lp-prose h3 { font-family: var(--font-display); font-weight: 600; font-size: var(--t-h3); margin: 1.4em 0 .4em; }
+.lp-prose a { color: var(--violet); text-underline-offset: 3px; }

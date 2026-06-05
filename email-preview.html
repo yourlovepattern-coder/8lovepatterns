@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Email preview, 8LovePatterns</title>
+<link rel="stylesheet" href="colors_and_type.css"/>
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--paper-2); font-family:var(--font-body); color:var(--ink); padding:32px 16px; }
+  .wrap { max-width:1200px; margin:0 auto; }
+  h1 { font-family:var(--font-display); font-weight:800; letter-spacing:-.02em; margin:0 0 4px; }
+  .sub { color:var(--ink-3); margin:0 0 28px; }
+  .cols { display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:start; }
+  @media (max-width:900px){ .cols { grid-template-columns:1fr; } }
+  .col h2 { font-family:var(--font-display); font-weight:700; font-size:1.05rem; margin:0 0 4px; }
+  .meta { font-size:.85rem; color:var(--ink-3); margin:0 0 12px; }
+  .meta b { color:var(--ink-2); font-weight:600; }
+  .frame { width:100%; height:760px; border:1px solid var(--hairline); border-radius:18px; background:#fff; box-shadow:var(--sh-md); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Email de confirmation</h1>
+  <p class="sub">Aperçu fidèle du mail que le client reçoit après paiement, avec son rapport en PDF joint.</p>
+  <div class="cols">
+    <div class="col">
+      <h2>🇫🇷 Français</h2>
+      <p class="meta">Objet : <b id="subj-fr"></b></p>
+      <iframe class="frame" id="fr" title="FR email"></iframe>
+    </div>
+    <div class="col">
+      <h2>🇬🇧 English</h2>
+      <p class="meta">Subject: <b id="subj-en"></b></p>
+      <iframe class="frame" id="en" title="EN email"></iframe>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { buildOrderEmail } from './email-template.mjs';
+  const fr = buildOrderEmail({ lang:'fr', profileName:'Le Fugitif', siteUrl:'https://8lovepatterns.com' });
+  const en = buildOrderEmail({ lang:'en', profileName:'The Runner', siteUrl:'https://8lovepatterns.com' });
+  document.getElementById('subj-fr').textContent = fr.subject;
+  document.getElementById('subj-en').textContent = en.subject;
+  document.getElementById('fr').srcdoc = fr.html;
+  document.getElementById('en').srcdoc = en.html;
+</script>
+</body>
+</html>

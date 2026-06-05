@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Private pages we do not want indexed
+Disallow: /premium-report.html
+
+Sitemap: https://8lovepatterns.com/sitemap.xml
