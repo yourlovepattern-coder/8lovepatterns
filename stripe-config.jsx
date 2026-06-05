@@ -15,7 +15,7 @@
           premium-report.html for the instant on-screen version.
 
    ----  TWO MODES  ----------------------------------------------------------
-   . SIMULATION (default): simulate: false. The pay button skips Stripe and the
+   . SIMULATION (default): simulate:true. The pay button skips Stripe and the
      robot, and opens the report directly. Use it to test the funnel with no
      Stripe / no email setup.
    . LIVE: simulate:false + a real Payment Link in `linkAll` (or per code in
@@ -35,7 +35,7 @@ const LP_STRIPE = {
 
   /* MVP test switch. true = simulate (no Stripe, no email). false = go live.
      Flip to false ONLY once the Netlify functions are deployed (SETUP_EMAIL.md). */
-  simulate: true,
+  simulate: false,
 
   /* Where the buyer lands after payment (instant on-screen report). Also use
      this exact page as the success URL on the Stripe Payment Link. */
