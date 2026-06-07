@@ -53,7 +53,7 @@ const LP_STRIPE = {
      NOTE: the value below is your Stripe TEST link, kept so we can test the
      whole robot end to end. Before real launch, replace it with your LIVE
      link (buy.stripe.com/... without "test_"). */
-  linkAll: 'https://buy.stripe.com/test_00w14ndsb67I1Yyb3V6oo00',
+  linkAll: 'https://buy.stripe.com/3cIdR93RBfIi32C2xp6oo01',
 
   /* Optional: a different link per pattern (overrides linkAll for that code).
      Leave empty unless you want per-profile Stripe stats. */
