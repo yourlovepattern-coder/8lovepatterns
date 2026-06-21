@@ -1,6 +1,6 @@
 # Connecting Stripe to 8LovePatterns (no backend)
 
-You sell **8 products**, one premium report per pattern, each **9 €**, one-time payment.
+You sell **the premium report**, one per buyer (built from their result), **$29**, one-time payment.
 No server, no secret keys in the site. Buyers pay on Stripe's own secure page, and the
 money lands in your Stripe account. This mirrors how 16personalities sells its packs.
 
@@ -67,9 +67,9 @@ In each Payment Link's settings you can, with no code:
 
 ## Changing the displayed price
 
-The price shown on the page is `priceLabel` in `stripe-config.jsx` (default `9 €`).
-The amount actually charged is whatever the Stripe Payment Link says, so keep them in
-sync. To show a crossed-out anchor price, set `priceCompareLabel` (e.g. `'19 €'`).
+The price shown on the page is `priceLabel` in `stripe-config.jsx` (default `$29`).
+The amount actually charged is whatever the Stripe Checkout Session says, so keep them in
+sync. To show a crossed-out anchor price, set `priceCompareLabel` (e.g. `'$49'`).
 
 ## When you outgrow Payment Links
 

@@ -31,18 +31,17 @@ function App() {
     if(window.LP_saveResultData) window.LP_saveResultData(res);
   }
 
-  const chromeless = route==='quiz' || route==='analyse';
+  const chromeless = route==='quiz' || route==='analyse' || route==='intro';
   let page;
   switch(route){
     case 'home': page = <Home go={go}/>; break;
-    case 'intro': page = <Intro go={go} onResult={onResult}/>; break;
+    case 'intro': page = <LoveTest go={go}/>; break;
     case 'quiz': page = <Quiz go={go} onFinish={()=>{}}/>; break;
     case 'analyse': page = <Analyse go={go}/>; break;
     case 'result': page = <Result go={go} code={result} data={resultData}/>; break;
     case 'profils': page = <ProfilsIndex go={go}/>; break;
     case 'profil': page = <Profile go={go} code={code}/>; break;
     case 'vente': page = <SalesPage go={go} code={code}/>; break;
-    case 'premium': page = <Premium go={go}/>; break;
     case 'methode': page = <Method go={go}/>; break;
     case 'science': page = <Science go={go}/>; break;
     default: page = <Home go={go}/>;

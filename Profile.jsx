@@ -109,15 +109,13 @@ function Profile({ go, code='bas' }) {
         <Container style={{ maxWidth:740 }}>
           <ProfileBody code={arch.code}/>
 
-          <div style={{ marginTop:'40px', background:'var(--encre)', color:'#fff', borderRadius:'var(--r-xl)', padding:'clamp(30px,4vw,44px)', textAlign:'center' }}>
-            <Chip soft="rgba(255,255,255,.14)" color="#fff"><Icon name="sparkle" size={14}/> The complete report</Chip>
-            <h2 className="lp-h2" style={{ color:'#fff', marginTop:14 }}>Go deeper into the {arch.name}.</h2>
-            <p style={{ color:'rgba(255,255,255,.72)', marginTop:12, maxWidth:480, marginInline:'auto' }}>
-              The full report unpacks this pattern's triggers, its conflict and breakup behavior, your Anchor level, and the first steps to grow. {window.LP_STRIPE ? window.LP_STRIPE.priceLabel : ''}, instant access.
+          <div style={{ marginTop:'40px', textAlign:'center', paddingTop:'clamp(24px,4vw,36px)', borderTop:'1px solid var(--hairline)' }}>
+            <h2 className="lp-h2" style={{ marginTop:0 }}>Want to discover your own pattern?</h2>
+            <p className="lp-lead" style={{ marginTop:12, maxWidth:440, marginInline:'auto' }}>
+              Take the test for free and find out which mechanism takes over when love gets uncertain.
             </p>
-            <div style={{ marginTop:24, display:'flex', justifyContent:'center', gap:'14px', flexWrap:'wrap' }}>
-              <Button size="lg" icon="arrow-right" onClick={()=>go('vente', arch.code)}>See the full report</Button>
-              <Button size="lg" variant="light" onClick={()=>go('intro')}>Take the free test</Button>
+            <div style={{ marginTop:24, display:'flex', justifyContent:'center' }}>
+              <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>Take the free test</Button>
             </div>
           </div>
         </Container>

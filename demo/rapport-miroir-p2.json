@@ -1,0 +1,343 @@
+{
+  "meta": {
+    "profil": "miroir",
+    "code": "mir",
+    "nom": "The Mirror",
+    "accent": "#46934A",
+    "palier": 2,
+    "palierLibelle": "I know I’m doing it, and I do it anyway",
+    "secondaire": "guetteur",
+    "secondaireNom": "The Watcher",
+    "statut": "couple",
+    "lang": "en",
+    "dateTest": 1780272000000,
+    "hasPaid": true
+  },
+  "free": [
+    {
+      "id": "accroche",
+      "type": "prose",
+      "zone": "free",
+      "title": "You’re The Mirror. And you already know it.",
+      "paras": [
+        "You catch yourself doing it. The exact moment you start becoming whatever the other person wants, some part of you notices. It almost comments on it. And you keep going anyway. If you’re here, it isn’t to be taught what your mechanism is. You could explain it better than most people could. You’re here because understanding it has never been enough to change it, and that clear-eyed helplessness wears you out.",
+        "Here’s the most important thing in this report, because you’ve waited long enough for it. What you’re missing isn’t willpower. The thing you keep trying to fix with your head is happening somewhere else in you, and nobody has ever shown you where, or how.",
+        "Let’s place you first, because your situation isn’t the same as every Mirror’s."
+      ]
+    },
+    {
+      "id": "visuel1",
+      "type": "visual",
+      "zone": "free",
+      "visual": {
+        "kind": "anchorScale",
+        "n": 1,
+        "subtitle": "You’re here. Most people who take this test land in exactly this spot, and it’s the most frustrating one of all.",
+        "paliers": [
+          { "v": 0, "phrase": "I feel it coming and I can do otherwise." },
+          { "v": 1, "phrase": "I catch it in the moment." },
+          { "v": 2, "phrase": "I know I’m doing it, and I do it anyway." },
+          { "v": 3, "phrase": "I understand, but after the fact." },
+          { "v": 4, "phrase": "For me, the problem is the other person." }
+        ]
+      },
+      "data": {
+        "position": 2,
+        "bascule": 3,
+        "libelle": "I know I’m doing it, and I do it anyway"
+      }
+    },
+    {
+      "id": "pourquoiToi",
+      "type": "prose",
+      "zone": "free",
+      "title": "Why you",
+      "paras": [
+        "This reflex of becoming what the other person expects, you didn’t choose it as an adult. It formed very early, back when your brain was learning what love was. According to Bowlby’s attachment theory, a child builds an internal model with their parent of how relationships work, an inner framework that then guides their adult relationships.",
+        "In your case, that model learned a simple rule. To keep the bond with the people you depended on, it was safer to sense their needs before your own and become what suited them. Maybe a parent whose mood kept shifting, someone you read carefully the moment you walked into a room. Maybe a fragile parent you became the little guardian of. Maybe a love that came when you were good and pulled back when you took up space. Whatever the scene was, your conclusion as a child was logical. Being fully me puts the bond at risk.",
+        "It wasn’t a weakness. It was the smartest thing a small person who depended entirely on adults could do. The problem is that what protected you as a child is still running today, when you’re no longer in danger, and it makes you disappear in front of people who would love you for exactly who you are."
+      ]
+    },
+    {
+      "id": "visuel2",
+      "type": "visual",
+      "zone": "free",
+      "title": "The loop you keep replaying",
+      "visual": {
+        "kind": "loop",
+        "n": 2,
+        "caption": "The loop that feeds itself.",
+        "steps": [
+          "A trigger, the other person seems distant.",
+          "Your inner alarm goes off.",
+          "You fade, you become what pleases.",
+          "The other person meets you less and pulls away."
+        ]
+      },
+      "data": {}
+    },
+    {
+      "id": "boucleProse",
+      "type": "prose",
+      "zone": "free",
+      "paras": [
+        "At the start, you meet a gaze that makes you feel intensely alive. You move closer by becoming what they like, you pick up their tastes, their moods, their expectations, and you mold yourself to them. The merging reassures you, and meanwhile your own outline fades.",
+        "Then comes the first sign of distance. A shorter message, an evening without you, a different tone. The ground gives way, because it isn’t only them you might lose, it’s you, this version of you that only existed inside their gaze. So you move closer still, you make yourself more attentive, you try to be exactly what’s needed.",
+        "And that’s where it turns against you. The other person, who never met the one behind all that effort, senses something slightly unreal and pulls away for good. The way you reach for safety builds the very abandonment you dread. It isn’t the wrong people, and it isn’t bad luck. It’s the loop."
+      ],
+      "callouts": [
+        {
+          "tone": "note",
+          "text": "You told us your relationships almost all look alike. This is why. It isn’t that you keep meeting the same kind of person. It’s the same mechanism writing the same ending."
+        }
+      ]
+    },
+    {
+      "id": "pourquoiComprendre",
+      "type": "prose",
+      "zone": "free",
+      "title": "Why understanding it has never been enough",
+      "paras": [
+        "You’ve understood your mechanism with your head. But your mechanism doesn’t live in your head. All of this was written into your body before you could even speak. A child records how love works long before having the words for it, and those lessons settle in the part of you that reacts, the part that speeds up your heart when a message goes unanswered. The psychiatrist Bessel van der Kolk summed it up in an idea that became famous, the body keeps the score of what the mind has forgotten, and that’s why you don’t free yourself from an old pattern through understanding alone.",
+        "The next time it rises, that moment when you feel yourself about to say yes while meaning no, when the other person’s silence eats at you, know that a chemical surge has just fired through your body, and that it has a fixed length, around ninety seconds. A minute and a half is how long an emotion takes to settle when you don’t feed it. The trouble is that you do feed it, by restarting the thoughts. So do nothing for that stretch of time. One hand on your belly, you breathe, you let the wave pass without fueling it. On the other side there’s a small space of calm where, for once, fear isn’t the one choosing. That space is yours now."
+      ]
+    },
+    {
+      "id": "gensBien",
+      "type": "prose",
+      "zone": "free",
+      "title": "Why you fade even with the people who love you",
+      "paras": [
+        "Here’s the most unsettling part. When someone loves you with a steady love, someone who would probably take you exactly as you are, you still keep fading, still keep guessing what they expect, still keep coming second. Not because that person asks for it, but because existing fully, on your own terms, feels like a threat to the bond. Part of you stays convinced that it’s your disappearing that keeps you loved.",
+        "The trap is that even the steadiest people only ever receive your faded version, so they can never prove they’d love you any other way. You never test whether you’d be kept while being fully yourself, because you never take the risk of being it. The doubt stays intact, would I really be loved, me? And the less anyone proves it to you, the more you fade, for safety. Until you see this, you’ll keep vanishing in front of the very people who only wanted to meet you."
+      ]
+    },
+    {
+      "id": "visuel3",
+      "type": "visual",
+      "zone": "free",
+      "title": "How far it spills into the rest of your life",
+      "visual": {
+        "kind": "spilloverTable",
+        "n": 3,
+        "leftHead": "Where it shows",
+        "rightHead": "What it produces",
+        "rows": [
+          ["At a restaurant, you let the other person choose", "you no longer know what you like"],
+          ["At work, you say yes to the one ask too many", "you come home drained"],
+          ["In friendship, you carry others", "nobody carries you"],
+          ["In your relationship, you put their wishes first", "they end up not seeing you anymore"]
+        ]
+      },
+      "data": {}
+    },
+    {
+      "id": "debordementProse",
+      "type": "prose",
+      "zone": "free",
+      "paras": [
+        "You don’t only fade when you’re in love. You fade almost everywhere. People find you easy, considerate, accommodating, and yet something in you is starting to get tired of living this way, as if you’d forgotten what your own shape was."
+      ],
+      "callouts": []
+    },
+    {
+      "id": "aQuelPoint",
+      "type": "prose",
+      "zone": "free",
+      "title": "How tightly it holds you today",
+      "lead": "You’re at level 2: “I know I’m doing it, and I do it anyway”.",
+      "paras": [
+        "You see it coming. The very moment you start to fade, you know it. You could almost watch yourself do it. And you do it anyway. That lucidity that prevents nothing is a pain well known to people who have worked hard on themselves and can’t understand why everything they’ve grasped changes nothing. Now you know why. It isn’t willpower you lack, it’s that the control isn’t in your head.",
+        "You now know what’s happening to you, where it comes from, and why understanding it hasn’t switched it off. You have a first tool that works in the body. What comes next is your plan."
+      ]
+    },
+    {
+      "id": "ctaPlan",
+      "type": "cta",
+      "zone": "free",
+      "cta": { "label": "Get my plan" }
+    }
+  ],
+  "paid": [
+    {
+      "id": "visuel4",
+      "type": "identityCard",
+      "zone": "paid",
+      "title": "Your plan, built on your exact position",
+      "fields": {
+        "profil": "The Mirror",
+        "dominantScore": 71,
+        "secondaire": "The Watcher",
+        "secondaireScore": 58,
+        "palier": 2,
+        "palierLibelle": "I know I’m doing it, and I do it anyway",
+        "bascule": 3,
+        "sabotage": "Fear of disappearing",
+        "axe": "pursuit"
+      }
+    },
+    {
+      "id": "deuxiemeMecanisme",
+      "type": "prose",
+      "zone": "paid",
+      "title": "1. Your second mechanism",
+      "paras": [
+        "Your Mirror doesn’t move alone. Right behind it sits The Watcher (58%), and until you see the two of them together, you risk working on the wrong thing.",
+        "You don’t only fade. You also keep watch for the signs that your presence is no longer enough to hold them. You’re doing two things at once, becoming perfect and standing guard. That’s why you come out of your relationships exhausted. In your plan, we calm the watching first, because that’s what drains you, before working on the fading."
+      ]
+    },
+    {
+      "id": "compatibilite",
+      "type": "prose",
+      "zone": "paid",
+      "title": "2. Who it can actually work with",
+      "paras": [
+        "No mechanism is made for another, and none is doomed with another. You can build something solid with any profile. What decides isn’t the other person’s label, it’s each person’s Anchor level.",
+        "Two people aware of their mechanisms, even opposite ones, love each other without destroying each other. Two compatible but unaware profiles hurt each other. So don’t look at the other person’s mechanism, look at whether they can see it, talk about it, and repair after a fight."
+      ]
+    },
+    {
+      "id": "visuel5",
+      "type": "visual",
+      "zone": "paid",
+      "visual": {
+        "kind": "compatColumns",
+        "n": 5,
+        "columns": [
+          {
+            "label": "The ones who soothe you",
+            "tone": "apaise",
+            "blurb": "Someone with a high Anchor, a Bastion who has learned to open up, a Savior who no longer sacrifices themselves. They don’t turn your fear of being abandoned into a daily routine. They’re steady, readable, able to repair, and your fear falls asleep gently beside them.",
+            "items": [
+              { "code": "anc", "name": "High Anchor" },
+              { "code": "bas", "name": "Open Bastion" },
+              { "code": "sau", "name": "Steady Savior" }
+            ]
+          },
+          {
+            "label": "The ones who understand you",
+            "tone": "comprend",
+            "blurb": "A Chameleon or a Savior still on the way, an Arsonist who has calmed down. They know from the inside the fear of losing your place. They understand you without necessarily soothing you, and with them everything depends on each person’s Anchor.",
+            "items": [
+              { "code": "cam", "name": "Chameleon on the way" },
+              { "code": "sau", "name": "Savior on the way" },
+              { "code": "inc", "name": "Calmed Arsonist" }
+            ]
+          },
+          {
+            "label": "The ones who make you blow up",
+            "tone": "declenche",
+            "blurb": "A very active Runaway, a very distant Alchemist, a magnetic partner who loves being mirrored. They press exactly on your sore spot. The more they pull away, the more you fade to hold on to them. They aren’t bad people, they’re the riskiest dynamic for you as long as your Anchor is low.",
+            "items": [
+              { "code": "fug", "name": "Active Runaway" },
+              { "code": "alc", "name": "Distant Alchemist" }
+            ]
+          }
+        ]
+      },
+      "data": {}
+    },
+    {
+      "id": "compatProse2",
+      "type": "prose",
+      "zone": "paid",
+      "paras": [
+        "And there’s a scientific reason for your pull toward the ones who make you blow up. Hazan and Shaver showed, back in 1987, that adult love replays the attachment system of childhood. Your body recognizes whatever resembles your wound as familiar, and calls it love. That’s why the calm of a steady person can feel flat to you, when it’s exactly what you need."
+      ]
+    },
+    {
+      "id": "protocole",
+      "type": "prose",
+      "zone": "paid",
+      "title": "3. Your way back up",
+      "paras": [
+        "You watch yourself do it, and you give in anyway. It isn’t a lack of willpower, it’s a lack of space. Between the moment your alarm rings and the moment you say yes, there’s nothing, not a fraction of a second to choose. Your whole job this week is to build that space, in the body, where it plays out. Get your notebook."
+      ]
+    },
+    {
+      "id": "protocoleExercices",
+      "type": "exercises",
+      "zone": "paid",
+      "exercises": [
+        {
+          "label": "Exercise 1, the breathing that opens the space (twice a day, 5 minutes, and in the moment).",
+          "body": "Here’s the base technique, to train first when calm. Breathe in through your nose for 4 seconds, then breathe out slowly through your mouth for 6 to 8 seconds. The out-breath being longer than the in-breath isn’t a detail, it’s what switches on your parasympathetic nervous system, the part of you that calms the alarm. Do it twice a day, ten breaths, so your body knows the way. Then, in a real situation, the moment you feel your signal rise, you’ll have this tool ready."
+        },
+        {
+          "label": "Exercise 2, the 90-second rule (in the moment, as soon as the alarm rings).",
+          "body": "This is your central exercise, resting on a biological fact. When an emotion fires, the chemical surge in your body lasts about 90 seconds, then it subsides, as long as you don’t feed it with your thoughts. So the next time someone is waiting on an answer from you and you feel the fading rise, do this, in order. One, don’t answer right away, just say give me a minute. Two, quietly put a hand on your belly and do your long breathing. Three, count inwardly until the wave comes back down, about a minute and a half. Four, only then, answer. You’ll find that on the other side of those 90 seconds, it’s no longer fear talking, it’s you."
+        },
+        {
+          "label": "Exercise 3, the journal of the space you gained (every evening).",
+          "body": "Each evening, note in your notebook the times you managed to slip that space in, even imperfectly, and the times the wave was faster than you. Don’t judge the misses, count them as data. Also note, for each success, what you felt after choosing your answer instead of being driven by it. Keep that feeling in mind, it’s your reward, and it’s what anchors the new reflex. Day after day, you’ll watch the success column grow. That’s your Anchor rising, in black and white."
+        },
+        {
+          "label": "Exercise 4, the starter line (to prepare in advance).",
+          "body": "Write on a piece of paper, and keep in your pocket, three small phrases that buy you time without creating conflict. For example, I’ll get back to you in a moment, or I need to think about it, or I’m not sure, let me sit with it. Having these ready in advance takes away the difficulty of inventing them right when the alarm rings. You’ll just pull one out, and it’ll buy you your 90 seconds."
+        }
+      ]
+    },
+    {
+      "id": "lectures",
+      "type": "bookcards",
+      "zone": "paid",
+      "title": "4. The reading chosen for your level",
+      "lead": "You’re at level 2. Here are the books that speak to this exact spot.",
+      "books": [
+        {
+          "title": "The Body Keeps the Score",
+          "author": "Bessel van der Kolk",
+          "price": "",
+          "url": "",
+          "cover": "",
+          "blurb": "To understand, in depth, why your mechanism lives in your body and not in your head. The book that explains your level."
+        },
+        {
+          "title": "Being Genuine: Stop Being Nice, Start Being Real",
+          "author": "Thomas d’Ansembourg",
+          "price": "",
+          "url": "",
+          "cover": "",
+          "blurb": "To learn to say what you feel instead of fading to please. The training that follows the understanding."
+        },
+        {
+          "title": "Attached",
+          "author": "Amir Levine and Rachel Heller",
+          "price": "",
+          "url": "",
+          "cover": "",
+          "blurb": "To reread your past relationships and stop thinking you’re crazy."
+        }
+      ]
+    },
+    {
+      "id": "devenir",
+      "type": "prose",
+      "zone": "paid",
+      "title": "5. What you become when you rise",
+      "paras": [
+        "A Mirror who rises doesn’t turn into someone else. You keep your sensitivity, your subtlety, that rare way of sensing people. But it no longer costs you your shape. You can be close without disappearing, give without draining yourself, love hard while still knowing what you want.",
+        "Be patient, the path is neither fast nor steady. You’ll fade again, especially when your sore spot gets touched. That won’t be a failure, just the sign that you’re learning. And what will lift you isn’t understanding more, it’s living, over time, new experiences where your nervous system learns it can be safe without fading. That happens with others, and it can be practiced. This week’s protocol is where you start."
+      ]
+    },
+    {
+      "id": "etApres",
+      "type": "prose",
+      "zone": "paid",
+      "title": "6. And after this",
+      "paras": [
+        "This report is a snapshot of you today. Your Anchor isn’t fixed, it moves as you integrate your mechanism. The more you learn to feel it coming and hold your place, the less it decides in your stead, and the more you let the right people meet you for real, for who you are and not for the reflection you hold up.",
+        "Each level has its own way of working. What you do at level 2 won’t be what you do at the level above. So come back, in a few weeks, take this test again. It’ll become your progress mirror. If your Anchor rises, you’ll know you’re showing up where you’d once have faded. And if it lowers after a hard stretch, that’s useful information, not a setback. Either way, you have a compass.",
+        "That’s the real difference between understanding your mechanism once, and moving it for good."
+      ]
+    },
+    {
+      "id": "disclaimer",
+      "type": "disclaimer",
+      "zone": "paid",
+      "paras": [
+        "8lovepatterns is a self-knowledge tool inspired by the science of attachment (Bowlby, Hazan & Shaver, van der Kolk). This report makes no diagnosis and is not a substitute for psychological care. If you’re going through something that puts you in danger, this report isn’t enough, and you deserve real support."
+      ]
+    }
+  ]
+}

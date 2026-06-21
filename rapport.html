@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Your report, LovePattern</title>
+<meta name="robots" content="noindex"/>
+<link rel="icon" href="assets/logo_mascot.png"/>
+<link rel="stylesheet" href="colors_and_type.css"/>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); font-family: var(--font-body); color: var(--ink); }
+  button { font-family: inherit; cursor: pointer; }
+  ::selection { background: var(--corail, #EE6352); color: #fff; }
+
+  .rp-wrap { max-width: 880px; margin: 0 auto; padding: 0 clamp(20px,5vw,40px); }
+  .rp-kicker { display:inline-block; font-size:.72rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+  .rp-display { font-family: var(--font-display); font-weight: 800; letter-spacing:-.01em; }
+  .rp-h2 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.5rem,1.1rem+1.4vw,2.1rem); line-height:1.1; letter-spacing:-.015em; }
+  .rp-p { margin: 0 0 1.05em; font-size: 1.08rem; line-height: 1.72; color: var(--ink); text-wrap: pretty; }
+  .rp-p:last-child { margin-bottom: 0; }
+
+  /* top bar */
+  .rp-topbar { position: sticky; top:0; z-index:20; background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom:1px solid var(--hairline); }
+  .rp-topbar-in { max-width:880px; margin:0 auto; padding:12px clamp(20px,5vw,40px); display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .rp-brand { display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-weight:800; color:var(--encre); text-decoration:none; font-size:1.05rem; }
+  .rp-brand img { width:30px; height:30px; }
+  .rp-tb-btn { display:inline-flex; align-items:center; gap:7px; border:1px solid var(--hairline); background:var(--surface,#fff); color:var(--ink-2);
+    border-radius:var(--r-pill); padding:8px 15px; font-weight:600; font-size:.86rem; text-decoration:none; }
+  .rp-tb-btn:hover { color:var(--encre); border-color:var(--ink-3); }
+
+  .rp-cta { display:inline-flex; align-items:center; gap:9px; border:none; border-radius:var(--r-pill);
+    padding:15px 28px; font-weight:800; font-size:1.05rem; background:var(--corail,#EE6352); color:#fff; box-shadow:var(--sh-sm); }
+  .rp-cta:hover { filter: brightness(1.05); }
+
+  .rp-state { max-width:560px; margin:0 auto; padding:clamp(60px,12vw,120px) clamp(20px,5vw,40px); text-align:center; }
+  .rp-spin { width:30px; height:30px; border:3px solid var(--hairline); border-top-color:var(--corail,#EE6352); border-radius:50%; display:inline-block; animation:rpspin .8s linear infinite; }
+  @keyframes rpspin { to { transform: rotate(360deg); } }
+
+  .rp-locked { background:var(--surface,#fff); border:1px solid var(--hairline); border-radius:var(--r-xl); padding:clamp(28px,4vw,44px); text-align:center; }
+
+  @media (max-width: 720px) {
+    .rp-loop { grid-template-columns: 1fr !important; }
+    .rp-compat { grid-template-columns: 1fr !important; }
+  }
+  @media print {
+    .rp-topbar { display:none !important; }
+    body { background:#fff; }
+    .rp-block, .rp-p, .rp-h2 { break-inside: avoid; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { animation-duration:.01ms !important; transition-duration:.01ms !important; } }
+</style>
+</head>
+<body>
+
+<header class="rp-topbar">
+  <div class="rp-topbar-in">
+    <a class="rp-brand" href="index.html"><img src="assets/logo_mascot.png" alt=""/> LovePattern</a>
+    <div style="display:flex;gap:10px;">
+      <button class="rp-tb-btn" id="rp-print">Print</button>
+      <a class="rp-tb-btn" href="index.html">Retake the test</a>
+    </div>
+  </div>
+</header>
+
+<main id="report">
+  <div class="rp-state"><span class="rp-spin"></span><p style="margin-top:18px;color:var(--ink-3);">Loading your report\u2026</p></div>
+</main>
+
+<script src="report-engine/render.js"></script>
+<script>
+(function () {
+  var params = new URLSearchParams(location.search);
+  var sessionId = params.get('session_id');
+  var demo = params.get('demo') === '1';
+  var freeOnly = params.get('free') === '1';   // preview the pre-payment (gated) state
+  var mount = document.getElementById('report');
+
+  document.getElementById('rp-print').addEventListener('click', function () { window.print(); });
+
+  function lockedNotice() {
+    var d = window.LP_RENDER.el('div', { class: 'rp-locked' }, [
+      window.LP_RENDER.el('h2', { class: 'rp-h2', style: 'color:var(--encre);margin:0 0 12px;' }, ['What comes next is your plan.']),
+      window.LP_RENDER.el('p', { style: 'margin:0 auto 22px;max-width:46ch;color:var(--ink-2);font-size:1.05rem;line-height:1.6;' }, ['The move that lifts you from your level, your second mechanism, the compatibility, and the reading chosen for exactly where you are. Assembled on the server, delivered only after payment.']),
+    ]);
+    var btn = window.LP_RENDER.el('button', { class: 'rp-cta', type: 'button' }, ['Get my plan, $29', window.LP_RENDER.el('span', {}, ['\u2192'])]);
+    btn.addEventListener('click', startCheckout);
+    d.appendChild(btn);
+    return d;
+  }
+
+  function startCheckout() {
+    /* In demo/offline preview, just reveal the full report. */
+    if (demo || freeOnly) { var u = new URL(location.href); u.searchParams.delete('free'); u.searchParams.set('demo', '1'); location.href = u.toString(); return; }
+    /* Production: post the stored result to the server, get a Stripe URL. */
+    var result = null;
+    try { result = JSON.parse(localStorage.getItem('lovepattern_result_v2') || 'null'); } catch (e) {}
+    var lang = (document.documentElement.lang === 'fr' || (function(){ try { return localStorage.getItem('lp_lang') === 'fr'; } catch(e){ return false; } })()) ? 'fr' : 'en';
+    if (!result) { location.href = 'index.html'; return; }
+    fetch('/api/create-checkout', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ result: result, lang: lang }) })
+      .then(function (r) { return r.json(); })
+      .then(function (d) { if (d && d.url) location.href = d.url; else location.href = 'index.html'; })
+      .catch(function () { location.href = 'index.html'; });
+  }
+
+  function showError(msg) {
+    mount.innerHTML = '';
+    mount.appendChild(window.LP_RENDER.el('div', { class: 'rp-state' }, [
+      window.LP_RENDER.el('h1', { class: 'rp-h2', style: 'color:var(--encre);margin:0 0 12px;' }, ['We couldn\u2019t find your report']),
+      window.LP_RENDER.el('p', { style: 'margin:0 0 24px;color:var(--ink-3);' }, [msg || 'Retake the test to generate your report.']),
+      window.LP_RENDER.el('a', { class: 'rp-cta', href: 'index.html', style: 'text-decoration:none;' }, ['Retake the test']),
+    ]));
+  }
+
+  function render(report, opts) {
+    window.LP_RENDER.renderReport(report, mount, opts || {});
+  }
+
+  /* ---- 1. PRODUCTION: a paid Stripe session -> ask the server ---------- */
+  if (sessionId && !demo && !freeOnly) {
+    fetch('/api/get-report?session_id=' + encodeURIComponent(sessionId))
+      .then(function (r) { if (!r.ok) throw new Error('status ' + r.status); return r.json(); })
+      .then(function (report) { render(report, { onCta: startCheckout }); })
+      .catch(function () { showError('Your payment could not be verified, or the session has expired.'); });
+    return;
+  }
+
+  /* ---- 2. FREE TUNNEL: real profile, free zone only, gated CTA --------- *
+     A finished visitor (result_v2 in storage) who lands here without a paid
+     session sees THEIR OWN free report, server-assembled free-only, with the
+     locked paid zone behind the CTA. Falls back to the offline demo if the
+     function is unreachable. `demo=1` / `free=1` skip this and use the demo. */
+  var storedResult = null;
+  try { storedResult = JSON.parse(localStorage.getItem('lovepattern_result_v2') || 'null'); } catch (e) {}
+  if (storedResult && !demo && !freeOnly) {
+    var lang2 = (document.documentElement.lang === 'fr' || (function(){ try { return localStorage.getItem('lp_lang') === 'fr'; } catch(e){ return false; } })()) ? 'fr' : 'en';
+    fetch('/api/get-report-free', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ result: storedResult, lang: lang2 }) })
+      .then(function (r) { if (!r.ok) throw new Error('status ' + r.status); return r.json(); })
+      .then(function (report) {
+        report.paid = [];   // belt and braces: the free endpoint already omits paid
+        render(report, { onCta: startCheckout, lockedNotice: lockedNotice() });
+      })
+      .catch(function () {
+        /* offline / preview: fall back to the bundled Miroir demo, free-only */
+        fetch('demo/rapport-miroir-p2.json')
+          .then(function (r) { return r.json(); })
+          .then(function (report) { render({ meta: report.meta, free: report.free, paid: [] }, { onCta: startCheckout, lockedNotice: lockedNotice() }); })
+          .catch(function () { showError('Preview unavailable.'); });
+      });
+    return;
+  }
+
+  /* ---- 3. PREVIEW / OFFLINE: load the pre-assembled demo payload ------- */
+  fetch('demo/rapport-miroir-p2.json')
+    .then(function (r) { return r.json(); })
+    .then(function (report) {
+      if (freeOnly) {
+        var freeReport = { meta: report.meta, free: report.free, paid: [] };
+        render(freeReport, { onCta: startCheckout, lockedNotice: lockedNotice() });
+      } else {
+        render(report, { onCta: startCheckout });
+      }
+    })
+    .catch(function () { showError('Demo unavailable.'); });
+})();
+</script>
+</body>
+</html>

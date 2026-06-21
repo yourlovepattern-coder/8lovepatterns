@@ -29,9 +29,9 @@
 const LP_STRIPE = {
   /* Price shown on the offer page (display only). The real charge is whatever
      the Stripe Payment Link itself says. Keep them in sync. */
-  priceLabel: '9 \u20AC',
-  priceCompareLabel: '',        // e.g. '19 \u20AC' for a crossed-out anchor price. '' = none.
-  currency: 'eur',
+  priceLabel: '$29',
+  priceCompareLabel: '',        // e.g. '$49' for a crossed-out anchor price. '' = none.
+  currency: 'usd',             // base presentment currency; Stripe Adaptive Pricing localizes at checkout.
 
   /* MVP test switch. true = simulate (no Stripe, no email). false = go live.
      Flip to false ONLY once the Netlify functions are deployed (SETUP_EMAIL.md). */
@@ -39,7 +39,7 @@ const LP_STRIPE = {
 
   /* Where the buyer lands after payment (instant on-screen report). Also use
      this exact page as the success URL on the Stripe Payment Link. */
-  successUrl: 'premium-report.html',
+  successUrl: 'rapport.html',
 
   /* Endpoint that stashes the pre-built PDF for the robot to email. */
   saveEndpoint: '/api/save-report',
@@ -50,9 +50,8 @@ const LP_STRIPE = {
   /* ----  ONE LINK FOR ALL PATTERNS  --------------------------------------
      You chose a single Payment Link reused for every profile (same 9 EUR, the
      report adapts to the buyer). Paste it here.
-     NOTE: the value below is your Stripe TEST link, kept so we can test the
-     whole robot end to end. Before real launch, replace it with your LIVE
-     link (buy.stripe.com/... without "test_"). */
+     LIVE link in use (real money). The previous TEST link was
+     buy.stripe.com/test_00w14ndsb67I1Yyb3V6oo00 if you ever need to test again. */
   linkAll: 'https://buy.stripe.com/3cIdR93RBfIi32C2xp6oo01',
 
   /* Optional: a different link per pattern (overrides linkAll for that code).
@@ -84,32 +83,6 @@ LP_STRIPE.isUnlocked = function () {
 /* ---- helpers ----------------------------------------------------------- */
 function lpSafeParse(s){ try { return JSON.parse(s); } catch (e) { return null; } }
 
-/* Build the buyer's report as a PDF, in an isolated iframe that loads
-   premium-report.html?gen=1. The iframe renders the report from localStorage
-   (same origin, so the buyer's result is available) and posts the PDF base64
-   back. Isolation avoids any global-name clash with the main app scripts. */
-LP_STRIPE._buildReportPdfViaIframe = function () {
-  return new Promise(function (resolve) {
-    var done = false;
-    var ifr = document.createElement('iframe');
-    function finish(val) {
-      if (done) return; done = true;
-      try { window.removeEventListener('message', onMsg); } catch (e) {}
-      try { ifr.remove(); } catch (e) {}
-      resolve(val || null);
-    }
-    function onMsg(e) {
-      if (e && e.data && e.data.type === 'lp_pdf') finish(e.data.pdf);
-    }
-    window.addEventListener('message', onMsg);
-    ifr.setAttribute('aria-hidden', 'true');
-    ifr.style.cssText = 'position:fixed;left:-100000px;top:0;width:900px;height:1400px;border:0;opacity:0;pointer-events:none;';
-    ifr.src = 'premium-report.html?gen=1';
-    document.body.appendChild(ifr);
-    setTimeout(function () { finish(null); }, 25000); // safety net
-  });
-};
-
 /* Full-screen "preparing" overlay shown while the PDF is built. */
 LP_STRIPE._showPreparing = function () {
   try {
@@ -130,64 +103,69 @@ LP_STRIPE._showPreparing = function () {
 };
 
 /* ---- the buy button --------------------------------------------------- */
-LP_STRIPE.checkout = async function (code) {
-  const url = this.resolveLink(code);
-
-  /* Analytics: record purchase intent before we navigate away. */
-  let txid = '';
-  try {
-    const items = (window.LP_reportItem) ? [window.LP_reportItem(code)] : [];
-    txid = 'lp_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
-    localStorage.setItem('lp_txid', txid);
-    localStorage.setItem('lp_tx_code', code || '');
-    if (window.LP_track) {
-      window.LP_track('add_to_cart',    { currency: 'EUR', value: 9, items: items });
-      window.LP_track('begin_checkout', { currency: 'EUR', value: 9, items: items, transaction_id: txid });
-    }
-  } catch (e) {}
-
-  /* SIMULATION or no link: go straight to the on-screen report (no robot). */
-  if (this.simulate || !url) {
-    console.info('[8LovePatterns] ' + (this.simulate
-      ? 'Simulation mode ON. Set LP_STRIPE.simulate=false (and deploy the functions) to go live.'
-      : 'No Stripe link configured. Simulating payment.'));
-    this.markUnlocked(code);
-    window.location.href = this.successUrl;
-    return false;
-  }
-
-  /* LIVE: pre-build the report for email, stash it, then hand off to Stripe. */
-  const overlay = this._showPreparing();
-  try {
-    const resultData = (window.LP_loadResultData && window.LP_loadResultData())
-      || lpSafeParse(localStorage.getItem('lovepattern_resultData'));
-    if (resultData) {
-      const id = 'rep_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
-      const arch = window.archByCode ? window.archByCode(code) : null;
-      const lang = (document.documentElement.lang === 'fr' || localStorage.getItem('lp_lang') === 'fr') ? 'fr' : 'en';
-      const pdf = await this._buildReportPdfViaIframe();
-      if (pdf) {
-        await fetch(this.saveEndpoint, {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ id: id, pdf: pdf, lang: lang, profileName: arch ? arch.name : '' }),
-        }).catch(function () {});
-        this.markUnlocked(code);
-        const sep = url.indexOf('?') === -1 ? '?' : '&';
-        window.location.href = url + sep + 'client_reference_id=' + encodeURIComponent(id);
-        return true;
-      }
-    }
-  } catch (e) {
-    console.warn('[8LovePatterns] Could not pre-build the report for email; continuing to payment.', e);
-  }
-
-  /* Fallback: proceed to Stripe without a stashed report (the robot will just
-     skip the attachment for this one). Payment still works. */
-  this.markUnlocked(code);
-  if (overlay) overlay.remove();
-  window.location.href = url;
-  return true;
+/* LEGACY ENTRYPOINT, now delegated to the secure v2 flow.
+   The old Payment-Link + premium-report.html PDF path was the original content
+   leak (paid content rendered client-side). Every buy button (sales page,
+   result screen) now routes through the server-gated Checkout Session: the
+   browser posts its test result, gets a Stripe URL, pays, and only then does
+   /api/get-report assemble and return the paid content. `code` is ignored: the
+   report is built from the stored result_v2, which already carries the profile. */
+LP_STRIPE.checkout = function (code) {
+  return this.checkoutSession();
 };
 
 window.LP_STRIPE = LP_STRIPE;
+
+/* ============================================================================
+   SECURE FLOW (v2)  .  server-created Checkout Session + server-gated report
+   ----------------------------------------------------------------------------
+   Replaces the static Payment Link for the new block-assembled report. The
+   browser never receives paid content: it posts its test result, gets a Stripe
+   URL, pays, and lands on rapport.html?session_id=... where /api/get-report
+   verifies the payment and returns ONLY this person's report.
+
+   Wiring: the test-result screen persists the new-engine result under
+   'lovepattern_result_v2', then the "Recevoir mon plan" CTA calls
+   LP_STRIPE.checkoutSession(). See RAPPORT_SETUP.md.
+   ============================================================================ */
+LP_STRIPE.RESULT_V2_KEY = 'lovepattern_result_v2';
+LP_STRIPE.createEndpoint = '/api/create-checkout';
+
+LP_STRIPE.loadResultV2 = function () {
+  try { return JSON.parse(localStorage.getItem(this.RESULT_V2_KEY) || 'null'); } catch (e) { return null; }
+};
+
+LP_STRIPE.checkoutSession = async function (result) {
+  result = result || this.loadResultV2();
+  const lang = (document.documentElement.lang === 'fr' || localStorage.getItem('lp_lang') === 'fr') ? 'fr' : 'en';
+
+  /* Analytics: purchase intent before navigating away. */
+  try {
+    if (window.LP_track) window.LP_track('begin_checkout', { currency: 'USD', value: 29 });
+  } catch (e) {}
+
+  /* SIMULATION: no Stripe configured. Open the report in demo mode. */
+  if (this.simulate || !result) {
+    console.info('[LovePattern] Simulation or no result. Opening demo report.');
+    window.location.href = 'rapport.html?demo=1';
+    return false;
+  }
+
+  const overlay = this._showPreparing ? this._showPreparing() : null;
+  try {
+    const res = await fetch(this.createEndpoint, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ result: result, lang: lang }),
+    });
+    const data = await res.json();
+    if (data && data.url) { window.location.href = data.url; return true; }
+    console.error('[LovePattern] create-checkout returned no url:', data);
+  } catch (e) {
+    console.error('[LovePattern] create-checkout failed:', e);
+  }
+  if (overlay) overlay.remove();
+  /* Fallback: keep the buyer on the free report rather than stranding them. */
+  window.location.href = 'rapport.html?free=1';
+  return false;
+};

@@ -1,85 +1,4 @@
-/* 8LovePatterns, Premium (paywall) + Method (English) */
-
-function Premium({ go }) {
-  const free = ['Your dominant pattern','Emotional summary','What it triggers & protects','A first step to take'];
-  const paid = [
-    ['flame','Your emotional triggers','The exact moments that flip the switch.'],
-    ['eye','Your relationship blind spot','What you keep missing about yourself.'],
-    ['shield','Your pattern in conflict','How you enter, and exit, a fight.'],
-    ['heart','Your pattern in dating','Why early connection feels the way it does.'],
-    ['anchor','Your pattern in long-term love','What protects you once the spark settles.'],
-    ['users','Your compatibility dynamics','Which patterns soothe you, which ignite you.'],
-    ['route','Your 7-day reset plan','Small, realistic steps to break the loop.'],
-  ];
-  return (
-    <div>
-      <Section style={{ padding:'clamp(40px,6vw,72px) 0 40px' }}>
-        <Container style={{ textAlign:'center' }}>
-          <Chip soft="var(--or-soft)" color="#9A7321"><Icon name="lock" size={14}/> Full 8LovePatterns playbook</Chip>
-          <h1 className="lp-h1" style={{ marginTop:16 }}>The free test names the pattern. Premium gives you the playbook.</h1>
-          <p className="lp-lead" style={{ marginTop:14, maxWidth:620, marginInline:'auto' }}>
-            Everything you need to turn a moment of recognition into real change.
-          </p>
-        </Container>
-      </Section>
-
-      <Section style={{ padding:'0 0 clamp(50px,8vw,96px)' }}>
-        <Container>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1.25fr', gap:'24px', alignItems:'start' }} className="lp-pricing-grid">
-            <div style={{ background:'var(--surface)', border:'1px solid var(--hairline)', borderRadius:'var(--r-xl)', padding:'30px', boxShadow:'var(--sh-xs)' }}>
-              <div style={{ fontWeight:700, color:'var(--ink-2)' }}>Free test</div>
-              <div style={{ display:'flex', alignItems:'baseline', gap:'6px', margin:'10px 0 4px' }}>
-                <span className="lp-display" style={{ fontSize:'2.6rem' }}>$0</span>
-                <span style={{ color:'var(--ink-3)' }}>forever</span>
-              </div>
-              <div style={{ height:1, background:'var(--hairline)', margin:'18px 0' }}></div>
-              <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
-                {free.map(t=>(
-                  <div key={t} style={{ display:'flex', gap:'10px', alignItems:'center', color:'var(--ink-2)' }}>
-                    <Icon name="check" size={18} style={{ color:'var(--positive)' }}/> {t}
-                  </div>
-                ))}
-              </div>
-              <div style={{ marginTop:24 }}><Button full variant="secondary" onClick={()=>go('intro')}>Reveal My Pattern</Button></div>
-            </div>
-
-            <div style={{ position:'relative', overflow:'hidden', borderRadius:'var(--r-xl)', padding:'30px',
-              background:'linear-gradient(150deg, var(--encre), var(--encre-700))', color:'#fff', boxShadow:'var(--sh-lg)' }}>
-              <div style={{ position:'absolute', top:'-30%', right:'-10%', width:'44%', aspectRatio:'1', borderRadius:'50%', background:'radial-gradient(circle, rgba(199,151,63,.32), transparent 70%)' }}></div>
-              <div style={{ position:'relative' }}>
-                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-                  <span style={{ fontWeight:700 }}>Full playbook</span>
-                  <Chip soft="rgba(255,255,255,.16)" color="#fff">Most chosen</Chip>
-                </div>
-                <div style={{ display:'flex', alignItems:'baseline', gap:'8px', margin:'10px 0 4px' }}>
-                  <span className="lp-display" style={{ fontSize:'2.6rem', color:'#fff' }}>$19</span>
-                  <span style={{ color:'rgba(255,255,255,.55)', textDecoration:'line-through' }}>$29</span>
-                  <span style={{ color:'rgba(255,255,255,.7)' }}>· one-time</span>
-                </div>
-                <div style={{ height:1, background:'rgba(255,255,255,.14)', margin:'18px 0' }}></div>
-                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'16px' }} className="lp-2col">
-                  {paid.map(([ic,t,d])=>(
-                    <div key={t} style={{ display:'flex', gap:'11px', alignItems:'flex-start' }}>
-                      <Icon name={ic} size={19} style={{ color:'var(--or)', marginTop:'2px', flexShrink:0 }}/>
-                      <div>
-                        <div style={{ fontWeight:700, fontSize:'.96rem' }}>{t}</div>
-                        <div style={{ color:'rgba(255,255,255,.6)', fontSize:'.85rem', lineHeight:1.45 }}>{d}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div style={{ marginTop:26 }}><Button full size="lg" onClick={()=>go('result')} icon="arrow-right">Unlock My Full Playbook</Button></div>
-                <p style={{ textAlign:'center', color:'rgba(255,255,255,.55)', fontSize:'.82rem', marginTop:14, marginBottom:0 }}>
-                  14-day money-back guarantee · no subscription
-                </p>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </Section>
-    </div>
-  );
-}
+/* 8LovePatterns, Method (English) */
 
 function Method({ go }) {
   const principles = [
@@ -191,4 +110,4 @@ function Science({ go }) {
   );
 }
 
-Object.assign(window, { Premium, Method, Science });
+Object.assign(window, { Method, Science });

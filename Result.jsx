@@ -81,7 +81,7 @@ function Result({ go, code='bas', data=null }) {
                 <Button size="lg" onClick={()=>go('vente', arch.code)} icon="arrow-right">Get My Full Report</Button>
                 <Button size="lg" variant="light" onClick={()=>go('profils')}>See the other patterns</Button>
               </div>
-              <button onClick={()=>{ window.location.href='premium-report.html'; }}
+              <button onClick={()=>{ window.location.href='rapport.html?free=1'; }}
                 style={{ marginTop:18, background:'none', border:'none', cursor:'pointer', color:'rgba(255,255,255,.7)',
                   fontFamily:'var(--font-body)', fontWeight:600, fontSize:'.92rem', textDecoration:'underline', textUnderlineOffset:'3px', padding:0 }}>
                 Preview my premium report (demo) &#8594;

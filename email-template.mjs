@@ -40,6 +40,8 @@ const COPY = {
     team:      'L\u2019\u00e9quipe 8LovePatterns',
     attach:    'Pi\u00e8ce jointe',
     attachName:'Ton rapport complet (PDF)',
+    linkPara:  'Ta commande est valid\u00e9e, et ton rapport complet t\u2019attend en ligne, pr\u00eat \u00e0 \u00eatre lu. Il est \u00e0 toi : ouvre-le quand tu veux, relis-le, et imprime-le en PDF d\u2019un clic si tu veux le garder.',
+    linkBtn:   'Ouvrir mon rapport',
     footnote:  'Tu re\u00e7ois ce message car tu as command\u00e9 ton rapport complet sur 8lovepatterns.com.',
   },
   en: {
@@ -57,6 +59,8 @@ const COPY = {
     team:      'The 8LovePatterns team',
     attach:    'Attached',
     attachName:'Your full report (PDF)',
+    linkPara:  'Your order is confirmed, and your full report is waiting for you online, ready to read. It is yours: open it whenever you like, sit with it, and print it to PDF in one click if you want to keep it.',
+    linkBtn:   'Open my report',
     footnote:  'You are receiving this because you ordered your full report on 8lovepatterns.com.',
   },
 };
@@ -70,8 +74,33 @@ export function buildOrderEmail(opts = {}) {
   const logo = site + '/assets/logo_mascot.png';
   const profile = opts.profileName ? String(opts.profileName) : '';
   const attachLabel = profile ? (c.attachName.replace('(PDF)', '') + '\u00b7 ' + profile + ' (PDF)') : c.attachName;
+  const reportUrl = opts.reportUrl || '';
 
-  const paras = c.paras.map(p =>
+  // When a secure report link is supplied, the email points to the on-demand
+  // report (re-verified as paid on every open) instead of a PDF attachment.
+  const bodyCopy = reportUrl ? c.paras.map((p, i) => (i === 1 ? c.linkPara : p)) : c.paras;
+
+  const deliveryBlock = reportUrl
+    ? `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:28px 0 6px;"><tr><td style="border-radius:999px;background:${BRAND.corail};">
+          <a href="${esc(reportUrl)}" style="display:inline-block;padding:15px 30px;font-family:${BRAND.display};font-weight:800;font-size:16px;color:#fff;text-decoration:none;">${esc(c.linkBtn)} \u2192</a>
+        </td></tr></table>`
+    : `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:26px 0 6px;width:100%;">
+          <tr><td style="background:${BRAND.paper};border:1px solid ${BRAND.hair};border-radius:14px;padding:14px 16px;">
+            <table role="presentation" cellpadding="0" cellspacing="0"><tr>
+              <td valign="middle" style="padding-right:12px;">
+                <span style="display:inline-block;width:34px;height:34px;border-radius:9px;background:${BRAND.corail};text-align:center;line-height:34px;">
+                  <span style="font-family:${BRAND.display};font-weight:800;font-size:12px;color:#fff;">PDF</span>
+                </span>
+              </td>
+              <td valign="middle">
+                <div style="font-family:${BRAND.font};font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:${BRAND.ink3};">${esc(c.attach)}</div>
+                <div style="font-family:${BRAND.font};font-size:15px;font-weight:600;color:${BRAND.ink};">${esc(attachLabel)}</div>
+              </td>
+            </tr></table>
+          </td></tr>
+        </table>`;
+
+  const paras = bodyCopy.map(p =>
     `<p style="margin:0 0 18px;font-family:${BRAND.font};font-size:16px;line-height:1.62;color:${BRAND.ink2};">${esc(p)}</p>`
   ).join('');
 
@@ -105,22 +134,7 @@ export function buildOrderEmail(opts = {}) {
 
         ${paras}
 
-        <!-- attachment chip -->
-        <table role="presentation" cellpadding="0" cellspacing="0" style="margin:26px 0 6px;width:100%;">
-          <tr><td style="background:${BRAND.paper};border:1px solid ${BRAND.hair};border-radius:14px;padding:14px 16px;">
-            <table role="presentation" cellpadding="0" cellspacing="0"><tr>
-              <td valign="middle" style="padding-right:12px;">
-                <span style="display:inline-block;width:34px;height:34px;border-radius:9px;background:${BRAND.corail};text-align:center;line-height:34px;">
-                  <span style="font-family:${BRAND.display};font-weight:800;font-size:12px;color:#fff;">PDF</span>
-                </span>
-              </td>
-              <td valign="middle">
-                <div style="font-family:${BRAND.font};font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:${BRAND.ink3};">${esc(c.attach)}</div>
-                <div style="font-family:${BRAND.font};font-size:15px;font-weight:600;color:${BRAND.ink};">${esc(attachLabel)}</div>
-              </td>
-            </tr></table>
-          </td></tr>
-        </table>
+        ${deliveryBlock}
 
         <p style="margin:24px 0 2px;font-family:${BRAND.font};font-size:16px;line-height:1.5;color:${BRAND.ink2};">${esc(c.signoff)}</p>
         <p style="margin:0;font-family:${BRAND.display};font-weight:700;font-size:16px;color:${BRAND.ink};">${esc(c.team)}</p>

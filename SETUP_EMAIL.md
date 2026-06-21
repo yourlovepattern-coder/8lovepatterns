@@ -91,7 +91,7 @@ changer le nom d'expéditeur.
 Sur ton **lien de paiement Stripe** → options **« Après le paiement »** →
 **« Rediriger les clients vers votre site »** → colle :
 ```
-https://8lovepatterns.com/premium-report.html
+https://8lovepatterns.com/rapport.html
 ```
 (Ça ramène l'acheteur sur son rapport à l'écran. L'e-mail, lui, part de toute
 façon grâce au robot.)

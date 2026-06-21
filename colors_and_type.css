@@ -159,3 +159,11 @@
 .lp-prose h2 { font-family: var(--font-display); font-weight: 700; font-size: var(--t-h2); margin: 1.6em 0 .5em; letter-spacing: -.01em; }
 .lp-prose h3 { font-family: var(--font-display); font-weight: 600; font-size: var(--t-h3); margin: 1.4em 0 .4em; }
 .lp-prose a { color: var(--violet); text-underline-offset: 3px; }
+
+/* ── Écran de résultat : structure des 5 temps ──────────────────────────────
+   IMPORTANT : pas d'animation d'entrée basée sur opacity/transform. L'aperçu
+   (et certains contextes : impression, export, onglet en arrière-plan) gèle
+   l'horloge d'animation, ce qui figerait le contenu sur son état caché. La
+   visibilité ne doit JAMAIS dépendre d'une animation. Les 5 temps se
+   distinguent par l'espacement et la composition, pas par un fondu fragile. */
+.lp-reveal { opacity: 1; }

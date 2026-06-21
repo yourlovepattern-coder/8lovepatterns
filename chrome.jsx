@@ -7,7 +7,6 @@ function Header({ go, route }) {
     { k:'profils', label:t('nav.patterns') },
     { k:'science', label:t('nav.science') },
     { k:'methode', label:t('nav.method') },
-    { k:'premium', label:t('nav.premium') },
   ];
   return (
     <header style={{ position:'sticky', top:0, zIndex:50, background:'rgba(251,247,241,.82)',
@@ -52,7 +51,7 @@ function Footer({ go }) {
   const { t } = useLang();
   const cols = [
     { h:t('footer.test'), items:[[t('cta.reveal'),'intro'],[t('footer.p8'),'profils'],[t('nav.science'),'science'],[t('nav.method'),'methode']] },
-    { h:t('footer.brand'), items:[[t('nav.premium'),'premium'],[t('footer.about'),'methode'],[t('footer.privacy'),'home'],[t('footer.contact'),'home']] },
+    { h:t('footer.brand'), items:[[t('footer.about'),'methode'],[t('footer.privacy'),'home'],[t('footer.contact'),'home']] },
   ];
   const supportEmail = 'support@8lovepatterns.com';
   return (
