@@ -69,6 +69,7 @@ export default async (req) => {
   params.set('metadata[token]', token);
   params.set('metadata[profil]', String(result.pattern_dominant));
   params.set('locale', lang === 'fr' ? 'fr' : 'en');
+  params.set('allow_promotion_codes', 'true');
 
   const priceId = process.env.STRIPE_PRICE_ID;
   if (priceId) {
