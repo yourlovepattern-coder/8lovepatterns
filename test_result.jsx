@@ -132,88 +132,89 @@ const LP_RESULT_V2_KEY = 'lovepattern_result_v2';
 /* ===========================================================================
    1. HERO — l'ancre qui plonge + le perso révélé
    ======================================================================== */
-function ResultHero({ R, isMixte, dominantName, secondaireName, code, tier, phrase, force, signature, intro, presence, surface, fond, anchorLabel }){
-  const pos = R.ancre_position;                 // 0 surface .. 4 fond
-  const depthPct = pos * 20 + 10;               // position verticale de l'ancre
-  const [heroImgOk, setHeroImgOk] = rsUseState(true);
+function ResultHero({ R, isMixte, dominantName, secondaireName, code, tier, phrase, force, signature, intro, presence, anchorLabel }){
+  const pos = R.ancre_position;                 // 0 surface (Clear) .. 4 fond (Buried)
+  const depthPct = 9 + pos * 19.5;              // ancre étagée sur la hauteur : 9 / 28.5 / 48 / 67.5 / 87 %
+  const [bgOk, setBgOk] = rsUseState(true);
+  const [anchorOk, setAnchorOk] = rsUseState(true);
   const [persoOk, setPersoOk] = rsUseState(true);
 
   return (
-    <section style={{ position:'relative', overflow:'hidden',
-      background:'linear-gradient(180deg, var(--paper) 0%, color-mix(in srgb, var(--fam-ancre) 10%, var(--paper)) 30%, color-mix(in srgb, var(--fam-ancre) 60%, var(--encre)) 100%)' }}>
+    <section style={{ position:'relative', overflow:'hidden', width:'100%', minHeight:'clamp(580px, 90vh, 880px)',
+      /* repli si le décor illustré n'est pas (encore) fourni : dégradé surface -> profondeurs */
+      background:'linear-gradient(180deg, color-mix(in srgb, var(--fam-ancre) 24%, var(--paper)) 0%, color-mix(in srgb, var(--fam-ancre) 55%, var(--encre)) 52%, var(--corail) 100%)' }}>
       <style>{`
-        @keyframes lp-dive { 0%{ transform:translate(-50%,-260%); opacity:0; } 55%{ opacity:1; } 100%{ transform:translate(-50%,-50%); opacity:1; } }
-        .lp-hero-anchor { animation: lp-dive 1.7s cubic-bezier(.45,0,.2,1) both; }
+        @keyframes lp-dive { 0%{ transform:translate(-50%,-300%); opacity:0; } 55%{ opacity:1; } 100%{ transform:translate(-50%,-50%); opacity:1; } }
+        .lp-hero-anchor { animation: lp-dive 1.8s cubic-bezier(.45,0,.2,1) both; }
         @media (prefers-reduced-motion: reduce){ .lp-hero-anchor { animation: none; } }
-        @media (max-width: 880px){ .lp-hero-grid { grid-template-columns: 1fr !important; text-align:center; } .lp-hero-illus { margin:0 auto; } .lp-hero-text { align-items:center !important; } }
+        .lp-hero-content { grid-template-columns: 1fr; }
+        @media (min-width: 881px){
+          .lp-hero-content { grid-template-columns: minmax(0,1fr) auto; }
+          .lp-hero-perso { align-self: end; justify-self: center; width: clamp(190px, 22vw, 300px); }
+        }
+        @media (max-width: 880px){
+          .lp-hero-perso { position:absolute; right:3%; bottom:0; width:clamp(120px,32vw,180px); z-index:1; }
+        }
       `}</style>
 
-      <div className="lp-hero-grid" style={{ maxWidth:1100, margin:'0 auto', padding:'clamp(28px,6vw,72px) clamp(20px,5vw,48px) clamp(40px,7vw,88px)',
-        display:'grid', gridTemplateColumns:'minmax(0,1fr) minmax(0,1.05fr)', gap:'clamp(28px,4vw,56px)', alignItems:'center', minHeight:'min(82vh, 760px)' }}>
+      {/* 1. FOND illustré : couvre tout le hero */}
+      {bgOk && (
+        <img src="assets/hero/water-depths.png" alt="" aria-hidden="true" onError={()=>setBgOk(false)}
+          style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', objectPosition:'center top', zIndex:0 }}/>
+      )}
 
-        {/* ----- Illustration : colonne d'eau + ancre qui plonge + perso ----- */}
-        <div className="lp-hero-illus" style={{ display:'flex', alignItems:'stretch', gap:'clamp(14px,2.5vw,30px)', width:'100%', maxWidth:480 }}>
-          {/* colonne d'eau (claire en surface, sombre au fond) */}
-          <div style={{ position:'relative', width:'clamp(60px,9vw,84px)', borderRadius:'40px', flexShrink:0,
-            height:'clamp(300px,46vh,440px)', alignSelf:'center',
-            background:'linear-gradient(180deg, color-mix(in srgb, var(--fam-ancre) 16%, #fff) 0%, color-mix(in srgb, var(--fam-ancre) 50%, var(--encre)) 58%, var(--encre) 100%)',
-            boxShadow:'inset 0 2px 12px rgba(255,255,255,.4), inset 0 -10px 22px rgba(0,0,0,.28)' }}>
-            {/* l'ancre, à la profondeur du palier */}
-            <div className="lp-hero-anchor" style={{ position:'absolute', left:'50%', top:`${depthPct}%`, transform:'translate(-50%,-50%)',
-              width:'clamp(46px,7vw,64px)', height:'clamp(46px,7vw,64px)', display:'grid', placeItems:'center' }}>
-              {heroImgOk
-                ? <img src="assets/hero/anchor-dive.png" alt="" onError={()=>setHeroImgOk(false)}
-                    style={{ width:'100%', height:'100%', objectFit:'contain', filter:'drop-shadow(0 8px 14px rgba(0,0,0,.45))' }}/>
-                : <span style={{ display:'grid', placeItems:'center', width:'100%', height:'100%', borderRadius:'50%',
-                    background:'var(--surface)', color:'var(--encre)', boxShadow:'0 8px 20px -4px rgba(0,0,0,.5)' }}><Icon name="anchor" size={26}/></span>}
-            </div>
-            {/* repères Surface / Fond */}
-            <span style={{ position:'absolute', top:8, left:'50%', transform:'translateX(-50%)', fontSize:'.6rem', fontWeight:800,
-              letterSpacing:'.1em', textTransform:'uppercase', color:'color-mix(in srgb, var(--encre) 55%, #fff)' }}>{surface}</span>
-            <span style={{ position:'absolute', bottom:8, left:'50%', transform:'translateX(-50%)', fontSize:'.6rem', fontWeight:800,
-              letterSpacing:'.1em', textTransform:'uppercase', color:'rgba(255,255,255,.7)' }}>{fond}</span>
-          </div>
+      {/* 2. ANCRE : superposée au-dessus du fond, animée, profondeur = palier d'Ancre */}
+      <div className="lp-hero-anchor" style={{ position:'absolute', left:'clamp(8%,11vw,13%)', top:`${depthPct}%`,
+        transform:'translate(-50%,-50%)', width:'clamp(46px,9vw,72px)', height:'clamp(46px,9vw,72px)', zIndex:1, display:'grid', placeItems:'center' }}>
+        {anchorOk
+          ? <img src="assets/hero/anchor-dive.png" alt="" aria-hidden="true" onError={()=>setAnchorOk(false)}
+              style={{ width:'100%', height:'100%', objectFit:'contain', filter:'drop-shadow(0 10px 16px rgba(0,0,0,.5))' }}/>
+          : <span style={{ display:'grid', placeItems:'center', width:'100%', height:'100%', borderRadius:'50%',
+              background:'var(--surface)', color:'var(--encre)', boxShadow:'0 8px 20px -4px rgba(0,0,0,.5)' }}><Icon name="anchor" size={26}/></span>}
+      </div>
 
-          {/* le perso du mécanisme révélé (art existant) */}
-          <div style={{ flex:1, display:'flex', alignItems:'flex-end', justifyContent:'center', minWidth:0 }}>
-            {persoOk
-              ? <img src={`assets/archetypes/${code}.png`} alt={dominantName} onError={()=>setPersoOk(false)}
-                  style={{ width:'100%', maxWidth:300, height:'auto', filter:'drop-shadow(0 22px 26px rgba(15,20,45,.4))' }}/>
-              : <div style={{ width:160, height:160, borderRadius:'50%', background:'rgba(255,255,255,.18)' }}/>}
-          </div>
-        </div>
-
-        {/* ----- Texte : nom + force % + palier nommé + phrase vécue ----- */}
-        <div className="lp-hero-text" style={{ display:'flex', flexDirection:'column', alignItems:'flex-start' }}>
-          <Reveal>
+      {/* 3. CONTENU : à côté, le perso + le texte (voile derrière le texte pour le contraste) */}
+      <div className="lp-hero-content" style={{ position:'relative', zIndex:2, minHeight:'inherit', maxWidth:1200, margin:'0 auto',
+        display:'grid', alignItems:'center', gap:'clamp(18px,3vw,40px)',
+        padding:'clamp(40px,8vw,90px) clamp(20px,5vw,56px) clamp(40px,8vw,90px) clamp(78px,22vw,200px)' }}>
+        <Reveal style={{ width:'100%', maxWidth:560 }}>
+          <div style={{ background:'color-mix(in srgb, var(--paper) 64%, transparent)', backdropFilter:'blur(8px)', WebkitBackdropFilter:'blur(8px)',
+            border:'1px solid color-mix(in srgb, #fff 55%, transparent)', borderRadius:'var(--r-xl)',
+            padding:'clamp(22px,4vw,38px)', boxShadow:'0 22px 60px -24px rgba(15,20,45,.55)' }}>
             <p style={{ margin:0, fontSize:'.95rem', fontWeight:600, color:'var(--ink-2)' }}>{intro}</p>
             <h1 style={{ fontFamily:'var(--font-display)', fontWeight:800, letterSpacing:'-.02em', color:'var(--ink)',
-              fontSize: isMixte ? 'clamp(2rem, 1rem + 4vw, 3.2rem)' : 'clamp(2.4rem, 1.3rem + 5vw, 4.2rem)',
+              fontSize: isMixte ? 'clamp(1.9rem, 1rem + 4vw, 3rem)' : 'clamp(2.3rem, 1.3rem + 4.5vw, 3.9rem)',
               lineHeight:1.06, margin:'12px 0 0', textWrap:'balance' }}>
               {isMixte
                 ? <span>{dominantName}<span style={{ color:'var(--ink-3)', fontWeight:400, padding:'0 .3em' }}>&amp;</span>{secondaireName}</span>
                 : dominantName}
             </h1>
-            <p style={{ margin:'16px 0 0', maxWidth:460, fontFamily:'var(--font-display)', fontWeight:600,
-              fontSize:'clamp(1.12rem, .95rem + .9vw, 1.45rem)', lineHeight:1.4, color:'var(--corail)', textWrap:'balance' }}>
+            <p style={{ margin:'14px 0 0', fontFamily:'var(--font-display)', fontWeight:600,
+              fontSize:'clamp(1.08rem, .95rem + .8vw, 1.4rem)', lineHeight:1.4, color:'var(--corail)', textWrap:'balance' }}>
               {signature}
             </p>
 
-            <div style={{ display:'flex', flexWrap:'wrap', gap:'10px', marginTop:24 }}>
+            <div style={{ display:'flex', flexWrap:'wrap', gap:'10px', marginTop:22 }}>
               <span style={{ display:'inline-flex', alignItems:'center', gap:'7px', padding:'9px 18px', borderRadius:'var(--r-pill)',
                 background:'var(--encre)', color:'#fff', fontWeight:700, fontSize:'.96rem' }}>
                 {lpFill(presence, { N: force })}
               </span>
               <span style={{ display:'inline-flex', alignItems:'center', gap:'8px', padding:'9px 18px', borderRadius:'var(--r-pill)',
-                background:'var(--surface)', border:'1.5px solid color-mix(in srgb, var(--fam-ancre) 50%, transparent)', color:'var(--fam-ancre)', fontWeight:700, fontSize:'.96rem' }}>
+                background:'var(--surface)', border:'1.5px solid color-mix(in srgb, var(--fam-ancre) 55%, transparent)', color:'var(--fam-ancre)', fontWeight:700, fontSize:'.96rem' }}>
                 <Icon name="anchor" size={15}/> {anchorLabel}: {tier}
               </span>
             </div>
-            <p style={{ margin:'18px 0 0', maxWidth:480, fontSize:'1.02rem', lineHeight:1.6, color:'var(--ink)', fontStyle:'italic' }}>
+            <p style={{ margin:'16px 0 0', fontSize:'1.02rem', lineHeight:1.6, color:'var(--ink)', fontStyle:'italic' }}>
               &laquo;&nbsp;{phrase}&nbsp;&raquo;
             </p>
-          </Reveal>
-        </div>
+          </div>
+        </Reveal>
+
+        {/* le perso du mécanisme révélé (art existant) */}
+        {persoOk
+          ? <img className="lp-hero-perso" src={`assets/archetypes/${code}.png`} alt={dominantName} onError={()=>setPersoOk(false)}
+              style={{ height:'auto', filter:'drop-shadow(0 22px 28px rgba(15,20,45,.5))' }}/>
+          : null}
       </div>
     </section>
   );
@@ -495,7 +496,7 @@ function TestResult({ answers, ancreVariant, onRestart, go }){
         signature={tx(PT.signature)}
         intro={tx(X.intro)}
         presence={tx(isMixte ? X.presenceMixte : X.presence)}
-        surface={tx(X.surface)} fond={tx(X.fond)} anchorLabel={tx(X.anchorLabel)}
+        anchorLabel={tx(X.anchorLabel)}
       />
 
       {/* 2 — BANDE SCIENCE */}
