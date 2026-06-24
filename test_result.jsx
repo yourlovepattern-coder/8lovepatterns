@@ -130,6 +130,103 @@ function lpResultV2(R){
 const LP_RESULT_V2_KEY = 'lovepattern_result_v2';
 
 /* ===========================================================================
+   COUCHE MOUVEMENT (premium, sobre)
+   ----------------------------------------------------------------------------
+   Principe de sûreté (cf. .lp-reveal) : l'état VISIBLE est toujours la base.
+   Le mouvement n'est ajouté QUE sous prefers-reduced-motion: no-preference, et
+   les révélations au scroll ne s'arment que si JS + IntersectionObserver sont
+   là. Donc reduced-motion / pas-de-JS / horloge figée => contenu visible.
+   Transform + opacity uniquement (GPU), 0 reflow, aucun asset réseau ajouté.
+   ======================================================================== */
+function lpReducedMotion(){
+  try { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch(e){ return false; }
+}
+function useReducedMotion(){
+  const [r, setR] = rsUseState(lpReducedMotion());
+  rsUseEffect(()=>{
+    let mq; try { mq = window.matchMedia('(prefers-reduced-motion: reduce)'); } catch(e){ return; }
+    const on = ()=> setR(mq.matches);
+    mq.addEventListener ? mq.addEventListener('change', on) : mq.addListener(on);
+    return ()=>{ mq.removeEventListener ? mq.removeEventListener('change', on) : mq.removeListener(on); };
+  }, []);
+  return r;
+}
+/* Compte de 0 -> target à l'arrivée ; instantané si reduced-motion. */
+function useCountUp(target, duration){
+  const reduced = useReducedMotion();
+  const [val, setVal] = rsUseState(reduced ? target : 0);
+  rsUseEffect(()=>{
+    if(reduced){ setVal(target); return; }
+    let raf, start=null; const d = duration || 900;
+    const step = (t)=>{
+      if(start==null) start=t;
+      const p = Math.min(1, (t-start)/d);
+      const eased = 1 - Math.pow(1-p, 3);              // ease-out cubic
+      setVal(Math.round(eased * target));
+      if(p < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return ()=> { if(raf) cancelAnimationFrame(raf); };
+  }, [target, reduced]);
+  return val;
+}
+/* Révélation au scroll. Base = visible ; on n'arme l'état caché que si motion
+   autorisé ET IntersectionObserver dispo. */
+function InView({ children, delay=0, y=16, style, className='' }){
+  const ref = rsUseRef(null);
+  const [armed] = rsUseState(()=> !lpReducedMotion() && typeof IntersectionObserver !== 'undefined');
+  const [inView, setInView] = rsUseState(false);
+  rsUseEffect(()=>{
+    if(!armed){ return; }
+    const node = ref.current; if(!node) return;
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ setInView(true); io.disconnect(); } });
+    }, { rootMargin:'0px 0px -8% 0px', threshold:0.08 });
+    io.observe(node);
+    return ()=> io.disconnect();
+  }, [armed]);
+  const cls = 'lp-inview' + (armed?' is-armed':'') + (inView?' is-in':'') + (className?(' '+className):'');
+  return <div ref={ref} className={cls} style={{ '--d': delay+'ms', '--y': y+'px', ...style }}>{children}</div>;
+}
+
+/* Feuille de styles d'animation, injectée une fois par l'écran de résultat. */
+function ResultMotionStyles(){
+  return <style>{`
+    /* Révélation au scroll (transform + opacity) */
+    .lp-inview.is-armed{ opacity:0; transform:translateY(var(--y,16px)); will-change:transform,opacity; }
+    .lp-inview.is-armed.is-in{ opacity:1; transform:none;
+      transition: opacity .6s cubic-bezier(.22,.61,.36,1) var(--d,0ms), transform .6s cubic-bezier(.22,.61,.36,1) var(--d,0ms); }
+
+    /* Survols premium (courts, user-initiated) */
+    .lp-sci-card{ transition: transform .24s cubic-bezier(.22,.61,.36,1), box-shadow .24s ease; }
+    .lp-sci-card:hover{ transform:translateY(-6px); box-shadow:var(--sh-md); }
+    .lp-sci-portrait{ transition: transform .3s cubic-bezier(.22,.61,.36,1); }
+    .lp-sci-card:hover .lp-sci-portrait{ transform:scale(1.045); }
+    .lp-lock-card{ transition: transform .24s cubic-bezier(.22,.61,.36,1), box-shadow .24s ease, border-color .24s ease; }
+    .lp-lock-card:hover{ transform:translateY(-4px); box-shadow:var(--sh-sm); border-color:color-mix(in srgb, var(--encre) 22%, var(--hairline)); }
+
+    /* L'onde de l'ancre reste invisible par défaut (pas de cercle statique en reduced-motion) */
+    .lp-anim-pulse{ opacity:0; }
+
+    /* Chorégraphie d'arrivée du hero : UNIQUEMENT si le mouvement est permis */
+    @media (prefers-reduced-motion: no-preference){
+      .lp-anim-perso{ opacity:0; animation: lpPersoIn .75s cubic-bezier(.22,.61,.36,1) .05s both; will-change:transform,opacity; }
+      .lp-anim-rail{ transform:scaleY(0); transform-origin:top center; animation: lpRail .55s cubic-bezier(.22,.61,.36,1) .25s both; }
+      .lp-anim-row{ opacity:0; animation: lpRise .5s ease-out both; }
+      .lp-anim-anchor{ opacity:0; animation: lpDrop .6s cubic-bezier(.34,1.45,.5,1) both; }
+      .lp-anim-pulse{ animation: lpPulse 1.05s ease-out forwards; }
+      .lp-anim-fade{ opacity:0; animation: lpFade .5s ease-out both; }
+    }
+    @keyframes lpPersoIn{ from{ opacity:0; transform:translateY(26px) scale(.96); } to{ opacity:1; transform:none; } }
+    @keyframes lpRail{ from{ transform:scaleY(0); } to{ transform:scaleY(1); } }
+    @keyframes lpRise{ from{ opacity:0; transform:translateY(12px); } to{ opacity:1; transform:none; } }
+    @keyframes lpDrop{ 0%{ opacity:0; transform:translateY(-24px); } 55%{ opacity:1; } 100%{ opacity:1; transform:translateY(0); } }
+    @keyframes lpPulse{ 0%{ opacity:.5; transform:scale(.82); } 100%{ opacity:0; transform:scale(1.7); } }
+    @keyframes lpFade{ from{ opacity:0; } to{ opacity:1; } }
+  `}</style>;
+}
+
+/* ===========================================================================
    1. EN-TÊTE — le mécanisme révélé (HÉROS) + échelle d'Ancre (secondaire)
    ----------------------------------------------------------------------------
    Hiérarchie : le PERSO en pied du mécanisme domine (grand, entier), avec son
@@ -140,6 +237,9 @@ function AnchorLadderHero({ isMixte, dominantName, secondaireName, code, force, 
   const [persoOk, setPersoOk] = rsUseState(true);
   const [anchorOk, setAnchorOk] = rsUseState(true);
   const dotBg = (v)=> `color-mix(in srgb, var(--fam-ancre) ${24 + v*16}%, var(--paper))`;
+  const shownForce = useCountUp(force, 1000);                       // % qui se compte à l'arrivée
+  const hereV = (rows.find(r=> r.here) || { v:0 }).v;
+  const anchorDelay = 350 + hereV*70 + 360;                         // l'ancre se pose après que sa ligne soit montée
 
   return (
     <section style={{ background:'var(--paper)', borderBottom:'1px solid var(--hairline)' }}>
@@ -151,79 +251,82 @@ function AnchorLadderHero({ isMixte, dominantName, secondaireName, code, force, 
         <div className="lp-hd-grid">
 
           {/* HÉROS : grand perso en pied + nom + force % */}
-          <Reveal>
-            <div style={{ textAlign:'center' }}>
-              {persoOk
-                ? <img src={`assets/archetypes/${code}.png`} alt={dominantName} onError={()=>setPersoOk(false)}
-                    style={{ width:'auto', height:'clamp(270px,44vw,410px)', maxWidth:'100%', display:'block', margin:'0 auto',
-                      filter:'drop-shadow(0 26px 30px rgba(15,20,45,.28))' }}/>
-                : null}
-              <p style={{ margin:'clamp(8px,1.6vw,16px) 0 0', fontSize:'.86rem', fontWeight:700, letterSpacing:'.03em', color:'var(--ink-3)' }}>{intro}</p>
-              <h1 style={{ fontFamily:'var(--font-display)', fontWeight:800, letterSpacing:'-.02em', color:'var(--ink)',
-                fontSize: isMixte ? 'clamp(2rem,1.2rem+3.4vw,3.2rem)' : 'clamp(2.4rem,1.5rem+3.6vw,3.9rem)', lineHeight:1.05, margin:'6px 0 0', textWrap:'balance' }}>
-                {isMixte
-                  ? <span>{dominantName}<span style={{ color:'var(--ink-3)', fontWeight:400, padding:'0 .25em' }}>&amp;</span>{secondaireName}</span>
-                  : dominantName}
-              </h1>
-              <div style={{ marginTop:16 }}>
-                <span style={{ display:'inline-flex', alignItems:'center', gap:'7px', padding:'10px 22px', borderRadius:'var(--r-pill)',
-                  background:'var(--encre)', color:'#fff', fontWeight:700, fontSize:'1rem' }}>{lpFill(presence, { N: force })}</span>
-              </div>
+          <div style={{ textAlign:'center' }}>
+            {persoOk
+              ? <img className="lp-anim-perso" src={`assets/archetypes/${code}.png`} alt={dominantName} onError={()=>setPersoOk(false)}
+                  style={{ width:'auto', height:'clamp(270px,44vw,410px)', maxWidth:'100%', display:'block', margin:'0 auto',
+                    filter:'drop-shadow(0 26px 30px rgba(15,20,45,.28))' }}/>
+              : null}
+            <p className="lp-anim-fade" style={{ animationDelay:'.5s', margin:'clamp(8px,1.6vw,16px) 0 0', fontSize:'.86rem', fontWeight:700, letterSpacing:'.03em', color:'var(--ink-3)' }}>{intro}</p>
+            <h1 className="lp-anim-fade" style={{ animationDelay:'.6s', fontFamily:'var(--font-display)', fontWeight:800, letterSpacing:'-.02em', color:'var(--ink)',
+              fontSize: isMixte ? 'clamp(2rem,1.2rem+3.4vw,3.2rem)' : 'clamp(2.4rem,1.5rem+3.6vw,3.9rem)', lineHeight:1.05, margin:'6px 0 0', textWrap:'balance' }}>
+              {isMixte
+                ? <span>{dominantName}<span style={{ color:'var(--ink-3)', fontWeight:400, padding:'0 .25em' }}>&amp;</span>{secondaireName}</span>
+                : dominantName}
+            </h1>
+            <div className="lp-anim-fade" style={{ animationDelay:'.72s', marginTop:16 }}>
+              <span style={{ display:'inline-flex', alignItems:'center', gap:'7px', padding:'10px 22px', borderRadius:'var(--r-pill)',
+                background:'var(--encre)', color:'#fff', fontWeight:700, fontSize:'1rem', fontVariantNumeric:'tabular-nums' }}>{lpFill(presence, { N: shownForce })}</span>
             </div>
-          </Reveal>
+          </div>
 
           {/* SECONDAIRE : échelle de profondeur d'Ancre, compacte */}
-          <Reveal delay={70}>
-            <div style={{ background:'var(--surface)', border:'1px solid var(--hairline)', borderRadius:'var(--r-xl)',
-              padding:'clamp(16px,2.4vw,24px)', boxShadow:'var(--sh-xs)' }}>
-              <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'10px' }}>
-                <Icon name="anchor" size={15} style={{ color:'var(--fam-ancre)' }}/>
-                <span style={{ fontSize:'.68rem', fontWeight:800, letterSpacing:'.12em', textTransform:'uppercase', color:'var(--ink-3)' }}>Your Anchor depth</span>
-              </div>
-              <div style={{ position:'relative' }}>
-                <div style={{ fontSize:'.6rem', fontWeight:800, letterSpacing:'.1em', textTransform:'uppercase', color:'var(--ink-3)', paddingLeft:'48px', marginBottom:'4px' }}>{surface}</div>
+          <div style={{ background:'var(--surface)', border:'1px solid var(--hairline)', borderRadius:'var(--r-xl)',
+            padding:'clamp(16px,2.4vw,24px)', boxShadow:'var(--sh-xs)' }}>
+            <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'10px' }}>
+              <Icon name="anchor" size={15} style={{ color:'var(--fam-ancre)' }}/>
+              <span style={{ fontSize:'.68rem', fontWeight:800, letterSpacing:'.12em', textTransform:'uppercase', color:'var(--ink-3)' }}>Your Anchor depth</span>
+            </div>
+            <div style={{ position:'relative' }}>
+              <div style={{ fontSize:'.6rem', fontWeight:800, letterSpacing:'.1em', textTransform:'uppercase', color:'var(--ink-3)', paddingLeft:'48px', marginBottom:'4px' }}>{surface}</div>
 
-                {/* rail vertical : surface claire -> fond sombre */}
-                <div aria-hidden="true" style={{ position:'absolute', left:'18px', top:'26px', bottom:'26px', width:'3px', borderRadius:'2px', zIndex:0,
-                  background:'linear-gradient(180deg, color-mix(in srgb, var(--fam-ancre) 30%, #fff), var(--fam-ancre) 55%, var(--encre))' }}/>
+              {/* rail vertical : surface claire -> fond sombre (se dessine du haut) */}
+              <div className="lp-anim-rail" aria-hidden="true" style={{ position:'absolute', left:'18px', top:'26px', bottom:'26px', width:'3px', borderRadius:'2px', zIndex:0,
+                background:'linear-gradient(180deg, color-mix(in srgb, var(--fam-ancre) 30%, #fff), var(--fam-ancre) 55%, var(--encre))' }}/>
 
-                {rows.map(row=>(
-                  <div key={row.v} style={{ position:'relative', zIndex:1, display:'grid', gridTemplateColumns:'37px 1fr', gap:'11px', alignItems:'center',
-                    padding:'7px 10px 7px 0', marginBottom:'2px', borderRadius:'var(--r-md)',
-                    background: row.here ? 'var(--fam-ancre-soft)' : 'transparent',
-                    boxShadow: row.here ? 'inset 0 0 0 1.5px var(--fam-ancre)' : 'none' }}>
-                    {/* marqueur : ancre au palier de l'utilisateur, sinon un point de profondeur */}
-                    <div style={{ display:'grid', placeItems:'center', width:37, height:37 }}>
-                      {row.here
-                        ? <div style={{ width:37, height:37, borderRadius:'50%', display:'grid', placeItems:'center', background:'var(--surface)',
+              {rows.map(row=>(
+                <div key={row.v} className="lp-anim-row" style={{ animationDelay:(350 + row.v*70)+'ms',
+                  position:'relative', zIndex:1, display:'grid', gridTemplateColumns:'37px 1fr', gap:'11px', alignItems:'center',
+                  padding:'7px 10px 7px 0', marginBottom:'2px', borderRadius:'var(--r-md)',
+                  background: row.here ? 'var(--fam-ancre-soft)' : 'transparent',
+                  boxShadow: row.here ? 'inset 0 0 0 1.5px var(--fam-ancre)' : 'none' }}>
+                  {/* marqueur : ancre au palier de l'utilisateur (qui se pose + onde), sinon un point */}
+                  <div style={{ display:'grid', placeItems:'center', width:37, height:37 }}>
+                    {row.here
+                      ? <div style={{ position:'relative', width:37, height:37 }}>
+                          <div className="lp-anim-anchor" style={{ animationDelay:anchorDelay+'ms',
+                            width:37, height:37, borderRadius:'50%', display:'grid', placeItems:'center', background:'var(--surface)',
                             boxShadow:'0 0 0 2px var(--fam-ancre), 0 5px 12px -4px rgba(0,0,0,.3)' }}>
                             {anchorOk
                               ? <img src="assets/hero/anchor-dive.png" alt="" aria-hidden="true" onError={()=>setAnchorOk(false)}
                                   style={{ width:22, height:22, objectFit:'contain' }}/>
                               : <Icon name="anchor" size={18} style={{ color:'var(--fam-ancre)' }}/>}
                           </div>
-                        : <span style={{ width:12, height:12, borderRadius:'50%', background:dotBg(row.v), boxShadow:'0 0 0 3px var(--surface)' }}/>}
-                    </div>
-                    {/* contenu : nom du palier + phrase vécue */}
-                    <div style={{ minWidth:0 }}>
-                      <div style={{ display:'flex', alignItems:'center', gap:'7px', flexWrap:'wrap' }}>
-                        <span style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:'.95rem',
-                          color: row.here ? 'var(--fam-ancre)' : 'var(--ink)' }}>{row.name}</span>
-                        {row.here && (
-                          <span style={{ fontSize:'.58rem', fontWeight:800, letterSpacing:'.06em', textTransform:'uppercase', color:'#fff',
-                            background:'var(--fam-ancre)', padding:'2px 7px', borderRadius:'var(--r-pill)' }}>You are here</span>
-                        )}
-                      </div>
-                      <p style={{ margin:'1px 0 0', fontSize:'.82rem', lineHeight:1.4,
-                        color: row.here ? 'var(--ink)' : 'var(--ink-3)', fontWeight: row.here ? 500 : 400, textWrap:'pretty' }}>{row.phrase}</p>
-                    </div>
+                          <span className="lp-anim-pulse" aria-hidden="true" style={{ animationDelay:(anchorDelay+160)+'ms',
+                            position:'absolute', inset:-3, borderRadius:'50%', border:'2px solid var(--fam-ancre)', pointerEvents:'none' }}/>
+                        </div>
+                      : <span style={{ width:12, height:12, borderRadius:'50%', background:dotBg(row.v), boxShadow:'0 0 0 3px var(--surface)' }}/>}
                   </div>
-                ))}
+                  {/* contenu : nom du palier + phrase vécue */}
+                  <div style={{ minWidth:0 }}>
+                    <div style={{ display:'flex', alignItems:'center', gap:'7px', flexWrap:'wrap' }}>
+                      <span style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:'.95rem',
+                        color: row.here ? 'var(--fam-ancre)' : 'var(--ink)' }}>{row.name}</span>
+                      {row.here && (
+                        <span className="lp-anim-fade" style={{ animationDelay:(anchorDelay+220)+'ms',
+                          fontSize:'.58rem', fontWeight:800, letterSpacing:'.06em', textTransform:'uppercase', color:'#fff',
+                          background:'var(--fam-ancre)', padding:'2px 7px', borderRadius:'var(--r-pill)' }}>You are here</span>
+                      )}
+                    </div>
+                    <p style={{ margin:'1px 0 0', fontSize:'.82rem', lineHeight:1.4,
+                      color: row.here ? 'var(--ink)' : 'var(--ink-3)', fontWeight: row.here ? 500 : 400, textWrap:'pretty' }}>{row.phrase}</p>
+                  </div>
+                </div>
+              ))}
 
-                <div style={{ fontSize:'.6rem', fontWeight:800, letterSpacing:'.1em', textTransform:'uppercase', color:'var(--ink-3)', paddingLeft:'48px', marginTop:'4px' }}>{fond}</div>
-              </div>
+              <div style={{ fontSize:'.6rem', fontWeight:800, letterSpacing:'.1em', textTransform:'uppercase', color:'var(--ink-3)', paddingLeft:'48px', marginTop:'4px' }}>{fond}</div>
             </div>
-          </Reveal>
+          </div>
 
         </div>
       </div>
@@ -244,7 +347,7 @@ function ScienceBand(){
           </span>
         </div>
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(240px, 1fr))', gap:'clamp(16px,2.5vw,26px)' }}>
-          {LP_SCIENCE.map((s)=> <ScienceCard key={s.img} s={s}/>)}
+          {LP_SCIENCE.map((s,i)=> <InView key={s.img} delay={i*80}><ScienceCard s={s}/></InView>)}
         </div>
       </div>
     </section>
@@ -254,12 +357,12 @@ function ScienceCard({ s }){
   const [imgOk, setImgOk] = rsUseState(true);
   const initials = s.name.split(/\s|&/).filter(Boolean).map(w=>w[0]).slice(0,2).join('');
   return (
-    <div style={{ background:'var(--surface)', border:'1px solid var(--hairline)', borderRadius:'var(--r-lg)',
-      padding:'clamp(22px,3vw,30px)', boxShadow:'var(--sh-xs)', textAlign:'center' }}>
+    <div className="lp-sci-card" style={{ background:'var(--surface)', border:'1px solid var(--hairline)', borderRadius:'var(--r-lg)',
+      padding:'clamp(22px,3vw,30px)', boxShadow:'var(--sh-xs)', textAlign:'center', height:'100%' }}>
       {/* portrait illustré en pied (fond transparent) : contain, posé en bas */}
       <div style={{ height:'clamp(160px,42vw,200px)', margin:'0 auto 14px', display:'flex', alignItems:'flex-end', justifyContent:'center' }}>
         {imgOk
-          ? <img src={`assets/science/${s.img}.png`} alt={s.name} onError={()=>setImgOk(false)}
+          ? <img className="lp-sci-portrait" src={`assets/science/${s.img}.png`} alt={s.name} onError={()=>setImgOk(false)}
               style={{ maxHeight:'100%', maxWidth:'94%', width:'auto', height:'auto', objectFit:'contain',
                 filter:'drop-shadow(0 12px 16px rgba(15,20,45,.18))' }}/>
           : <div style={{ alignSelf:'center', width:96, height:96, borderRadius:'50%', display:'grid', placeItems:'center',
@@ -390,7 +493,7 @@ function ReviewsPlaceholder(){
    ======================================================================== */
 function PaidReportBlock({ X, tx, onCta, onRestart }){
   return (
-    <Reveal>
+    <InView>
       <section style={{ maxWidth:880, margin:'clamp(48px,7vw,80px) auto 0', padding:'0 clamp(20px,5vw,40px) clamp(48px,7vw,80px)' }}>
         <h2 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:'clamp(1.5rem,1.1rem+1.4vw,2rem)',
           color:'var(--ink)', margin:0, textAlign:'center' }}>{tx(X.porteTitle)}</h2>
@@ -398,7 +501,7 @@ function PaidReportBlock({ X, tx, onCta, onRestart }){
 
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(260px, 1fr))', gap:'14px', marginTop:'clamp(26px,4vw,38px)' }}>
           {X.cards.map((c,i)=>(
-            <div key={i} style={{ background:'var(--surface)', border:'1px solid var(--hairline)', borderRadius:'var(--r-lg)',
+            <div key={i} className="lp-lock-card" style={{ background:'var(--surface)', border:'1px solid var(--hairline)', borderRadius:'var(--r-lg)',
               padding:'18px 20px', boxShadow:'var(--sh-xs)', position:'relative', overflow:'hidden' }}>
               <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'9px' }}>
                 <span style={{ display:'grid', placeItems:'center', width:30, height:30, borderRadius:'50%', flexShrink:0,
@@ -423,7 +526,7 @@ function PaidReportBlock({ X, tx, onCta, onRestart }){
           <Button variant="ghost" onClick={onRestart}>{tx(X.retake)}</Button>
         </div>
       </section>
-    </Reveal>
+    </InView>
   );
 }
 
@@ -490,6 +593,7 @@ function TestResult({ answers, ancreVariant, onRestart, go }){
 
   return (
     <div>
+      <ResultMotionStyles/>
       {/* EN-TÊTE COMPACT — échelle de profondeur de l'Ancre */}
       <AnchorLadderHero
         isMixte={isMixte}
@@ -504,11 +608,11 @@ function TestResult({ answers, ancreVariant, onRestart, go }){
       />
 
       {/* 1 — PROFIL GRATUIT COMPLET (zone "free") */}
-      <Reveal><FreeReport R={R}/></Reveal>
+      <InView><FreeReport R={R}/></InView>
 
       {/* 2 — PREUVE : bande science (3 fondateurs) + avis clients */}
       <ScienceBand/>
-      <ReviewsPlaceholder/>
+      <InView><ReviewsPlaceholder/></InView>
 
       {/* 3 — CTA rapport complet + garantie 7 jours */}
       <PaidReportBlock X={X} tx={tx} onCta={startPlanCheckout} onRestart={onRestart}/>
