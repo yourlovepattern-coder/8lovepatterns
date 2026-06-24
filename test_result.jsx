@@ -277,10 +277,16 @@ function ScienceCard({ s }){
 }
 
 /* ===========================================================================
-   3. PROFIL GRATUIT COMPLET — zone "free" réassemblée (tunnel sécurisé)
-   Réutilise EXACTEMENT les blocs free de _content/*.js, rendus par
-   window.LP_RENDER (le même renderer que rapport.html). On retire le bloc
-   'cta' de fin : la porte payante est gérée par la section 7.
+   PROFIL GRATUIT COMPLET — zone "free" du mécanisme
+   ----------------------------------------------------------------------------
+   Affiche les blocs zone:'free' de _content/<profil>.js (prose, visuels
+   anchorScale/loop/spilloverTable), au mot près, rendus par window.LP_RENDER.
+   Deux sources, dans l'ordre :
+     1. /api/get-report-free  (vérité serveur, avec timeout) ;
+     2. fallback CLIENT si le tunnel ne répond pas : window.LP_FREE_ASSEMBLE
+        + window.LP_FREE_CONTENT (free uniquement, jamais de payant), donc le
+        profil gratuit s'affiche partout, même sans la fonction Netlify.
+   Le bloc 'cta' final est retiré : la porte payante est gérée plus bas.
    ======================================================================== */
 function FreeReport({ R }){
   const lang = (window.useLang && window.useLang().lang) || 'en';
@@ -290,22 +296,43 @@ function FreeReport({ R }){
   rsUseEffect(()=>{
     let alive = true;
     setState('loading');
-    const payload = { result: lpResultV2(R), lang: lang === 'fr' ? 'fr' : 'en' };
-    fetch('/api/get-report-free', { method:'POST', headers:{ 'content-type':'application/json' }, body: JSON.stringify(payload) })
+    const resultV2 = lpResultV2(R);
+    const profil = resultV2.pattern_dominant;
+    const wantLang = lang === 'fr' ? 'fr' : 'en';
+
+    /* rend les blocs free d'un rapport assemblé (serveur OU client) */
+    function renderReport(report){
+      const blocks = ((report && report.free) || []).filter(b=> b && b.type !== 'cta');
+      const mount = mountRef.current;
+      if(!blocks.length || !window.LP_RENDER || !mount) return false;
+      window.LP_RENDER._accent = (report.meta && report.meta.accent) || '#46934A';
+      window.LP_RENDER._code = (report.meta && report.meta.code) || 'mir';
+      mount.innerHTML = '';
+      blocks.forEach(b=>{ try { mount.appendChild(window.LP_RENDER.renderBlock(b, {})); } catch(e){} });
+      return true;
+    }
+
+    /* fallback : assemblage du free côté client (aucun contenu payant impliqué) */
+    function clientFallback(){
+      try {
+        if(window.LP_FREE_ASSEMBLE && window.LP_FREE_CONTENT && window.LP_FREE_CONTENT[profil]){
+          const report = window.LP_FREE_ASSEMBLE(window.LP_FREE_CONTENT[profil], resultV2, { lang: wantLang });
+          if(alive && renderReport(report)){ setState('done'); return; }
+        }
+      } catch(e){}
+      if(alive) setState('empty');
+    }
+
+    /* 1) tunnel serveur d'abord, avec timeout pour ne pas rester bloqué */
+    const ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    const to = setTimeout(()=>{ if(ctrl) ctrl.abort(); }, 6000);
+    fetch('/api/get-report-free', { method:'POST', headers:{ 'content-type':'application/json' },
+      body: JSON.stringify({ result: resultV2, lang: wantLang }), signal: ctrl ? ctrl.signal : undefined })
       .then(r=>{ if(!r.ok) throw new Error('status '+r.status); return r.json(); })
-      .then(report=>{
-        if(!alive) return;
-        const blocks = (report.free || []).filter(b=> b && b.type !== 'cta');
-        const mount = mountRef.current;
-        if(!blocks.length || !window.LP_RENDER || !mount){ setState('empty'); return; }
-        window.LP_RENDER._accent = (report.meta && report.meta.accent) || '#46934A';
-        window.LP_RENDER._code = (report.meta && report.meta.code) || 'mir';
-        mount.innerHTML = '';
-        blocks.forEach(b=>{ try { mount.appendChild(window.LP_RENDER.renderBlock(b, {})); } catch(e){} });
-        setState('done');
-      })
-      .catch(()=>{ if(alive) setState('empty'); });
-    return ()=>{ alive = false; };
+      .then(report=>{ clearTimeout(to); if(!alive) return; if(!renderReport(report)) clientFallback(); else setState('done'); })
+      .catch(()=>{ clearTimeout(to); clientFallback(); });
+
+    return ()=>{ alive = false; clearTimeout(to); if(ctrl){ try { ctrl.abort(); } catch(e){} } };
   }, [R, lang]);
 
   return (
