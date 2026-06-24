@@ -130,91 +130,102 @@ function lpResultV2(R){
 const LP_RESULT_V2_KEY = 'lovepattern_result_v2';
 
 /* ===========================================================================
-   1. HERO — l'ancre qui plonge + le perso révélé
+   1. EN-TÊTE — le mécanisme révélé (HÉROS) + échelle d'Ancre (secondaire)
+   ----------------------------------------------------------------------------
+   Hiérarchie : le PERSO en pied du mécanisme domine (grand, entier), avec son
+   nom + sa force %. L'échelle de profondeur d'Ancre (Clear -> Buried) est un
+   panneau secondaire compact, à côté en desktop / dessous en mobile.
    ======================================================================== */
-function ResultHero({ R, isMixte, dominantName, secondaireName, code, tier, phrase, force, signature, intro, presence, anchorLabel }){
-  const pos = R.ancre_position;                 // 0 surface (Clear) .. 4 fond (Buried)
-  const depthPct = 9 + pos * 19.5;              // ancre étagée sur la hauteur : 9 / 28.5 / 48 / 67.5 / 87 %
-  const [bgOk, setBgOk] = rsUseState(true);
-  const [anchorOk, setAnchorOk] = rsUseState(true);
+function AnchorLadderHero({ isMixte, dominantName, secondaireName, code, force, intro, presence, rows, surface, fond }){
   const [persoOk, setPersoOk] = rsUseState(true);
+  const [anchorOk, setAnchorOk] = rsUseState(true);
+  const dotBg = (v)=> `color-mix(in srgb, var(--fam-ancre) ${24 + v*16}%, var(--paper))`;
 
   return (
-    <section style={{ position:'relative', overflow:'hidden', width:'100%', minHeight:'clamp(580px, 90vh, 880px)',
-      /* repli si le décor illustré n'est pas (encore) fourni : dégradé surface -> profondeurs */
-      background:'linear-gradient(180deg, color-mix(in srgb, var(--fam-ancre) 24%, var(--paper)) 0%, color-mix(in srgb, var(--fam-ancre) 55%, var(--encre)) 52%, var(--corail) 100%)' }}>
+    <section style={{ background:'var(--paper)', borderBottom:'1px solid var(--hairline)' }}>
       <style>{`
-        @keyframes lp-dive { 0%{ transform:translate(-50%,-300%); opacity:0; } 55%{ opacity:1; } 100%{ transform:translate(-50%,-50%); opacity:1; } }
-        .lp-hero-anchor { animation: lp-dive 1.8s cubic-bezier(.45,0,.2,1) both; }
-        @media (prefers-reduced-motion: reduce){ .lp-hero-anchor { animation: none; } }
-        .lp-hero-content { grid-template-columns: 1fr; }
-        @media (min-width: 881px){
-          .lp-hero-content { grid-template-columns: minmax(0,1fr) auto; }
-          .lp-hero-perso { align-self: end; justify-self: center; width: clamp(190px, 22vw, 300px); }
-        }
-        @media (max-width: 880px){
-          .lp-hero-perso { position:absolute; right:3%; bottom:0; width:clamp(120px,32vw,180px); z-index:1; }
-        }
+        .lp-hd-grid{ display:grid; grid-template-columns:1fr; gap:clamp(24px,4vw,46px); align-items:center; }
+        @media (min-width:861px){ .lp-hd-grid{ grid-template-columns:1.08fr .92fr; } }
       `}</style>
+      <div style={{ maxWidth:1080, margin:'0 auto', padding:'clamp(28px,5vw,56px) clamp(20px,5vw,44px) clamp(30px,4vw,48px)' }}>
+        <div className="lp-hd-grid">
 
-      {/* 1. FOND illustré : couvre tout le hero */}
-      {bgOk && (
-        <img src="assets/hero/water-depths.png" alt="" aria-hidden="true" onError={()=>setBgOk(false)}
-          style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', objectPosition:'center top', zIndex:0 }}/>
-      )}
-
-      {/* 2. ANCRE : superposée au-dessus du fond, animée, profondeur = palier d'Ancre */}
-      <div className="lp-hero-anchor" style={{ position:'absolute', left:'clamp(8%,11vw,13%)', top:`${depthPct}%`,
-        transform:'translate(-50%,-50%)', width:'clamp(46px,9vw,72px)', height:'clamp(46px,9vw,72px)', zIndex:1, display:'grid', placeItems:'center' }}>
-        {anchorOk
-          ? <img src="assets/hero/anchor-dive.png" alt="" aria-hidden="true" onError={()=>setAnchorOk(false)}
-              style={{ width:'100%', height:'100%', objectFit:'contain', filter:'drop-shadow(0 10px 16px rgba(0,0,0,.5))' }}/>
-          : <span style={{ display:'grid', placeItems:'center', width:'100%', height:'100%', borderRadius:'50%',
-              background:'var(--surface)', color:'var(--encre)', boxShadow:'0 8px 20px -4px rgba(0,0,0,.5)' }}><Icon name="anchor" size={26}/></span>}
-      </div>
-
-      {/* 3. CONTENU : à côté, le perso + le texte (voile derrière le texte pour le contraste) */}
-      <div className="lp-hero-content" style={{ position:'relative', zIndex:2, minHeight:'inherit', maxWidth:1200, margin:'0 auto',
-        display:'grid', alignItems:'center', gap:'clamp(18px,3vw,40px)',
-        padding:'clamp(40px,8vw,90px) clamp(20px,5vw,56px) clamp(40px,8vw,90px) clamp(78px,22vw,200px)' }}>
-        <Reveal style={{ width:'100%', maxWidth:560 }}>
-          <div style={{ background:'color-mix(in srgb, var(--paper) 64%, transparent)', backdropFilter:'blur(8px)', WebkitBackdropFilter:'blur(8px)',
-            border:'1px solid color-mix(in srgb, #fff 55%, transparent)', borderRadius:'var(--r-xl)',
-            padding:'clamp(22px,4vw,38px)', boxShadow:'0 22px 60px -24px rgba(15,20,45,.55)' }}>
-            <p style={{ margin:0, fontSize:'.95rem', fontWeight:600, color:'var(--ink-2)' }}>{intro}</p>
-            <h1 style={{ fontFamily:'var(--font-display)', fontWeight:800, letterSpacing:'-.02em', color:'var(--ink)',
-              fontSize: isMixte ? 'clamp(1.9rem, 1rem + 4vw, 3rem)' : 'clamp(2.3rem, 1.3rem + 4.5vw, 3.9rem)',
-              lineHeight:1.06, margin:'12px 0 0', textWrap:'balance' }}>
-              {isMixte
-                ? <span>{dominantName}<span style={{ color:'var(--ink-3)', fontWeight:400, padding:'0 .3em' }}>&amp;</span>{secondaireName}</span>
-                : dominantName}
-            </h1>
-            <p style={{ margin:'14px 0 0', fontFamily:'var(--font-display)', fontWeight:600,
-              fontSize:'clamp(1.08rem, .95rem + .8vw, 1.4rem)', lineHeight:1.4, color:'var(--corail)', textWrap:'balance' }}>
-              {signature}
-            </p>
-
-            <div style={{ display:'flex', flexWrap:'wrap', gap:'10px', marginTop:22 }}>
-              <span style={{ display:'inline-flex', alignItems:'center', gap:'7px', padding:'9px 18px', borderRadius:'var(--r-pill)',
-                background:'var(--encre)', color:'#fff', fontWeight:700, fontSize:'.96rem' }}>
-                {lpFill(presence, { N: force })}
-              </span>
-              <span style={{ display:'inline-flex', alignItems:'center', gap:'8px', padding:'9px 18px', borderRadius:'var(--r-pill)',
-                background:'var(--surface)', border:'1.5px solid color-mix(in srgb, var(--fam-ancre) 55%, transparent)', color:'var(--fam-ancre)', fontWeight:700, fontSize:'.96rem' }}>
-                <Icon name="anchor" size={15}/> {anchorLabel}: {tier}
-              </span>
+          {/* HÉROS : grand perso en pied + nom + force % */}
+          <Reveal>
+            <div style={{ textAlign:'center' }}>
+              {persoOk
+                ? <img src={`assets/archetypes/${code}.png`} alt={dominantName} onError={()=>setPersoOk(false)}
+                    style={{ width:'auto', height:'clamp(270px,44vw,410px)', maxWidth:'100%', display:'block', margin:'0 auto',
+                      filter:'drop-shadow(0 26px 30px rgba(15,20,45,.28))' }}/>
+                : null}
+              <p style={{ margin:'clamp(8px,1.6vw,16px) 0 0', fontSize:'.86rem', fontWeight:700, letterSpacing:'.03em', color:'var(--ink-3)' }}>{intro}</p>
+              <h1 style={{ fontFamily:'var(--font-display)', fontWeight:800, letterSpacing:'-.02em', color:'var(--ink)',
+                fontSize: isMixte ? 'clamp(2rem,1.2rem+3.4vw,3.2rem)' : 'clamp(2.4rem,1.5rem+3.6vw,3.9rem)', lineHeight:1.05, margin:'6px 0 0', textWrap:'balance' }}>
+                {isMixte
+                  ? <span>{dominantName}<span style={{ color:'var(--ink-3)', fontWeight:400, padding:'0 .25em' }}>&amp;</span>{secondaireName}</span>
+                  : dominantName}
+              </h1>
+              <div style={{ marginTop:16 }}>
+                <span style={{ display:'inline-flex', alignItems:'center', gap:'7px', padding:'10px 22px', borderRadius:'var(--r-pill)',
+                  background:'var(--encre)', color:'#fff', fontWeight:700, fontSize:'1rem' }}>{lpFill(presence, { N: force })}</span>
+              </div>
             </div>
-            <p style={{ margin:'16px 0 0', fontSize:'1.02rem', lineHeight:1.6, color:'var(--ink)', fontStyle:'italic' }}>
-              &laquo;&nbsp;{phrase}&nbsp;&raquo;
-            </p>
-          </div>
-        </Reveal>
+          </Reveal>
 
-        {/* le perso du mécanisme révélé (art existant) */}
-        {persoOk
-          ? <img className="lp-hero-perso" src={`assets/archetypes/${code}.png`} alt={dominantName} onError={()=>setPersoOk(false)}
-              style={{ height:'auto', filter:'drop-shadow(0 22px 28px rgba(15,20,45,.5))' }}/>
-          : null}
+          {/* SECONDAIRE : échelle de profondeur d'Ancre, compacte */}
+          <Reveal delay={70}>
+            <div style={{ background:'var(--surface)', border:'1px solid var(--hairline)', borderRadius:'var(--r-xl)',
+              padding:'clamp(16px,2.4vw,24px)', boxShadow:'var(--sh-xs)' }}>
+              <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'10px' }}>
+                <Icon name="anchor" size={15} style={{ color:'var(--fam-ancre)' }}/>
+                <span style={{ fontSize:'.68rem', fontWeight:800, letterSpacing:'.12em', textTransform:'uppercase', color:'var(--ink-3)' }}>Your Anchor depth</span>
+              </div>
+              <div style={{ position:'relative' }}>
+                <div style={{ fontSize:'.6rem', fontWeight:800, letterSpacing:'.1em', textTransform:'uppercase', color:'var(--ink-3)', paddingLeft:'48px', marginBottom:'4px' }}>{surface}</div>
+
+                {/* rail vertical : surface claire -> fond sombre */}
+                <div aria-hidden="true" style={{ position:'absolute', left:'18px', top:'26px', bottom:'26px', width:'3px', borderRadius:'2px', zIndex:0,
+                  background:'linear-gradient(180deg, color-mix(in srgb, var(--fam-ancre) 30%, #fff), var(--fam-ancre) 55%, var(--encre))' }}/>
+
+                {rows.map(row=>(
+                  <div key={row.v} style={{ position:'relative', zIndex:1, display:'grid', gridTemplateColumns:'37px 1fr', gap:'11px', alignItems:'center',
+                    padding:'7px 10px 7px 0', marginBottom:'2px', borderRadius:'var(--r-md)',
+                    background: row.here ? 'var(--fam-ancre-soft)' : 'transparent',
+                    boxShadow: row.here ? 'inset 0 0 0 1.5px var(--fam-ancre)' : 'none' }}>
+                    {/* marqueur : ancre au palier de l'utilisateur, sinon un point de profondeur */}
+                    <div style={{ display:'grid', placeItems:'center', width:37, height:37 }}>
+                      {row.here
+                        ? <div style={{ width:37, height:37, borderRadius:'50%', display:'grid', placeItems:'center', background:'var(--surface)',
+                            boxShadow:'0 0 0 2px var(--fam-ancre), 0 5px 12px -4px rgba(0,0,0,.3)' }}>
+                            {anchorOk
+                              ? <img src="assets/hero/anchor-dive.png" alt="" aria-hidden="true" onError={()=>setAnchorOk(false)}
+                                  style={{ width:22, height:22, objectFit:'contain' }}/>
+                              : <Icon name="anchor" size={18} style={{ color:'var(--fam-ancre)' }}/>}
+                          </div>
+                        : <span style={{ width:12, height:12, borderRadius:'50%', background:dotBg(row.v), boxShadow:'0 0 0 3px var(--surface)' }}/>}
+                    </div>
+                    {/* contenu : nom du palier + phrase vécue */}
+                    <div style={{ minWidth:0 }}>
+                      <div style={{ display:'flex', alignItems:'center', gap:'7px', flexWrap:'wrap' }}>
+                        <span style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:'.95rem',
+                          color: row.here ? 'var(--fam-ancre)' : 'var(--ink)' }}>{row.name}</span>
+                        {row.here && (
+                          <span style={{ fontSize:'.58rem', fontWeight:800, letterSpacing:'.06em', textTransform:'uppercase', color:'#fff',
+                            background:'var(--fam-ancre)', padding:'2px 7px', borderRadius:'var(--r-pill)' }}>You are here</span>
+                        )}
+                      </div>
+                      <p style={{ margin:'1px 0 0', fontSize:'.82rem', lineHeight:1.4,
+                        color: row.here ? 'var(--ink)' : 'var(--ink-3)', fontWeight: row.here ? 500 : 400, textWrap:'pretty' }}>{row.phrase}</p>
+                    </div>
+                  </div>
+                ))}
+
+                <div style={{ fontSize:'.6rem', fontWeight:800, letterSpacing:'.1em', textTransform:'uppercase', color:'var(--ink-3)', paddingLeft:'48px', marginTop:'4px' }}>{fond}</div>
+              </div>
+            </div>
+          </Reveal>
+
+        </div>
       </div>
     </section>
   );
@@ -245,12 +256,16 @@ function ScienceCard({ s }){
   return (
     <div style={{ background:'var(--surface)', border:'1px solid var(--hairline)', borderRadius:'var(--r-lg)',
       padding:'clamp(22px,3vw,30px)', boxShadow:'var(--sh-xs)', textAlign:'center' }}>
-      <div style={{ width:96, height:96, margin:'0 auto 16px', borderRadius:'50%', overflow:'hidden',
-        background:'color-mix(in srgb, var(--fam-ancre) 14%, #fff)', display:'grid', placeItems:'center' }}>
+      {/* portrait illustré en pied (fond transparent) : contain, posé en bas */}
+      <div style={{ height:'clamp(160px,42vw,200px)', margin:'0 auto 14px', display:'flex', alignItems:'flex-end', justifyContent:'center' }}>
         {imgOk
           ? <img src={`assets/science/${s.img}.png`} alt={s.name} onError={()=>setImgOk(false)}
-              style={{ width:'100%', height:'100%', objectFit:'cover' }}/>
-          : <span style={{ fontFamily:'var(--font-display)', fontWeight:800, fontSize:'1.7rem', color:'var(--fam-ancre)' }}>{initials}</span>}
+              style={{ maxHeight:'100%', maxWidth:'94%', width:'auto', height:'auto', objectFit:'contain',
+                filter:'drop-shadow(0 12px 16px rgba(15,20,45,.18))' }}/>
+          : <div style={{ alignSelf:'center', width:96, height:96, borderRadius:'50%', display:'grid', placeItems:'center',
+              background:'color-mix(in srgb, var(--fam-ancre) 14%, #fff)' }}>
+              <span style={{ fontFamily:'var(--font-display)', fontWeight:800, fontSize:'1.7rem', color:'var(--fam-ancre)' }}>{initials}</span>
+            </div>}
       </div>
       <h3 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:'1.18rem', color:'var(--ink)', margin:'0 0 10px' }}>{s.name}</h3>
       {s.lines.map((l,i)=>(
@@ -318,51 +333,11 @@ function FreeReport({ R }){
 }
 
 /* ===========================================================================
-   4. LIGNE DE VALEUR PERÇUE
-   ======================================================================== */
-function ValueLine(){
-  return (
-    <section style={{ maxWidth:680, margin:'clamp(40px,6vw,72px) auto 0', padding:'0 clamp(20px,5vw,40px)' }}>
-      <div style={{ background:'var(--fam-ancre-soft)', border:'1px solid color-mix(in srgb, var(--fam-ancre) 30%, transparent)',
-        borderRadius:'var(--r-xl)', padding:'clamp(26px,4vw,40px)' }}>
-        <p style={{ margin:0, fontFamily:'var(--font-display)', fontWeight:600, fontSize:'clamp(1.15rem,1rem+.7vw,1.5rem)',
-          lineHeight:1.5, color:'var(--ink)', textWrap:'pretty' }}>
-          Your pattern isn't a flaw. Attachment research shows it's a protection strategy your mind built to keep you safe. Once you see it, you can change it.
-        </p>
-      </div>
-    </section>
-  );
-}
-
-/* ===========================================================================
-   5. SCEAU THÉRAPEUTE — placeholder structuré (aucun nom/photo inventés)
-   ======================================================================== */
-function TherapistSeal(){
-  return (
-    <section style={{ maxWidth:680, margin:'clamp(28px,4vw,40px) auto 0', padding:'0 clamp(20px,5vw,40px)' }}>
-      <div style={{ display:'flex', alignItems:'center', gap:'16px', justifyContent:'center', flexWrap:'wrap',
-        background:'var(--surface)', border:'1px solid var(--hairline)', borderRadius:'var(--r-lg)', padding:'18px 22px' }}>
-        {/* photo placeholder */}
-        <div style={{ width:56, height:56, borderRadius:'50%', flexShrink:0, border:'2px dashed var(--hairline-2)',
-          display:'grid', placeItems:'center', color:'var(--ink-3)', background:'var(--paper-2)' }}>
-          <Icon name="users" size={22}/>
-        </div>
-        <div style={{ display:'flex', alignItems:'center', gap:'10px', color:'var(--ink-2)', fontSize:'.98rem', fontWeight:600 }}>
-          <span style={{ display:'grid', placeItems:'center', width:24, height:24, borderRadius:'50%', flexShrink:0,
-            background:'rgba(63,160,107,.14)', color:'var(--positive)' }}><Icon name="check" size={14}/></span>
-          <span>Content reviewed by [Full Name], [licensed credential]</span>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ===========================================================================
-   6. AVIS CLIENTS — placeholder structuré (aucun faux avis)
+   AVIS CLIENTS — placeholder structuré (aucun faux avis)
    ======================================================================== */
 function ReviewsPlaceholder(){
   return (
-    <section style={{ maxWidth:880, margin:'clamp(36px,5vw,56px) auto 0', padding:'0 clamp(20px,5vw,40px)' }}>
+    <section style={{ maxWidth:880, margin:'clamp(28px,4vw,40px) auto 0', padding:'0 clamp(20px,5vw,40px)' }}>
       <div style={{ textAlign:'center', marginBottom:'20px' }}>
         <span style={{ fontSize:'.72rem', fontWeight:800, letterSpacing:'.14em', textTransform:'uppercase', color:'var(--ink-3)' }}>
           [ Customer reviews, to be added ]
@@ -478,43 +453,37 @@ function TestResult({ answers, ancreVariant, onRestart, go }){
 
   const patOf = k => T.patterns.find(p=>p.key===k) || { key:k, fr:k, en:k };
   const isMixte = R.profil_type==='mixte';
-  const mirrorKey = isMixte ? R.ancre_variante : R.pattern_dominant;
-  const PT = X.patterns[mirrorKey] || X.patterns[R.pattern_dominant] || { signature:{ fr:'', en:'' } };
   const code = LP_PATTERN_CODE[R.pattern_dominant] || 'mir';
-  const tier = LP_ANCHOR_TIERS[R.ancre_position] || '';
-  const phrase = tx(T.paliers.find(p=>p.v===R.ancre_position) || { fr:'', en:'' });
+  /* les 5 paliers nommés (surface -> fond) + phrase vécue du repo, palier joué surligné */
+  const ladderRows = LP_ANCHOR_TIERS.map((nm, v)=> ({
+    v, name: nm,
+    phrase: tx(T.paliers.find(p=>p.v===v) || { fr:'', en:'' }),
+    here: v === R.ancre_position,
+  }));
 
   return (
     <div>
-      {/* 1 — HERO */}
-      <ResultHero
-        R={R} isMixte={isMixte}
+      {/* EN-TÊTE COMPACT — échelle de profondeur de l'Ancre */}
+      <AnchorLadderHero
+        isMixte={isMixte}
         dominantName={tx(patOf(R.pattern_dominant))}
         secondaireName={tx(patOf(R.pattern_secondaire))}
-        code={code} tier={tier} phrase={phrase}
+        code={code}
         force={R.pattern_dominant_score}
-        signature={tx(PT.signature)}
         intro={tx(X.intro)}
         presence={tx(isMixte ? X.presenceMixte : X.presence)}
-        anchorLabel={tx(X.anchorLabel)}
+        rows={ladderRows}
+        surface={tx(X.surface)} fond={tx(X.fond)}
       />
 
-      {/* 2 — BANDE SCIENCE */}
-      <ScienceBand/>
-
-      {/* 3 — PROFIL GRATUIT COMPLET (zone "free") */}
+      {/* 1 — PROFIL GRATUIT COMPLET (zone "free") */}
       <Reveal><FreeReport R={R}/></Reveal>
 
-      {/* 4 — LIGNE DE VALEUR PERÇUE */}
-      <Reveal><ValueLine/></Reveal>
-
-      {/* 5 — SCEAU THÉRAPEUTE (placeholder) */}
-      <TherapistSeal/>
-
-      {/* 6 — AVIS CLIENTS (placeholder) */}
+      {/* 2 — PREUVE : bande science (3 fondateurs) + avis clients */}
+      <ScienceBand/>
       <ReviewsPlaceholder/>
 
-      {/* 7 — RAPPORT PAYANT + garantie + CTA */}
+      {/* 3 — CTA rapport complet + garantie 7 jours */}
       <PaidReportBlock X={X} tx={tx} onCta={startPlanCheckout} onRestart={onRestart}/>
 
       {/* objet technique : uniquement en mode développement (?lpdev=1) */}
