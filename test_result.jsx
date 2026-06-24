@@ -1,12 +1,22 @@
 /* ============================================================================
-   8LovePatterns — ÉCRAN DE RÉSULTAT GRATUIT (séquence en 5 temps)
-   Source : uploads/8lovepatterns_Ecran_resultat_gratuit.md. Le moteur ne change
-   pas, seul l'affichage. Cette page MONTRE : pattern dominant (nom + signature
-   + miroir), Ancre verticale en profondeur, phrase de coût, porte vers le
-   rapport. Elle NE MONTRE PLUS : graphe des 8 patterns, secondaire nommé,
-   scores de sabotage, axe. L'objet technique n'apparaît qu'avec ?lpdev=1.
+   8LovePatterns — ÉCRAN DE RÉSULTAT GRATUIT (page de valeur perçue)
+   ----------------------------------------------------------------------------
+   Refonte orientée valeur perçue avant achat. De haut en bas :
+     1. HERO illustré, quasi pleine page : ancre qui plonge (asset commun) +
+        perso du mécanisme (art existant) + nom, force %, palier d'Ancre NOMMÉ,
+        phrase vécue.
+     2. Bande SCIENCE « 70 years of attachment research » (3 fondateurs).
+     3. PROFIL GRATUIT COMPLET du mécanisme (zone "free") — réassemblé par le
+        tunnel sécurisé /api/get-report-free et rendu par window.LP_RENDER, donc
+        STRICTEMENT le même contenu free que rapport.html (_content/*.js).
+     4. Ligne de valeur perçue.
+     5. Sceau thérapeute (placeholder structuré, sans nom/photo inventés).
+     6. Avis clients (placeholder structuré, aucun faux avis).
+     7. Rapport complet payant + garantie 7 jours + CTA.
+   Le moteur ne change pas, seul l'affichage. Le garde-fou sécurité (alerte)
+   passe toujours avant. L'objet technique n'apparaît qu'avec ?lpdev=1.
    ========================================================================== */
-const { useState: rsUseState, useEffect: rsUseEffect, useRef: rsUseRef } = React;
+const { useState: rsUseState, useEffect: rsUseEffect, useRef: rsUseRef, useMemo: rsUseMemo } = React;
 
 /* ---- Micro-textes (FR validé du document + EN fidèle) -------------------- */
 const LP_RESULT_TEXTS = {
@@ -17,21 +27,9 @@ const LP_RESULT_TEXTS = {
              en:"Another mechanism is right behind it. Your report takes it into account." },
   mixte:   { fr:"Deux mécanismes cohabitent chez toi à parts égales. C'est rare, et ça change la lecture.",
              en:"Two mechanisms live in you in equal measure. It is rare, and it changes the reading." },
-  tresActive:   { fr:"Tes réponses montrent que plusieurs mécanismes sont à vif en ce moment. C'est le signe d'une période chargée, pas d'un défaut.",
-                  en:"Your answers show that several mechanisms are raw right now. It is the sign of a heavy period, not a flaw." },
-  peuDeclenche: { fr:"Tes réponses montrent peu d'activation en ce moment. Ton mécanisme existe, mais il dort. Le rapport t'aidera à le reconnaître quand il se réveille.",
-                  en:"Your answers show little activation right now. Your mechanism exists, but it is asleep. The report will help you recognize it when it wakes." },
-  vigilance:{ fr:"Une note douce : certaines de tes réponses méritent qu'on y revienne avec soin. Sois indulgente avec toi en lisant la suite.",
-              en:"A gentle note: some of your answers deserve to be revisited with care. Be kind to yourself as you read on." },
-  ancreTitle: { fr:"À quel point ce mécanisme te tient", en:"How deeply this mechanism holds you" },
   surface:    { fr:"Surface", en:"Surface" },
   fond:       { fr:"Fond", en:"Bottom" },
-  ancreNormal:{ fr:"La plupart du temps, tu es ici : « {P} ». Mais quand ton point sensible est touché, tu descends jusqu'à : « {B} ».",
-                en:"Most of the time, you are here: \u201c{P}\u201d. But when your sensitive spot is touched, you go down to: \u201c{B}\u201d." },
-  ancreEgal:  { fr:"Tu es ici : « {P} ». C'est ta profondeur, même quand ton point sensible est touché.",
-                en:"You are here: \u201c{P}\u201d. That is your depth, even when your sensitive spot is touched." },
-  espoir:     { fr:"Cette profondeur n'est pas une condamnation. C'est une position. Et une position, ça se remonte.",
-                en:"This depth is not a sentence. It is a position. And a position can be climbed back up." },
+  anchorLabel:{ fr:"Ton Ancre", en:"Your Anchor" },
   porteTitle:   { fr:"Ton rapport complet est prêt", en:"Your complete report is ready" },
   porteAccroche:{ fr:"Ce que tu viens de lire, c'est la surface. Ton rapport complet descend là où ça se joue vraiment.",
                   en:"What you just read is the surface. Your complete report goes down to where it really plays out." },
@@ -57,6 +55,8 @@ const LP_RESULT_TEXTS = {
   ],
   cta:    { fr:"Obtenir mon rapport complet", en:"Get my full report" },
   retake: { fr:"Refaire le test", en:"Retake the test" },
+  guarantee: { fr:"Garantie 7 jours, remboursé si le rapport ne te parle pas.",
+               en:"7-day money-back guarantee if the report doesn't speak to you." },
   pendingTitle:{ fr:"Ton rapport est en préparation.", en:"Your report is in preparation." },
   pendingBody: { fr:"Le rapport complet rédigé arrive très bientôt. Ton résultat est gardé en attendant.",
                  en:"The complete written report is coming very soon. Your result is kept safe in the meantime." },
@@ -64,118 +64,363 @@ const LP_RESULT_TEXTS = {
 
   patterns: {
     'Incendiaire': {
-      signature:{ fr:"Tu mets le feu pour vérifier qu'on t'aime.", en:"You set fires to check that you are loved." },
-      miroir:{ fr:"Quand tout est trop calme, quelque chose en toi s'inquiète. Alors tu lances une pique, tu montes le ton, tu crées la vague. Pas pour faire mal. Pour voir s'il réagit, s'il se bat, s'il tient à toi. Une dispute, au moins, c'est une preuve qu'on existe l'un pour l'autre.",
-              en:"When everything is too calm, something in you starts to worry. So you throw a jab, you raise the tone, you make a wave. Not to hurt. To see if they react, if they fight, if they care. An argument, at least, is proof that you exist for each other." },
-      cout:{ fr:"À force de tester le lien, c'est le lien qui finit par lâcher.", en:"By testing the bond again and again, it is the bond that ends up giving way." },
-      rupture:{ fr:"Et depuis la rupture, ce besoin de réaction n'a sans doute pas disparu. Il cherche juste une autre porte.",
-                en:"And since the breakup, that need for a reaction probably has not gone away. It is just looking for another door." } },
+      signature:{ fr:"Tu mets le feu pour vérifier qu'on t'aime.", en:"You set fires to check that you are loved." } },
     'Miroir': {
-      signature:{ fr:"Tu te reflètes pour te sentir exister dans le lien.", en:"You mirror the other to feel you exist in the bond." },
-      miroir:{ fr:"Ses goûts deviennent tes goûts, ses amis tes amis, ses envies tes envies. Sur le moment, ça ressemble à l'amour. Et puis un jour, on te demande ce que toi tu veux, et il y a ce petit blanc. Ce blanc, c'est l'endroit où tu as disparu.",
-              en:"Their tastes become your tastes, their friends your friends, their wishes your wishes. In the moment, it looks like love. Then one day someone asks what you want, and there is that small blank. That blank is the place where you disappeared." },
-      cout:{ fr:"On ne peut pas t'aimer vraiment si on ne te rencontre jamais.", en:"No one can truly love you if they never get to meet you." },
-      rupture:{ fr:"Et depuis la rupture, ce n'est pas seulement lui qui manque. C'est la forme que tu avais dans son regard.",
-                en:"And since the breakup, it is not only them you miss. It is the shape you had in their eyes." } },
+      signature:{ fr:"Tu te reflètes pour te sentir exister dans le lien.", en:"You mirror the other to feel you exist in the bond." } },
     'Fugitif': {
-      signature:{ fr:"Tu pars avant qu'on puisse te quitter.", en:"You leave before anyone can leave you." },
-      miroir:{ fr:"Tout va bien, et justement c'est ça le problème. Dès que ça devient sérieux, tu trouves des défauts, tu te sens à l'étroit, tu regardes la sortie. Tu appelles ça ton indépendance. Mais une partie de toi sait que c'est de la fuite.",
-              en:"Everything is fine, and that is exactly the problem. As soon as it gets serious, you find flaws, you feel cramped, you look at the exit. You call it your independence. But a part of you knows it is flight." },
-      cout:{ fr:"Tu laisses filer des histoires qui auraient pu être les bonnes.", en:"You let go of relationships that might have been the right ones." },
-      rupture:{ fr:"Et cette rupture, une partie de toi l'avait peut-être préparée bien avant qu'elle arrive.",
-                en:"And this breakup, a part of you may have prepared it long before it happened." } },
+      signature:{ fr:"Tu pars avant qu'on puisse te quitter.", en:"You leave before anyone can leave you." } },
     'Bastion': {
-      signature:{ fr:"Tu te protèges si bien qu'on ne t'atteint plus.", en:"You protect yourself so well that no one reaches you anymore." },
-      miroir:{ fr:"Quand ça devient émotionnel, tu réponds que ça va. Tu gères, tu encaisses, tu ne montres rien. Les gens te croient solide, et tu l'es. Mais derrière le mur, il y a quelqu'un que presque personne n'a jamais rencontré.",
-              en:"When things get emotional, you answer that you are fine. You cope, you take the hits, you show nothing. People believe you are solid, and you are. But behind the wall, there is someone almost no one has ever met." },
-      cout:{ fr:"L'autre finit par s'épuiser à essayer de t'atteindre.", en:"The other person ends up exhausted from trying to reach you." },
-      rupture:{ fr:"Et même la rupture, tu l'as peut-être traversée sans laisser personne voir ce qu'elle t'a fait.",
-                en:"And even the breakup, you may have gone through it without letting anyone see what it did to you." } },
+      signature:{ fr:"Tu te protèges si bien qu'on ne t'atteint plus.", en:"You protect yourself so well that no one reaches you anymore." } },
     'Guetteur': {
-      signature:{ fr:"Tu surveilles l'amour au lieu de le vivre.", en:"You watch over love instead of living it." },
-      miroir:{ fr:"Tu relis les messages, tu décortiques un silence, tu notes un changement de ton. Tout est analysé, tout est indice. Tu appelles ça de la lucidité. Mais à force de chercher la preuve que quelque chose cloche, tu finis toujours par la trouver.",
-              en:"You reread the messages, you dissect a silence, you note a change of tone. Everything is analyzed, everything is a clue. You call it clear-sightedness. But by hunting for proof that something is wrong, you always end up finding it." },
-      cout:{ fr:"Une relation surveillée en permanence finit par étouffer.", en:"A relationship under constant watch ends up suffocating." },
-      rupture:{ fr:"Et depuis la rupture, ton esprit continue l'enquête, à rejouer chaque signe que tu aurais dû voir.",
-                en:"And since the breakup, your mind keeps up the investigation, replaying every sign you should have seen." } },
+      signature:{ fr:"Tu surveilles l'amour au lieu de le vivre.", en:"You watch over love instead of living it." } },
     'Sauveur': {
-      signature:{ fr:"Tu te rends indispensable pour être sûr d'être gardé.", en:"You make yourself indispensable to be sure you are kept." },
-      miroir:{ fr:"Ses problèmes passent avant les tiens, toujours. Tu portes, tu répares, tu anticipes ses besoins avant même qu'il les sente. Donner, c'est ta façon d'aimer. Mais au fond, c'est aussi ta façon de t'assurer qu'on ne pourra pas se passer de toi.",
-              en:"Their problems come before yours, always. You carry, you fix, you anticipate their needs before they even feel them. Giving is your way of loving. But deep down, it is also your way of making sure no one can do without you." },
-      cout:{ fr:"On finit par aimer ce que tu fais, plus ce que tu es.", en:"People end up loving what you do, no longer who you are." },
-      rupture:{ fr:"Et depuis la rupture, le plus dur n'est peut-être pas l'absence. C'est de ne plus avoir personne à porter.",
-                en:"And since the breakup, the hardest part may not be the absence. It is no longer having anyone to carry." } },
+      signature:{ fr:"Tu te rends indispensable pour être sûr d'être gardé.", en:"You make yourself indispensable to be sure you are kept." } },
     'Caméléon': {
-      signature:{ fr:"Tu deviens ce qu'on attend pour ne pas être rejeté.", en:"You become what is expected so you will not be rejected." },
-      miroir:{ fr:"Tu sens ce que l'autre veut entendre, et tu le dis. Tu lisses, tu arrondis, tu t'ajustes. Tout le monde te trouve facile à vivre. Mais toi, tu sais que personne n'a jamais rencontré la version non négociée de toi.",
-              en:"You sense what the other person wants to hear, and you say it. You smooth, you soften, you adjust. Everyone finds you easy to be around. But you know that no one has ever met the unnegotiated version of you." },
-      cout:{ fr:"À force de plaire à tout le monde, tu ne sais plus qui tu es.", en:"By pleasing everyone, you no longer know who you are." },
-      rupture:{ fr:"Et depuis la rupture, tu te demandes peut-être lequel de vous deux il a quitté : toi, ou le rôle que tu jouais.",
-                en:"And since the breakup, you may be wondering which of you they left: you, or the role you were playing." } },
+      signature:{ fr:"Tu deviens ce qu'on attend pour ne pas être rejeté.", en:"You become what is expected so you will not be rejected." } },
     'Alchimiste': {
-      signature:{ fr:"Tu comprends tout pour ne rien sentir.", en:"You understand everything so you feel nothing." },
-      miroir:{ fr:"Quand ça fait mal, tu analyses. Tu expliques ta douleur avec des mots justes, tu décortiques la relation comme un dossier. Tout est clair dans ta tête. Mais l'autre, lui, ne te sent jamais vraiment touché. Et toi non plus, parfois.",
-              en:"When it hurts, you analyze. You explain your pain with precise words, you dissect the relationship like a case file. Everything is clear in your head. But the other person never really feels you moved. And sometimes, neither do you." },
-      cout:{ fr:"On ne crée pas d'intimité avec quelqu'un qui survole ses propres émotions.", en:"No one builds intimacy with someone who flies over their own emotions." },
-      rupture:{ fr:"Et cette rupture, tu l'as probablement déjà toute expliquée. Comprise, oui. Traversée, pas encore.",
-                en:"And this breakup, you have probably already explained it all. Understood, yes. Lived through, not yet." } },
+      signature:{ fr:"Tu comprends tout pour ne rien sentir.", en:"You understand everything so you feel nothing." } },
   },
 };
+
+/* ---- Paliers d'Ancre NOMMÉS (mapping validé, surface -> fond) ------------ *
+   v0 Clear · v1 Slipping · v2 Snagged · v3 Hooked · v4 Buried. La phrase
+   vécue de chaque palier reste celle du repo (window.LP_TEST.paliers). */
+const LP_ANCHOR_TIERS = ['Clear', 'Slipping', 'Snagged', 'Hooked', 'Buried'];
+
+/* ---- pattern key -> code archétype (art assets/archetypes/<code>.png) ----- */
+const LP_PATTERN_CODE = {
+  'Miroir':'mir', 'Fugitif':'fug', 'Bastion':'bas', 'Guetteur':'gue',
+  'Sauveur':'sau', 'Caméléon':'cam', 'Alchimiste':'alc', 'Incendiaire':'inc',
+};
+
+/* ---- Bande science : 3 fondateurs (portraits illustrés fournis) ---------- */
+const LP_SCIENCE = [
+  { img:'bowlby', name:'John Bowlby',
+    lines:['Father of attachment theory.', 'Proved the bonds we form early shape how we love for life.'] },
+  { img:'ainsworth', name:'Mary Ainsworth',
+    lines:['Mapped the attachment styles.', 'Showed why some people cling, some pull away, some feel secure.'] },
+  { img:'hazan-shaver', name:'Hazan & Shaver',
+    lines:['Brought it to adult love.', 'Found that romance runs on the same attachment system.'] },
+];
 
 /* ---- helpers -------------------------------------------------------------- */
 function lpFill(s, map){ return s.replace(/\{(\w+)\}/g, (m,k)=> map[k]!=null ? map[k] : m); }
 
-/* Apparition progressive (document : « apparition progressive »).
-   Implémentation 100% CSS (classe .lp-reveal dans colors_and_type.css) : l'état
-   final VISIBLE est la base, l'animation d'entrée n'est qu'un enrichissement et
-   ne peut jamais laisser le contenu caché. Le décalage en cascade donne le
-   rythme des 5 temps. Aucune dépendance à IntersectionObserver. */
+/* Apparition progressive : 100% CSS (.lp-reveal), état final VISIBLE comme base.*/
 function Reveal({ children, style, delay=0 }){
   return <div className="lp-reveal" style={{ '--d': delay+'ms', ...style }}>{children}</div>;
 }
 
-/* ---- Temps 3 : l'Ancre, échelle verticale de profondeur ------------------- */
-function AnchorDepth({ R }){
-  const tx = useTx();
-  const T = window.LP_TEST;
-  const X = LP_RESULT_TEXTS;
-  const pos = R.ancre_position;
+/* ---- result_v2 bridge ----------------------------------------------------
+   The live engine emits CAPITALIZED, accented pattern keys ('Miroir', ...).
+   The secure report system keys on lowercase ASCII ids ('miroir', ...). We
+   bridge here when persisting / posting the result the server reads. */
+const LP_PROFILE_KEY = {
+  'Miroir':'miroir', 'Fugitif':'fugitif', 'Bastion':'bastion', 'Guetteur':'guetteur',
+  'Sauveur':'sauveur', 'Caméléon':'cameleon', 'Alchimiste':'alchimiste', 'Incendiaire':'incendiaire',
+};
+function lpToProfileKey(k){ return LP_PROFILE_KEY[k] || (typeof k === 'string' ? k.toLowerCase() : k); }
+function lpResultV2(R){
+  return Object.assign({}, R, {
+    pattern_dominant: lpToProfileKey(R.pattern_dominant),
+    pattern_secondaire: lpToProfileKey(R.pattern_secondaire),
+    ancre_variante: lpToProfileKey(R.ancre_variante),
+  });
+}
+const LP_RESULT_V2_KEY = 'lovepattern_result_v2';
+
+/* ===========================================================================
+   1. HERO — l'ancre qui plonge + le perso révélé
+   ======================================================================== */
+function ResultHero({ R, isMixte, dominantName, secondaireName, code, tier, phrase, force, signature, intro, presence, surface, fond, anchorLabel }){
+  const pos = R.ancre_position;                 // 0 surface .. 4 fond
+  const depthPct = pos * 20 + 10;               // position verticale de l'ancre
+  const [heroImgOk, setHeroImgOk] = rsUseState(true);
+  const [persoOk, setPersoOk] = rsUseState(true);
+
   return (
-    <div>
-      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:'8px' }}>
-        <span style={{ fontSize:'.74rem', fontWeight:800, letterSpacing:'.11em', textTransform:'uppercase', color:'var(--ink-3)' }}>{tx(X.surface)}</span>
-      </div>
-      <div style={{ position:'relative', paddingLeft:'clamp(72px, 10vw, 96px)' }}>
-        {/* colonne d'eau : claire en surface, sombre au fond */}
-        <div style={{ position:'absolute', left:0, top:0, bottom:0, width:'clamp(52px, 7vw, 64px)', borderRadius:'28px',
-          background:'linear-gradient(180deg, color-mix(in srgb, var(--fam-ancre) 14%, var(--paper)) 0%, color-mix(in srgb, var(--fam-ancre) 45%, var(--encre)) 58%, var(--encre) 100%)',
-          boxShadow:'inset 0 2px 10px rgba(255,255,255,.35), inset 0 -6px 16px rgba(0,0,0,.25)' }}>
-          {/* l'ancre, à la position de la personne */}
-          <div style={{ position:'absolute', left:'50%', top:`${pos*20+10}%`, transform:'translate(-50%,-50%)',
-            width:44, height:44, borderRadius:'50%', background:'var(--surface)', display:'grid', placeItems:'center',
-            boxShadow:'0 6px 18px -4px rgba(0,0,0,.4), 0 0 0 3px color-mix(in srgb, var(--fam-ancre) 55%, transparent)', color:'var(--encre)' }}>
-            <Icon name="anchor" size={22}/>
+    <section style={{ position:'relative', overflow:'hidden',
+      background:'linear-gradient(180deg, var(--paper) 0%, color-mix(in srgb, var(--fam-ancre) 10%, var(--paper)) 30%, color-mix(in srgb, var(--fam-ancre) 60%, var(--encre)) 100%)' }}>
+      <style>{`
+        @keyframes lp-dive { 0%{ transform:translate(-50%,-260%); opacity:0; } 55%{ opacity:1; } 100%{ transform:translate(-50%,-50%); opacity:1; } }
+        .lp-hero-anchor { animation: lp-dive 1.7s cubic-bezier(.45,0,.2,1) both; }
+        @media (prefers-reduced-motion: reduce){ .lp-hero-anchor { animation: none; } }
+        @media (max-width: 880px){ .lp-hero-grid { grid-template-columns: 1fr !important; text-align:center; } .lp-hero-illus { margin:0 auto; } .lp-hero-text { align-items:center !important; } }
+      `}</style>
+
+      <div className="lp-hero-grid" style={{ maxWidth:1100, margin:'0 auto', padding:'clamp(28px,6vw,72px) clamp(20px,5vw,48px) clamp(40px,7vw,88px)',
+        display:'grid', gridTemplateColumns:'minmax(0,1fr) minmax(0,1.05fr)', gap:'clamp(28px,4vw,56px)', alignItems:'center', minHeight:'min(82vh, 760px)' }}>
+
+        {/* ----- Illustration : colonne d'eau + ancre qui plonge + perso ----- */}
+        <div className="lp-hero-illus" style={{ display:'flex', alignItems:'stretch', gap:'clamp(14px,2.5vw,30px)', width:'100%', maxWidth:480 }}>
+          {/* colonne d'eau (claire en surface, sombre au fond) */}
+          <div style={{ position:'relative', width:'clamp(60px,9vw,84px)', borderRadius:'40px', flexShrink:0,
+            height:'clamp(300px,46vh,440px)', alignSelf:'center',
+            background:'linear-gradient(180deg, color-mix(in srgb, var(--fam-ancre) 16%, #fff) 0%, color-mix(in srgb, var(--fam-ancre) 50%, var(--encre)) 58%, var(--encre) 100%)',
+            boxShadow:'inset 0 2px 12px rgba(255,255,255,.4), inset 0 -10px 22px rgba(0,0,0,.28)' }}>
+            {/* l'ancre, à la profondeur du palier */}
+            <div className="lp-hero-anchor" style={{ position:'absolute', left:'50%', top:`${depthPct}%`, transform:'translate(-50%,-50%)',
+              width:'clamp(46px,7vw,64px)', height:'clamp(46px,7vw,64px)', display:'grid', placeItems:'center' }}>
+              {heroImgOk
+                ? <img src="assets/hero/anchor-dive.png" alt="" onError={()=>setHeroImgOk(false)}
+                    style={{ width:'100%', height:'100%', objectFit:'contain', filter:'drop-shadow(0 8px 14px rgba(0,0,0,.45))' }}/>
+                : <span style={{ display:'grid', placeItems:'center', width:'100%', height:'100%', borderRadius:'50%',
+                    background:'var(--surface)', color:'var(--encre)', boxShadow:'0 8px 20px -4px rgba(0,0,0,.5)' }}><Icon name="anchor" size={26}/></span>}
+            </div>
+            {/* repères Surface / Fond */}
+            <span style={{ position:'absolute', top:8, left:'50%', transform:'translateX(-50%)', fontSize:'.6rem', fontWeight:800,
+              letterSpacing:'.1em', textTransform:'uppercase', color:'color-mix(in srgb, var(--encre) 55%, #fff)' }}>{surface}</span>
+            <span style={{ position:'absolute', bottom:8, left:'50%', transform:'translateX(-50%)', fontSize:'.6rem', fontWeight:800,
+              letterSpacing:'.1em', textTransform:'uppercase', color:'rgba(255,255,255,.7)' }}>{fond}</span>
+          </div>
+
+          {/* le perso du mécanisme révélé (art existant) */}
+          <div style={{ flex:1, display:'flex', alignItems:'flex-end', justifyContent:'center', minWidth:0 }}>
+            {persoOk
+              ? <img src={`assets/archetypes/${code}.png`} alt={dominantName} onError={()=>setPersoOk(false)}
+                  style={{ width:'100%', maxWidth:300, height:'auto', filter:'drop-shadow(0 22px 26px rgba(15,20,45,.4))' }}/>
+              : <div style={{ width:160, height:160, borderRadius:'50%', background:'rgba(255,255,255,.18)' }}/>}
           </div>
         </div>
-        {/* les 5 paliers, de la surface au fond */}
-        <div style={{ display:'flex', flexDirection:'column' }}>
-          {T.paliers.map(p=>{
-            const here = p.v===pos;
-            return (
-              <div key={p.v} style={{ minHeight:64, display:'flex', alignItems:'center', padding:'8px 0 8px 16px',
-                borderRadius:'var(--r-md)', background: here?'var(--fam-ancre-soft)':'transparent',
-                border: here?'1.5px solid var(--fam-ancre)':'1.5px solid transparent' }}>
-                <span style={{ fontSize: here?'1.02rem':'.94rem', fontWeight: here?700:500, lineHeight:1.4,
-                  color: here?'var(--ink)':'var(--ink-2)' }}>{tx(p)}</span>
-              </div>
-            );
-          })}
+
+        {/* ----- Texte : nom + force % + palier nommé + phrase vécue ----- */}
+        <div className="lp-hero-text" style={{ display:'flex', flexDirection:'column', alignItems:'flex-start' }}>
+          <Reveal>
+            <p style={{ margin:0, fontSize:'.95rem', fontWeight:600, color:'var(--ink-2)' }}>{intro}</p>
+            <h1 style={{ fontFamily:'var(--font-display)', fontWeight:800, letterSpacing:'-.02em', color:'var(--ink)',
+              fontSize: isMixte ? 'clamp(2rem, 1rem + 4vw, 3.2rem)' : 'clamp(2.4rem, 1.3rem + 5vw, 4.2rem)',
+              lineHeight:1.06, margin:'12px 0 0', textWrap:'balance' }}>
+              {isMixte
+                ? <span>{dominantName}<span style={{ color:'var(--ink-3)', fontWeight:400, padding:'0 .3em' }}>&amp;</span>{secondaireName}</span>
+                : dominantName}
+            </h1>
+            <p style={{ margin:'16px 0 0', maxWidth:460, fontFamily:'var(--font-display)', fontWeight:600,
+              fontSize:'clamp(1.12rem, .95rem + .9vw, 1.45rem)', lineHeight:1.4, color:'var(--corail)', textWrap:'balance' }}>
+              {signature}
+            </p>
+
+            <div style={{ display:'flex', flexWrap:'wrap', gap:'10px', marginTop:24 }}>
+              <span style={{ display:'inline-flex', alignItems:'center', gap:'7px', padding:'9px 18px', borderRadius:'var(--r-pill)',
+                background:'var(--encre)', color:'#fff', fontWeight:700, fontSize:'.96rem' }}>
+                {lpFill(presence, { N: force })}
+              </span>
+              <span style={{ display:'inline-flex', alignItems:'center', gap:'8px', padding:'9px 18px', borderRadius:'var(--r-pill)',
+                background:'var(--surface)', border:'1.5px solid color-mix(in srgb, var(--fam-ancre) 50%, transparent)', color:'var(--fam-ancre)', fontWeight:700, fontSize:'.96rem' }}>
+                <Icon name="anchor" size={15}/> {anchorLabel}: {tier}
+              </span>
+            </div>
+            <p style={{ margin:'18px 0 0', maxWidth:480, fontSize:'1.02rem', lineHeight:1.6, color:'var(--ink)', fontStyle:'italic' }}>
+              &laquo;&nbsp;{phrase}&nbsp;&raquo;
+            </p>
+          </Reveal>
         </div>
       </div>
-      <div style={{ marginTop:'8px' }}>
-        <span style={{ fontSize:'.74rem', fontWeight:800, letterSpacing:'.11em', textTransform:'uppercase', color:'var(--ink-3)' }}>{tx(X.fond)}</span>
+    </section>
+  );
+}
+
+/* ===========================================================================
+   2. BANDE SCIENCE — 70 years of attachment research
+   ======================================================================== */
+function ScienceBand(){
+  return (
+    <section style={{ background:'var(--paper-2)', padding:'clamp(44px,7vw,80px) clamp(20px,5vw,48px)' }}>
+      <div style={{ maxWidth:1000, margin:'0 auto' }}>
+        <div style={{ textAlign:'center', marginBottom:'clamp(28px,4vw,44px)' }}>
+          <span style={{ fontSize:'.74rem', fontWeight:800, letterSpacing:'.16em', textTransform:'uppercase', color:'var(--fam-ancre)' }}>
+            70 years of attachment research
+          </span>
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(240px, 1fr))', gap:'clamp(16px,2.5vw,26px)' }}>
+          {LP_SCIENCE.map((s)=> <ScienceCard key={s.img} s={s}/>)}
+        </div>
       </div>
+    </section>
+  );
+}
+function ScienceCard({ s }){
+  const [imgOk, setImgOk] = rsUseState(true);
+  const initials = s.name.split(/\s|&/).filter(Boolean).map(w=>w[0]).slice(0,2).join('');
+  return (
+    <div style={{ background:'var(--surface)', border:'1px solid var(--hairline)', borderRadius:'var(--r-lg)',
+      padding:'clamp(22px,3vw,30px)', boxShadow:'var(--sh-xs)', textAlign:'center' }}>
+      <div style={{ width:96, height:96, margin:'0 auto 16px', borderRadius:'50%', overflow:'hidden',
+        background:'color-mix(in srgb, var(--fam-ancre) 14%, #fff)', display:'grid', placeItems:'center' }}>
+        {imgOk
+          ? <img src={`assets/science/${s.img}.png`} alt={s.name} onError={()=>setImgOk(false)}
+              style={{ width:'100%', height:'100%', objectFit:'cover' }}/>
+          : <span style={{ fontFamily:'var(--font-display)', fontWeight:800, fontSize:'1.7rem', color:'var(--fam-ancre)' }}>{initials}</span>}
+      </div>
+      <h3 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:'1.18rem', color:'var(--ink)', margin:'0 0 10px' }}>{s.name}</h3>
+      {s.lines.map((l,i)=>(
+        <p key={i} style={{ margin: i===0?'0':'6px 0 0', fontSize:'.96rem', lineHeight:1.5,
+          color: i===0?'var(--ink)':'var(--ink-2)', fontWeight: i===0?600:400 }}>{l}</p>
+      ))}
     </div>
+  );
+}
+
+/* ===========================================================================
+   3. PROFIL GRATUIT COMPLET — zone "free" réassemblée (tunnel sécurisé)
+   Réutilise EXACTEMENT les blocs free de _content/*.js, rendus par
+   window.LP_RENDER (le même renderer que rapport.html). On retire le bloc
+   'cta' de fin : la porte payante est gérée par la section 7.
+   ======================================================================== */
+function FreeReport({ R }){
+  const lang = (window.useLang && window.useLang().lang) || 'en';
+  const mountRef = rsUseRef(null);
+  const [state, setState] = rsUseState('loading');   // loading | done | empty
+
+  rsUseEffect(()=>{
+    let alive = true;
+    setState('loading');
+    const payload = { result: lpResultV2(R), lang: lang === 'fr' ? 'fr' : 'en' };
+    fetch('/api/get-report-free', { method:'POST', headers:{ 'content-type':'application/json' }, body: JSON.stringify(payload) })
+      .then(r=>{ if(!r.ok) throw new Error('status '+r.status); return r.json(); })
+      .then(report=>{
+        if(!alive) return;
+        const blocks = (report.free || []).filter(b=> b && b.type !== 'cta');
+        const mount = mountRef.current;
+        if(!blocks.length || !window.LP_RENDER || !mount){ setState('empty'); return; }
+        window.LP_RENDER._accent = (report.meta && report.meta.accent) || '#46934A';
+        window.LP_RENDER._code = (report.meta && report.meta.code) || 'mir';
+        mount.innerHTML = '';
+        blocks.forEach(b=>{ try { mount.appendChild(window.LP_RENDER.renderBlock(b, {})); } catch(e){} });
+        setState('done');
+      })
+      .catch(()=>{ if(alive) setState('empty'); });
+    return ()=>{ alive = false; };
+  }, [R, lang]);
+
+  return (
+    <section className="lp-freezone" style={{ display: state==='empty' ? 'none' : 'block',
+      maxWidth:880, margin:'0 auto', padding:'clamp(36px,6vw,72px) clamp(20px,5vw,40px) 0' }}>
+      <style>{`
+        .lp-freezone .rp-kicker{ display:inline-block; font-size:.72rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+        .lp-freezone .rp-display{ font-family:var(--font-display); font-weight:800; letter-spacing:-.01em; }
+        .lp-freezone .rp-h2{ font-family:var(--font-display); font-weight:800; font-size:clamp(1.5rem,1.1rem+1.4vw,2.1rem); line-height:1.1; letter-spacing:-.015em; }
+        .lp-freezone .rp-p{ margin:0 0 1.05em; font-size:1.08rem; line-height:1.72; color:var(--ink); text-wrap:pretty; }
+        .lp-freezone .rp-p:last-child{ margin-bottom:0; }
+        .lp-freezone .rp-block:first-child{ margin-top:0 !important; }
+        @media (max-width:720px){ .lp-freezone .rp-loop{ grid-template-columns:1fr !important; } .lp-freezone .rp-compat{ grid-template-columns:1fr !important; } }
+      `}</style>
+      {state==='loading' && (
+        <div style={{ textAlign:'center', padding:'40px 0', color:'var(--ink-3)' }}>
+          <div style={{ width:28, height:28, margin:'0 auto', borderRadius:'50%', border:'3px solid var(--hairline)',
+            borderTopColor:'var(--corail)', animation:'lp-spin 1s linear infinite' }}/>
+          <style>{`@keyframes lp-spin{to{transform:rotate(360deg)}}`}</style>
+        </div>
+      )}
+      <div ref={mountRef}/>
+    </section>
+  );
+}
+
+/* ===========================================================================
+   4. LIGNE DE VALEUR PERÇUE
+   ======================================================================== */
+function ValueLine(){
+  return (
+    <section style={{ maxWidth:680, margin:'clamp(40px,6vw,72px) auto 0', padding:'0 clamp(20px,5vw,40px)' }}>
+      <div style={{ background:'var(--fam-ancre-soft)', border:'1px solid color-mix(in srgb, var(--fam-ancre) 30%, transparent)',
+        borderRadius:'var(--r-xl)', padding:'clamp(26px,4vw,40px)' }}>
+        <p style={{ margin:0, fontFamily:'var(--font-display)', fontWeight:600, fontSize:'clamp(1.15rem,1rem+.7vw,1.5rem)',
+          lineHeight:1.5, color:'var(--ink)', textWrap:'pretty' }}>
+          Your pattern isn't a flaw. Attachment research shows it's a protection strategy your mind built to keep you safe. Once you see it, you can change it.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* ===========================================================================
+   5. SCEAU THÉRAPEUTE — placeholder structuré (aucun nom/photo inventés)
+   ======================================================================== */
+function TherapistSeal(){
+  return (
+    <section style={{ maxWidth:680, margin:'clamp(28px,4vw,40px) auto 0', padding:'0 clamp(20px,5vw,40px)' }}>
+      <div style={{ display:'flex', alignItems:'center', gap:'16px', justifyContent:'center', flexWrap:'wrap',
+        background:'var(--surface)', border:'1px solid var(--hairline)', borderRadius:'var(--r-lg)', padding:'18px 22px' }}>
+        {/* photo placeholder */}
+        <div style={{ width:56, height:56, borderRadius:'50%', flexShrink:0, border:'2px dashed var(--hairline-2)',
+          display:'grid', placeItems:'center', color:'var(--ink-3)', background:'var(--paper-2)' }}>
+          <Icon name="users" size={22}/>
+        </div>
+        <div style={{ display:'flex', alignItems:'center', gap:'10px', color:'var(--ink-2)', fontSize:'.98rem', fontWeight:600 }}>
+          <span style={{ display:'grid', placeItems:'center', width:24, height:24, borderRadius:'50%', flexShrink:0,
+            background:'rgba(63,160,107,.14)', color:'var(--positive)' }}><Icon name="check" size={14}/></span>
+          <span>Content reviewed by [Full Name], [licensed credential]</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ===========================================================================
+   6. AVIS CLIENTS — placeholder structuré (aucun faux avis)
+   ======================================================================== */
+function ReviewsPlaceholder(){
+  return (
+    <section style={{ maxWidth:880, margin:'clamp(36px,5vw,56px) auto 0', padding:'0 clamp(20px,5vw,40px)' }}>
+      <div style={{ textAlign:'center', marginBottom:'20px' }}>
+        <span style={{ fontSize:'.72rem', fontWeight:800, letterSpacing:'.14em', textTransform:'uppercase', color:'var(--ink-3)' }}>
+          [ Customer reviews, to be added ]
+        </span>
+      </div>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(240px, 1fr))', gap:'14px' }}>
+        {[0,1,2].map(i=>(
+          <div key={i} style={{ background:'var(--surface)', border:'1.5px dashed var(--hairline-2)', borderRadius:'var(--r-lg)', padding:'20px 22px' }}>
+            <div style={{ display:'flex', alignItems:'center', gap:'12px', marginBottom:'12px' }}>
+              <div style={{ width:40, height:40, borderRadius:'50%', background:'var(--paper-2)', border:'1px dashed var(--hairline-2)' }}/>
+              <span style={{ color:'var(--ink-3)', fontWeight:600, fontSize:'.92rem' }}>[ Customer name ]</span>
+            </div>
+            <p style={{ margin:0, color:'var(--ink-3)', fontSize:'.94rem', lineHeight:1.55, fontStyle:'italic' }}>[ Review text to be added ]</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ===========================================================================
+   7. RAPPORT COMPLET PAYANT + garantie 7 jours + CTA
+   ======================================================================== */
+function PaidReportBlock({ X, tx, onCta, onRestart }){
+  return (
+    <Reveal>
+      <section style={{ maxWidth:880, margin:'clamp(48px,7vw,80px) auto 0', padding:'0 clamp(20px,5vw,40px) clamp(48px,7vw,80px)' }}>
+        <h2 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:'clamp(1.5rem,1.1rem+1.4vw,2rem)',
+          color:'var(--ink)', margin:0, textAlign:'center' }}>{tx(X.porteTitle)}</h2>
+        <p className="lp-lead" style={{ margin:'14px auto 0', maxWidth:520, textAlign:'center' }}>{tx(X.porteAccroche)}</p>
+
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(260px, 1fr))', gap:'14px', marginTop:'clamp(26px,4vw,38px)' }}>
+          {X.cards.map((c,i)=>(
+            <div key={i} style={{ background:'var(--surface)', border:'1px solid var(--hairline)', borderRadius:'var(--r-lg)',
+              padding:'18px 20px', boxShadow:'var(--sh-xs)', position:'relative', overflow:'hidden' }}>
+              <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'9px' }}>
+                <span style={{ display:'grid', placeItems:'center', width:30, height:30, borderRadius:'50%', flexShrink:0,
+                  background:'var(--paper-2)', color:'var(--ink-3)' }}><Icon name="lock" size={15}/></span>
+                <span style={{ fontWeight:700, fontSize:'1.02rem', color:'var(--ink)' }}>{tx(c.title)}</span>
+              </div>
+              <p style={{ margin:0, fontSize:'.93rem', lineHeight:1.5, color:'var(--ink-2)' }}>{tx(c.teaser)}</p>
+              <div aria-hidden="true" style={{ marginTop:'13px', filter:'blur(4px)', userSelect:'none', pointerEvents:'none' }}>
+                <div style={{ height:9, borderRadius:'5px', background:'var(--hairline)', width:'92%' }}></div>
+                <div style={{ height:9, borderRadius:'5px', background:'var(--hairline)', width:'78%', marginTop:'7px' }}></div>
+                <div style={{ height:9, borderRadius:'5px', background:'var(--hairline)', width:'85%', marginTop:'7px' }}></div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:'12px', marginTop:'clamp(28px,4vw,40px)' }}>
+          <Button size="lg" icon="arrow-right" onClick={onCta}>{tx(X.cta)}</Button>
+          <div style={{ display:'inline-flex', alignItems:'center', gap:'8px', color:'var(--ink-3)', fontSize:'.9rem', fontWeight:600 }}>
+            <Icon name="shield" size={15}/> {tx(X.guarantee)}
+          </div>
+          <Button variant="ghost" onClick={onRestart}>{tx(X.retake)}</Button>
+        </div>
+      </section>
+    </Reveal>
   );
 }
 
@@ -196,40 +441,20 @@ function PendingReport({ onBack }){
   );
 }
 
-/* ---- result_v2 bridge ----------------------------------------------------
-   The live engine (test_engine.jsx) emits CAPITALIZED, accented pattern keys
-   ('Miroir', 'Caméléon', ...). The secure report system (assembler + the
-   _content/<profil>.js modules + the get-report CONTENT registry) keys on the
-   lowercase ASCII profile ids ('miroir', 'cameleon', ...). We bridge here when
-   persisting the result the server will read, so the gated path resolves the
-   right content module. Everything else in R is left untouched. */
-const LP_PROFILE_KEY = {
-  'Miroir':'miroir', 'Fugitif':'fugitif', 'Bastion':'bastion', 'Guetteur':'guetteur',
-  'Sauveur':'sauveur', 'Cam\u00e9l\u00e9on':'cameleon', 'Alchimiste':'alchimiste', 'Incendiaire':'incendiaire',
-};
-function lpToProfileKey(k){ return LP_PROFILE_KEY[k] || (typeof k === 'string' ? k.toLowerCase() : k); }
-function lpResultV2(R){
-  return Object.assign({}, R, {
-    pattern_dominant: lpToProfileKey(R.pattern_dominant),
-    pattern_secondaire: lpToProfileKey(R.pattern_secondaire),
-    ancre_variante: lpToProfileKey(R.ancre_variante),
-  });
-}
-const LP_RESULT_V2_KEY = 'lovepattern_result_v2';
-
-/* ---- L'ÉCRAN DE RÉSULTAT GRATUIT (5 temps) -------------------------------- */
+/* ===========================================================================
+   L'ÉCRAN DE RÉSULTAT GRATUIT (assemblage des 7 sections)
+   ======================================================================== */
 function TestResult({ answers, ancreVariant, onRestart, go }){
   const tx = useTx();
   const T = window.LP_TEST;
   const X = LP_RESULT_TEXTS;
-  const R = React.useMemo(()=> window.LP_ENGINE.computeResultat(answers, ancreVariant), [answers, ancreVariant]);
+  const R = rsUseMemo(()=> window.LP_ENGINE.computeResultat(answers, ancreVariant), [answers, ancreVariant]);
   const [gateDone,setGateDone] = rsUseState(R.securite!=='alerte');
   const [pending,setPending] = rsUseState(false);
   const dev = /[?&]lpdev=1/.test(window.location.search);
 
-  /* Persist the engine result (in the profile-key shape the server reads) so
-     the "Recevoir mon plan" CTA can hand it to /api/create-checkout, and so
-     rapport.html can recover it on the success_url round-trip. */
+  /* Persist the engine result (profile-key shape the server reads) for the CTA
+     and for rapport.html's success_url round-trip. */
   rsUseEffect(()=>{
     try { localStorage.setItem(LP_RESULT_V2_KEY, JSON.stringify(lpResultV2(R))); } catch(e){}
   }, [R]);
@@ -252,142 +477,55 @@ function TestResult({ answers, ancreVariant, onRestart, go }){
 
   const patOf = k => T.patterns.find(p=>p.key===k) || { key:k, fr:k, en:k };
   const isMixte = R.profil_type==='mixte';
-  /* Profil mixte : le miroir affiché est celui de la variante d'Ancre jouée. */
   const mirrorKey = isMixte ? R.ancre_variante : R.pattern_dominant;
-  const PT = X.patterns[mirrorKey];
-  const posLbl = tx(T.paliers.find(p=>p.v===R.ancre_position));
-  const basLbl = tx(T.paliers.find(p=>p.v===R.ancre_bascule));
-  const isRupture = R.contexte.statut==='rupture';
+  const PT = X.patterns[mirrorKey] || X.patterns[R.pattern_dominant] || { signature:{ fr:'', en:'' } };
+  const code = LP_PATTERN_CODE[R.pattern_dominant] || 'mir';
+  const tier = LP_ANCHOR_TIERS[R.ancre_position] || '';
+  const phrase = tx(T.paliers.find(p=>p.v===R.ancre_position) || { fr:'', en:'' });
 
   return (
-    <div style={{ maxWidth:720, margin:'0 auto' }}>
+    <div>
+      {/* 1 — HERO */}
+      <ResultHero
+        R={R} isMixte={isMixte}
+        dominantName={tx(patOf(R.pattern_dominant))}
+        secondaireName={tx(patOf(R.pattern_secondaire))}
+        code={code} tier={tier} phrase={phrase}
+        force={R.pattern_dominant_score}
+        signature={tx(PT.signature)}
+        intro={tx(X.intro)}
+        presence={tx(isMixte ? X.presenceMixte : X.presence)}
+        surface={tx(X.surface)} fond={tx(X.fond)} anchorLabel={tx(X.anchorLabel)}
+      />
 
-      {/* ===== Temps 1 — LA RÉVÉLATION (plein écran, sobre, centré) ===== */}
-      <section style={{ minHeight:'calc(100vh - 230px)', display:'flex', flexDirection:'column',
-        justifyContent:'center', alignItems:'center', textAlign:'center', padding:'clamp(20px,4vw,40px) 0' }}>
-        <Reveal>
-          <p style={{ margin:0, fontSize:'.95rem', fontWeight:600, color:'var(--ink-2)', letterSpacing:'.01em' }}>{tx(X.intro)}</p>
-          <h1 style={{ fontFamily:'var(--font-display)', fontWeight:800, letterSpacing:'-.02em', color:'var(--ink)',
-            fontSize: isMixte ? 'clamp(2rem, 1rem + 4vw, 3.4rem)' : 'clamp(2.6rem, 1.4rem + 5vw, 4.6rem)',
-            lineHeight:1.08, margin:'18px 0 0', textWrap:'balance' }}>
-            {isMixte ? <span>{tx(patOf(R.pattern_dominant))}<span style={{ color:'var(--ink-3)', fontWeight:400, padding:'0 .35em' }}>&amp;</span>{tx(patOf(R.pattern_secondaire))}</span>
-                     : tx(patOf(R.pattern_dominant))}
-          </h1>
-          <p style={{ margin:'20px auto 0', maxWidth:520, fontFamily:'var(--font-display)', fontWeight:600,
-            fontSize:'clamp(1.15rem, .95rem + 1vw, 1.5rem)', lineHeight:1.4, color:'var(--corail)', textWrap:'balance' }}>
-            {tx(PT.signature)}
-          </p>
-          <div style={{ display:'inline-flex', alignItems:'center', gap:'8px', marginTop:26, padding:'9px 20px',
-            borderRadius:'var(--r-pill)', background:'var(--encre)', color:'#fff', fontWeight:700, fontSize:'.98rem' }}>
-            {lpFill(tx(isMixte ? X.presenceMixte : X.presence), { N: R.pattern_dominant_score })}
-          </div>
-          {R.profil_type==='melange' && (
-            <p style={{ margin:'16px auto 0', maxWidth:440, fontSize:'.92rem', color:'var(--ink-3)', fontWeight:600 }}>{tx(X.melange)}</p>
-          )}
-          {isMixte && (
-            <p style={{ margin:'16px auto 0', maxWidth:460, fontSize:'.95rem', color:'var(--ink-2)', fontWeight:600 }}>{tx(X.mixte)}</p>
-          )}
-        </Reveal>
-      </section>
+      {/* 2 — BANDE SCIENCE */}
+      <ScienceBand/>
 
-      {/* ===== Temps 2 — LE MIROIR ===== */}
-      <Reveal>
-        <section style={{ maxWidth:620, margin:'0 auto', padding:'clamp(10px,2vw,20px) 0' }}>
-          <p style={{ margin:0, fontSize:'clamp(1.12rem, 1rem + .6vw, 1.32rem)', lineHeight:1.72, color:'var(--ink)', textWrap:'pretty' }}>
-            {tx(PT.miroir)}{isRupture && <span> {tx(PT.rupture)}</span>}
-          </p>
-        </section>
-      </Reveal>
+      {/* 3 — PROFIL GRATUIT COMPLET (zone "free") */}
+      <Reveal><FreeReport R={R}/></Reveal>
 
-      {/* Cas particuliers : très activé / peu déclenché (discret, après le Temps 2) */}
-      {(R.profil_tres_active || R.profil_peu_declenche) && (
-        <Reveal>
-          <p style={{ maxWidth:620, margin:'26px auto 0', fontSize:'.92rem', lineHeight:1.6, color:'var(--ink-3)', fontWeight:600 }}>
-            {tx(R.profil_tres_active ? X.tresActive : X.peuDeclenche)}
-          </p>
-        </Reveal>
+      {/* 4 — LIGNE DE VALEUR PERÇUE */}
+      <Reveal><ValueLine/></Reveal>
+
+      {/* 5 — SCEAU THÉRAPEUTE (placeholder) */}
+      <TherapistSeal/>
+
+      {/* 6 — AVIS CLIENTS (placeholder) */}
+      <ReviewsPlaceholder/>
+
+      {/* 7 — RAPPORT PAYANT + garantie + CTA */}
+      <PaidReportBlock X={X} tx={tx} onCta={startPlanCheckout} onRestart={onRestart}/>
+
+      {/* objet technique : uniquement en mode développement (?lpdev=1) */}
+      {dev && (
+        <div style={{ maxWidth:880, margin:'0 auto', padding:'0 clamp(20px,5vw,40px) 40px' }}>
+          <details>
+            <summary style={{ cursor:'pointer', fontWeight:700, fontSize:'.88rem', color:'var(--ink-3)' }}>Objet résultat (dev)</summary>
+            <pre style={{ marginTop:10, background:'var(--paper-2)', border:'1px solid var(--hairline)', borderRadius:'var(--r-md)',
+              padding:'14px 16px', fontSize:'.76rem', lineHeight:1.5, overflowX:'auto', color:'var(--ink-2)' }}>{JSON.stringify(R, null, 2)}</pre>
+          </details>
+        </div>
       )}
-
-      {/* Sécurité = vigilance : note douce entre le Temps 2 et le Temps 3 */}
-      {R.securite==='vigilance' && (
-        <Reveal>
-          <div style={{ maxWidth:620, margin:'26px auto 0', background:'var(--corail-soft)', border:'1px solid #F1C9C1',
-            borderRadius:'var(--r-lg)', padding:'16px 20px', color:'#9A3A2E', fontSize:'.96rem', lineHeight:1.55 }}>
-            {tx(X.vigilance)}
-          </div>
-        </Reveal>
-      )}
-
-      {/* ===== Temps 3 — TON ANCRE (la star de la page) ===== */}
-      <Reveal>
-        <section style={{ margin:'clamp(54px,8vw,90px) auto 0', maxWidth:640 }}>
-          <h2 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:'clamp(1.4rem, 1.1rem + 1.2vw, 1.9rem)',
-            color:'var(--ink)', margin:'0 0 26px', textAlign:'center', textWrap:'balance' }}>{tx(X.ancreTitle)}</h2>
-          <AnchorDepth R={R}/>
-          <p style={{ margin:'26px auto 0', maxWidth:560, fontSize:'1.05rem', lineHeight:1.65, color:'var(--ink)' }}>
-            {R.ancre_position===R.ancre_bascule
-              ? lpFill(tx(X.ancreEgal),   { P: posLbl })
-              : lpFill(tx(X.ancreNormal), { P: posLbl, B: basLbl })}
-          </p>
-          <p style={{ margin:'18px auto 0', maxWidth:560, fontFamily:'var(--font-display)', fontWeight:600,
-            fontSize:'1.12rem', lineHeight:1.5, color:'var(--fam-ancre)' }}>
-            {tx(X.espoir)}
-          </p>
-        </section>
-      </Reveal>
-
-      {/* ===== Temps 4 — CE QUE ÇA TE COÛTE ===== */}
-      <Reveal>
-        <section style={{ margin:'clamp(54px,8vw,90px) auto 0', maxWidth:620, textAlign:'center' }}>
-          <p style={{ margin:0, fontFamily:'var(--font-display)', fontWeight:700,
-            fontSize:'clamp(1.35rem, 1.05rem + 1.4vw, 1.95rem)', lineHeight:1.35, color:'var(--ink)', textWrap:'balance' }}>
-            {tx(PT.cout)}
-          </p>
-        </section>
-      </Reveal>
-
-      {/* ===== Temps 5 — LA PORTE ===== */}
-      <Reveal>
-        <section style={{ margin:'clamp(60px,9vw,100px) auto 0', paddingBottom:'clamp(40px,6vw,70px)' }}>
-          <h2 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:'clamp(1.4rem, 1.1rem + 1.2vw, 1.9rem)',
-            color:'var(--ink)', margin:0, textAlign:'center' }}>{tx(X.porteTitle)}</h2>
-          <p className="lp-lead" style={{ margin:'14px auto 0', maxWidth:520, textAlign:'center' }}>{tx(X.porteAccroche)}</p>
-
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(260px, 1fr))', gap:'14px', marginTop:'clamp(26px,4vw,38px)' }}>
-            {X.cards.map((c,i)=>(
-              <div key={i} style={{ background:'var(--surface)', border:'1px solid var(--hairline)', borderRadius:'var(--r-lg)',
-                padding:'18px 20px', boxShadow:'var(--sh-xs)', position:'relative', overflow:'hidden' }}>
-                <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'9px' }}>
-                  <span style={{ display:'grid', placeItems:'center', width:30, height:30, borderRadius:'50%', flexShrink:0,
-                    background:'var(--paper-2)', color:'var(--ink-3)' }}><Icon name="lock" size={15}/></span>
-                  <span style={{ fontWeight:700, fontSize:'1.02rem', color:'var(--ink)' }}>{tx(c.title)}</span>
-                </div>
-                <p style={{ margin:0, fontSize:'.93rem', lineHeight:1.5, color:'var(--ink-2)' }}>{tx(c.teaser)}</p>
-                {/* contenu verrouillé : lignes floutées */}
-                <div aria-hidden="true" style={{ marginTop:'13px', filter:'blur(4px)', userSelect:'none', pointerEvents:'none' }}>
-                  <div style={{ height:9, borderRadius:'5px', background:'var(--hairline)', width:'92%' }}></div>
-                  <div style={{ height:9, borderRadius:'5px', background:'var(--hairline)', width:'78%', marginTop:'7px' }}></div>
-                  <div style={{ height:9, borderRadius:'5px', background:'var(--hairline)', width:'85%', marginTop:'7px' }}></div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:'16px', marginTop:'clamp(28px,4vw,40px)' }}>
-            <Button size="lg" icon="arrow-right" onClick={startPlanCheckout}>{tx(X.cta)}</Button>
-            <Button variant="ghost" onClick={onRestart}>{tx(X.retake)}</Button>
-          </div>
-
-          {/* objet technique : uniquement en mode développement (?lpdev=1) */}
-          {dev && (
-            <details style={{ marginTop:'34px' }}>
-              <summary style={{ cursor:'pointer', fontWeight:700, fontSize:'.88rem', color:'var(--ink-3)' }}>Objet résultat (dev)</summary>
-              <pre style={{ marginTop:10, background:'var(--paper-2)', border:'1px solid var(--hairline)', borderRadius:'var(--r-md)',
-                padding:'14px 16px', fontSize:'.76rem', lineHeight:1.5, overflowX:'auto', color:'var(--ink-2)' }}>{JSON.stringify(R, null, 2)}</pre>
-            </details>
-          )}
-        </section>
-      </Reveal>
     </div>
   );
 }

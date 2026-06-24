@@ -38,7 +38,6 @@ function App() {
     case 'intro': page = <LoveTest go={go}/>; break;
     case 'quiz': page = <Quiz go={go} onFinish={()=>{}}/>; break;
     case 'analyse': page = <Analyse go={go}/>; break;
-    case 'result': page = <Result go={go} code={result} data={resultData}/>; break;
     case 'profils': page = <ProfilsIndex go={go}/>; break;
     case 'profil': page = <Profile go={go} code={code}/>; break;
     case 'vente': page = <SalesPage go={go} code={code}/>; break;
