@@ -75,6 +75,14 @@ export default async (req) => {
   } catch (e) { console.error('[get-report] blob get threw:', e && e.message); }
   if (!order || !order.result) return json({ error: 'order not found' }, 404);
 
+  // Real amount actually charged, straight from the verified Stripe session.
+  // amount_total is in the currency's minor unit (cents); the client converts
+  // it to the major unit for purchase_completed. No price is ever hard-coded.
+  const payment = {
+    amount_total: typeof session.amount_total === 'number' ? session.amount_total : null,
+    currency: session.currency || null,
+  };
+
   // 4 + 5 . assemble server-side and return only this report
   const profil = order.result.pattern_dominant;
   const content = CONTENT[profil];
@@ -84,10 +92,12 @@ export default async (req) => {
     const fallback = CONTENT.miroir;
     const free = assembleReport(fallback, order.result, { lang: order.lang, zones: 'free' });
     free.meta.unauthored = profil;
+    free.payment = payment;
     return json(free);
   }
 
   const report = assembleReport(content, order.result, { lang: order.lang });
+  report.payment = payment;
   return json(report);
 };
 

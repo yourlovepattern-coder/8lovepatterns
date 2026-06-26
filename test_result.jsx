@@ -491,10 +491,25 @@ function ReviewsPlaceholder(){
 /* ===========================================================================
    7. RAPPORT COMPLET PAYANT + garantie 7 jours + CTA
    ======================================================================== */
-function PaidReportBlock({ X, tx, onCta, onRestart }){
+function PaidReportBlock({ X, tx, onCta, onRestart, pattern }){
+  /* Analytics (cookieless, non-blocking): the premium offer / price became
+     visible. Fires once, when the block actually scrolls into view. */
+  const paywallRef = rsUseRef(null);
+  const paywallFiredRef = rsUseRef(false);
+  rsUseEffect(()=>{
+    const fire = ()=>{ if(paywallFiredRef.current) return; paywallFiredRef.current = true;
+      window.LP_PH && window.LP_PH('paywall_viewed', pattern ? { pattern } : {}); };
+    const node = paywallRef.current;
+    if(!node || typeof IntersectionObserver === 'undefined'){ fire(); return; }
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ fire(); io.disconnect(); } });
+    }, { threshold:0.2 });
+    io.observe(node);
+    return ()=> io.disconnect();
+  }, []);
   return (
     <InView>
-      <section style={{ maxWidth:880, margin:'clamp(48px,7vw,80px) auto 0', padding:'0 clamp(20px,5vw,40px) clamp(48px,7vw,80px)' }}>
+      <section ref={paywallRef} style={{ maxWidth:880, margin:'clamp(48px,7vw,80px) auto 0', padding:'0 clamp(20px,5vw,40px) clamp(48px,7vw,80px)' }}>
         <h2 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:'clamp(1.5rem,1.1rem+1.4vw,2rem)',
           color:'var(--ink)', margin:0, textAlign:'center' }}>{tx(X.porteTitle)}</h2>
         <p className="lp-lead" style={{ margin:'14px auto 0', maxWidth:520, textAlign:'center' }}>{tx(X.porteAccroche)}</p>
@@ -565,6 +580,17 @@ function TestResult({ answers, ancreVariant, onRestart, go }){
     try { localStorage.setItem(LP_RESULT_V2_KEY, JSON.stringify(lpResultV2(R))); } catch(e){}
   }, [R]);
 
+  /* Analytics (cookieless, non-blocking): the free result is on screen. Fires
+     once, only after the safety gate has been cleared and we are not on the
+     interim purchase screen — i.e. when the real result hero is shown. */
+  const resultViewedRef = rsUseRef(false);
+  rsUseEffect(()=>{
+    if(gateDone && !pending && !resultViewedRef.current){
+      resultViewedRef.current = true;
+      window.LP_PH && window.LP_PH('result_viewed', { pattern: R.pattern_dominant });
+    }
+  }, [gateDone, pending, R]);
+
   function startPlanCheckout(){
     try {
       if (window.LP_STRIPE && typeof window.LP_STRIPE.checkoutSession === 'function') {
@@ -615,7 +641,7 @@ function TestResult({ answers, ancreVariant, onRestart, go }){
       <InView><ReviewsPlaceholder/></InView>
 
       {/* 3 — CTA rapport complet + garantie 7 jours */}
-      <PaidReportBlock X={X} tx={tx} onCta={startPlanCheckout} onRestart={onRestart}/>
+      <PaidReportBlock X={X} tx={tx} onCta={startPlanCheckout} onRestart={onRestart} pattern={R.pattern_dominant}/>
 
       {/* objet technique : uniquement en mode développement (?lpdev=1) */}
       {dev && (

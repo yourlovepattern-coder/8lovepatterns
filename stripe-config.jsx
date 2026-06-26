@@ -143,6 +143,16 @@ LP_STRIPE.checkoutSession = async function (result) {
   try {
     if (window.LP_track) window.LP_track('begin_checkout', { currency: 'USD', value: 29 });
   } catch (e) {}
+  /* PostHog (cookieless, non-blocking). No invented amount: we only attach the
+     price label actually shown on screen, if any. The real charged amount is
+     captured later, on purchase_completed, from the Stripe session. */
+  try {
+    if (window.LP_PH) {
+      var phProps = {};
+      if (this.priceLabel) phProps.displayed_price = this.priceLabel;
+      window.LP_PH('checkout_started', phProps);
+    }
+  } catch (e) {}
 
   /* SIMULATION: no Stripe configured. Open the report in demo mode. */
   if (this.simulate || !result) {

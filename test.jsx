@@ -239,6 +239,19 @@ function LoveTest({ go }){
   /* Dev hook (debugging + future integrations). Read-only. */
   useEffect(()=>{ window.__lpState = { answers, ancreVariant }; }, [answers, ancreVariant]);
 
+  /* Analytics (cookieless, non-blocking). quiz_started when the questionnaire
+     actually begins; quiz_completed when the last answer is validated and the
+     flow crosses into the result phase (score computed downstream). Fires on
+     each real transition, so a retake counts as a fresh start. */
+  const phasePrevRef = React.useRef(phase);
+  React.useEffect(()=>{
+    if(phase !== phasePrevRef.current){
+      if(phase==='test'){ window.LP_PH && window.LP_PH('quiz_started', { test_type:'love_test' }); }
+      else if(phase==='result'){ window.LP_PH && window.LP_PH('quiz_completed', { questions_answered: Object.keys(answers).length }); }
+      phasePrevRef.current = phase;
+    }
+  }, [phase]);
+
   const q = Q[index];
   const curChapter = q ? q.chapter : 0;
   const fills = chapters.map(ch=>{

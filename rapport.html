@@ -6,6 +6,8 @@
 <title>Your report, LovePattern</title>
 <meta name="robots" content="noindex"/>
 <link rel="icon" href="assets/logo_mascot.png"/>
+<!-- PostHog (cookieless, EU) — shared loader, must load early -->
+<script src="posthog-init.js"></script>
 <link rel="stylesheet" href="colors_and_type.css"/>
 <style>
   * { box-sizing: border-box; }
@@ -78,6 +80,10 @@
   var freeOnly = params.get('free') === '1';   // preview the pre-payment (gated) state
   var mount = document.getElementById('report');
 
+  /* Price label shown on this page's locked CTA. Single source so the on-screen
+     label and the checkout_started.displayed_price property never drift. */
+  var PRICE_LABEL = '$29';
+
   document.getElementById('rp-print').addEventListener('click', function () { window.print(); });
 
   function lockedNotice() {
@@ -85,7 +91,7 @@
       window.LP_RENDER.el('h2', { class: 'rp-h2', style: 'color:var(--encre);margin:0 0 12px;' }, ['What comes next is your plan.']),
       window.LP_RENDER.el('p', { style: 'margin:0 auto 22px;max-width:46ch;color:var(--ink-2);font-size:1.05rem;line-height:1.6;' }, ['The move that lifts you from your level, your second mechanism, the compatibility, and the reading chosen for exactly where you are. Assembled on the server, delivered only after payment.']),
     ]);
-    var btn = window.LP_RENDER.el('button', { class: 'rp-cta', type: 'button' }, ['Get my plan, $29', window.LP_RENDER.el('span', {}, ['\u2192'])]);
+    var btn = window.LP_RENDER.el('button', { class: 'rp-cta', type: 'button' }, ['Get my plan, ' + PRICE_LABEL, window.LP_RENDER.el('span', {}, ['\u2192'])]);
     btn.addEventListener('click', startCheckout);
     d.appendChild(btn);
     return d;
@@ -99,6 +105,9 @@
     try { result = JSON.parse(localStorage.getItem('lovepattern_result_v2') || 'null'); } catch (e) {}
     var lang = (document.documentElement.lang === 'fr' || (function(){ try { return localStorage.getItem('lp_lang') === 'fr'; } catch(e){ return false; } })()) ? 'fr' : 'en';
     if (!result) { location.href = 'index.html'; return; }
+    /* Analytics (cookieless, non-blocking). No invented amount: only the price
+       label shown on this page. Real amount is captured on purchase_completed. */
+    if (window.LP_PH) window.LP_PH('checkout_started', { displayed_price: PRICE_LABEL });
     fetch('/api/create-checkout', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ result: result, lang: lang }) })
       .then(function (r) { return r.json(); })
       .then(function (d) { if (d && d.url) location.href = d.url; else location.href = 'index.html'; })
@@ -118,11 +127,33 @@
     window.LP_RENDER.renderReport(report, mount, opts || {});
   }
 
+  /* Fire purchase_completed exactly once per paid session. The session_id stays
+     in the URL, so a refresh would re-run this branch: a per-session localStorage
+     flag prevents a double count. Amount/currency come from the verified Stripe
+     session (report.payment); amount_total is in cents -> major unit. Fully
+     non-blocking: any failure here never touches the report rendering. */
+  function trackPurchaseOnce(sid, report) {
+    try {
+      var flag = 'lp_purchase_tracked_' + sid;
+      var seen = false;
+      try { seen = !!localStorage.getItem(flag); } catch (e) {}
+      if (seen) return;
+      try { localStorage.setItem(flag, '1'); } catch (e) {}
+      var props = {};
+      var pay = report && report.payment;
+      if (pay) {
+        if (typeof pay.amount_total === 'number') props.price = pay.amount_total / 100;
+        if (pay.currency) props.currency = String(pay.currency).toUpperCase();
+      }
+      if (window.LP_PH) window.LP_PH('purchase_completed', props);
+    } catch (e) {}
+  }
+
   /* ---- 1. PRODUCTION: a paid Stripe session -> ask the server ---------- */
   if (sessionId && !demo && !freeOnly) {
     fetch('/api/get-report?session_id=' + encodeURIComponent(sessionId))
       .then(function (r) { if (!r.ok) throw new Error('status ' + r.status); return r.json(); })
-      .then(function (report) { render(report, { onCta: startCheckout }); })
+      .then(function (report) { trackPurchaseOnce(sessionId, report); render(report, { onCta: startCheckout }); })
       .catch(function () { showError('Your payment could not be verified, or the session has expired.'); });
     return;
   }
