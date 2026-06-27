@@ -62,8 +62,10 @@ export async function onRequest(context) {
     return json({ error: 'stripe unreachable' }, 502);
   }
 
-  // 2 . the only thing that unlocks paid content
-  if (session.payment_status !== 'paid') {
+  // 2 . the only thing that unlocks paid content. 'paid' = money taken;
+  // 'no_payment_required' = legitimately free (e.g. a 100%-off promotion code).
+  // Both mean the checkout is settled; only 'unpaid' (and anything else) is gated.
+  if (session.payment_status !== 'paid' && session.payment_status !== 'no_payment_required') {
     return json({ error: 'not paid', payment_status: session.payment_status || 'unknown' }, 402);
   }
 

@@ -49,7 +49,12 @@ export async function onRequest(context) {
   if (event.type !== 'checkout.session.completed') return new Response('ignored', { status: 200 });
 
   const session = (event.data && event.data.object) || {};
-  if (session.payment_status && session.payment_status !== 'paid') return new Response('not paid', { status: 200 });
+  // Accept settled checkouts: 'paid' (money taken) and 'no_payment_required'
+  // (legitimately free, e.g. a 100%-off promotion code). Only 'unpaid' (and any
+  // other state) is rejected, so a free order still triggers the email.
+  if (session.payment_status && session.payment_status !== 'paid' && session.payment_status !== 'no_payment_required') {
+    return new Response('not paid', { status: 200 });
+  }
 
   const email = (session.customer_details && session.customer_details.email) || session.customer_email;
   const token = (session.metadata && session.metadata.token) || session.client_reference_id;
