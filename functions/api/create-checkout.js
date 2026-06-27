@@ -64,8 +64,12 @@ export async function onRequest(context) {
     console.error('[create-checkout] kv store failed:', detail);
     /* TEMP DIAGNOSTIC: surface the exact KV reason (binding missing vs put failed)
        so we can tell apart a stale-deployment binding from a namespace error.
-       Remove `detail` once the KV wiring is confirmed. */
-    return json({ error: 'store failed', detail }, 500);
+       When the LP_KV binding is absent, also list the env KEY NAMES the live
+       deployment actually sees (names only, never values) so we can spot a
+       wrong Variable name / wrong environment. Remove both once KV is confirmed. */
+    const out = { error: 'store failed', detail };
+    if (!env || !env.LP_KV) { try { out.envKeys = Object.keys(env || {}); } catch (_) {} }
+    return json(out, 500);
   }
 
   // 3 . create the Stripe Checkout Session (form-encoded, no SDK)
