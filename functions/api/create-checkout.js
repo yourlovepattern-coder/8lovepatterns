@@ -23,7 +23,9 @@
                          2900-cent USD price is used. Stripe Adaptive Pricing
                          (enabled on the account) localizes the presentment
                          currency at checkout from this USD base.
-     SITE_URL            https://8lovepatterns.com (defaults below)
+     SITE_URL            optional override for the return domain. If unset, the
+                         buyer is returned to the request's own origin (so it
+                         works on pages.dev and the custom domain unchanged).
    Required binding: LP_KV (Workers KV namespace)
    ============================================================================ */
 
@@ -40,7 +42,11 @@ export async function onRequest(context) {
   const { request, env } = context;
   if (request.method !== 'POST') return json({ error: 'method not allowed' }, 405);
 
-  const SITE = env.SITE_URL || 'https://8lovepatterns.com';
+  /* Return the buyer to the SAME origin they checked out from (pages.dev today,
+     the custom domain after the switch) so the relative /api/get-report fetch on
+     rapport.html hits a live function. env.SITE_URL overrides if ever set to
+     force a canonical domain. */
+  const SITE = env.SITE_URL || new URL(request.url).origin;
 
   const secret = env.STRIPE_SECRET_KEY;
   if (!secret) { console.error('[create-checkout] STRIPE_SECRET_KEY missing'); return json({ error: 'not configured' }, 500); }

@@ -30,7 +30,10 @@ export async function onRequest(context) {
   const { request, env } = context;
   if (request.method !== 'POST') return new Response('method not allowed', { status: 405 });
 
-  const SITE = env.SITE_URL || 'https://8lovepatterns.com';
+  /* Base the emailed report link on the origin that received this webhook (the
+     deployed domain where get-report is live), so the link never points at a
+     dead host. env.SITE_URL overrides to force a canonical domain if set. */
+  const SITE = env.SITE_URL || new URL(request.url).origin;
 
   const sig = request.headers.get('stripe-signature') || '';
   const raw = await request.text();
