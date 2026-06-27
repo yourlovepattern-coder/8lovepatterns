@@ -60,8 +60,12 @@ export async function onRequest(context) {
     const store = getStore(env, 'orders');
     await store.setJSON(token, { result, lang, ts: Date.now() });
   } catch (e) {
-    console.error('[create-checkout] kv store failed:', e && e.message);
-    return json({ error: 'store failed' }, 500);
+    const detail = e && e.message ? e.message : String(e);
+    console.error('[create-checkout] kv store failed:', detail);
+    /* TEMP DIAGNOSTIC: surface the exact KV reason (binding missing vs put failed)
+       so we can tell apart a stale-deployment binding from a namespace error.
+       Remove `detail` once the KV wiring is confirmed. */
+    return json({ error: 'store failed', detail }, 500);
   }
 
   // 3 . create the Stripe Checkout Session (form-encoded, no SDK)

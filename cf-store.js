@@ -29,11 +29,19 @@ export function getStore(env, name) {
        accepted and ignored (KV is eventually consistent). */
     async get(key, opts = {}) {
       const type = opts && opts.type === 'json' ? 'json' : 'text';
-      return kv.get(k(key), { type });
+      try {
+        return await kv.get(k(key), { type });
+      } catch (e) {
+        throw new Error('LP_KV get failed: ' + (e && e.message ? e.message : String(e)));
+      }
     },
     /* Mirrors blobs.setJSON(key, value). */
     async setJSON(key, value) {
-      return kv.put(k(key), JSON.stringify(value));
+      try {
+        return await kv.put(k(key), JSON.stringify(value));
+      } catch (e) {
+        throw new Error('LP_KV put failed: ' + (e && e.message ? e.message : String(e)));
+      }
     },
   };
 }
