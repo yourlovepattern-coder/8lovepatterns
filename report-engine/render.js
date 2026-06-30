@@ -190,7 +190,7 @@
           el('p', { style: 'margin:0 0 10px;color:var(--ink-2);font-size:.95rem;line-height:1.5;text-wrap:pretty;' }, [bk.blurb]),
           bk.url
             ? el('a', { href: bk.url, target: '_blank', rel: 'sponsored noopener', style: `display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:.88rem;color:${A()};text-decoration:none;` }, ['View on Amazon \u2192'])
-            : el('span', { style: 'display:inline-block;font-size:.78rem;color:var(--ink-3);font-style:italic;' }, ['[affiliate link to add]']),
+            : null,
         ]),
       ]);
     });
@@ -267,11 +267,14 @@
     mount.innerHTML = '';
     mount.appendChild(hero(report.meta || {}));
 
+    const paid = report.paid || [];
     const free = el('div', { class: 'rp-wrap' }, []);
-    (report.free || []).forEach((b) => free.appendChild(renderBlock(b, opts)));
+    (report.free || []).forEach((b) => {
+      if (paid.length && b.type === 'cta') return;
+      free.appendChild(renderBlock(b, opts));
+    });
     mount.appendChild(free);
 
-    const paid = report.paid || [];
     if (paid.length) {
       mount.appendChild(zoneDivider('Your plan'));
       const paidWrap = el('div', { class: 'rp-wrap' }, []);
