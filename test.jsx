@@ -161,28 +161,31 @@ function TopProgress({ fill }){
    ========================================================================== */
 function HalteProse({ data, code }){
   const [imgOk,setImgOk] = useState(true);
+  /* Mobile: la halte est une pause, pas une lecture. On resserre l'interligne
+     et on réduit l'illustration pour que le bouton Continue (Halte 1) et la
+     première question d'Ancre (Halte 2) tiennent au-dessus de la ligne. */
+  const narrow = useWidth() < 620;
+  const pStyle = { margin: narrow ? '0 0 .5em' : '0 0 1.05em', fontSize: narrow ? '.98rem' : '1.08rem',
+    lineHeight: narrow ? 1.4 : 1.7, color:'var(--ink)', textWrap:'pretty' };
   return (
     <div style={{ maxWidth:720, margin:'0 auto' }}>
       <h1 style={{ fontFamily:'var(--font-display)', fontWeight:800, letterSpacing:'-.02em', color:'var(--ink)',
-        fontSize:'clamp(1.6rem, 1.15rem + 1.6vw, 2.4rem)', lineHeight:1.12, margin:'0 0 clamp(18px,2.6vw,26px)', textWrap:'balance' }}>
+        fontSize: narrow ? 'clamp(1.4rem,1.15rem+1.3vw,1.72rem)' : 'clamp(1.6rem, 1.15rem + 1.6vw, 2.4rem)',
+        lineHeight:1.1, margin: narrow ? '0 0 9px' : '0 0 clamp(18px,2.6vw,26px)', textWrap:'balance' }}>
         <InlineRich text={data.head}/>
       </h1>
       {(data.body||[]).map((p,i)=>(
-        <p key={i} style={{ margin:'0 0 1.05em', fontSize:'1.08rem', lineHeight:1.7, color:'var(--ink)', textWrap:'pretty' }}>
-          <InlineRich text={p}/>
-        </p>
+        <p key={i} style={pStyle}><InlineRich text={p}/></p>
       ))}
       {code && imgOk && (
-        <div style={{ textAlign:'center', margin:'clamp(22px,3.4vw,34px) 0' }}>
+        <div style={{ textAlign:'center', margin: narrow ? '8px 0' : 'clamp(22px,3.4vw,34px) 0' }}>
           <img src={`assets/archetypes/${code}.png`} alt="" onError={()=>setImgOk(false)}
-            style={{ width:'auto', height:'clamp(200px,34vw,300px)', maxWidth:'100%', display:'inline-block',
-              filter:'drop-shadow(0 22px 26px rgba(15,20,45,.26))' }}/>
+            style={{ width:'auto', height: narrow ? '60px' : 'clamp(200px,34vw,300px)', maxWidth:'100%', display:'inline-block',
+              filter: narrow ? 'drop-shadow(0 8px 12px rgba(15,20,45,.2))' : 'drop-shadow(0 22px 26px rgba(15,20,45,.26))' }}/>
         </div>
       )}
       {(data.after||[]).map((p,i)=>(
-        <p key={i} style={{ margin:'0 0 1.05em', fontSize:'1.08rem', lineHeight:1.7, color:'var(--ink)', textWrap:'pretty' }}>
-          <InlineRich text={p}/>
-        </p>
+        <p key={i} style={pStyle}><InlineRich text={p}/></p>
       ))}
     </div>
   );
@@ -194,6 +197,7 @@ function HalteProse({ data, code }){
 function LoveTest({ go }){
   const T = window.LP_TEST;
   const tx = useTx();
+  const narrow = useWidth() < 620;                 // fold-sensitive spacing on mobile
 
   const [phase,setPhase] = useState('intro');      // 'intro' | 'test' | 'result'
   const [index,setIndex] = useState(0);
@@ -327,7 +331,7 @@ function LoveTest({ go }){
   } else if(card.type==='framing'){
     body = <div>
       <HalteProse data={T.haltes.framing}/>
-      <div style={{ textAlign:'center', marginTop:'clamp(28px,4vw,42px)' }}>
+      <div style={{ textAlign:'center', marginTop: narrow ? '10px' : 'clamp(28px,4vw,42px)' }}>
         <Button size="lg" icon="arrow-right" onClick={()=>goForward()}>{tx({ fr:'Continuer', en:'Continue' })}</Button>
       </div>
     </div>;
@@ -337,7 +341,7 @@ function LoveTest({ go }){
     const code = secure ? null : (LP_HALTE_CODE[frozen.dominant] || 'mir');
     body = <div>
       <HalteProse data={data} code={code}/>
-      <div style={{ textAlign:'center', marginTop:'clamp(28px,4vw,42px)' }}>
+      <div style={{ textAlign:'center', marginTop: narrow ? '10px' : 'clamp(28px,4vw,42px)' }}>
         <Button size="lg" icon="arrow-right" onClick={()=>goForward()}>{tx({ fr:'Continuer', en:'Continue' })}</Button>
       </div>
     </div>;
@@ -366,7 +370,7 @@ function LoveTest({ go }){
       <div style={{ display:'flex', flexDirection:'column', minHeight:'calc(100vh - 132px)' }}>
         <TopProgress fill={fill}/>
 
-        <div style={{ flex:1, display:'flex', flexDirection:'column', justifyContent:'center', padding:'clamp(20px,3.4vw,40px) 0',
+        <div style={{ flex:1, display:'flex', flexDirection:'column', justifyContent:'center', padding: narrow ? '8px 0' : 'clamp(20px,3.4vw,40px) 0',
           opacity:leaving?0:1, transform:leaving?'translateY(10px)':'none', transition:'all .24s cubic-bezier(.22,.61,.36,1)' }}>
           {body}
         </div>

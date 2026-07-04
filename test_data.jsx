@@ -282,97 +282,89 @@ const LP_HALTE_REVEALS = {
   'Miroir': {
     head: "Halfway there. Something is already showing.",
     body: [
-      "It looks like you live by a quiet rule: as long as you're what they need, they have no reason to leave. So you read a room fast, you catch a mood shift before it's spoken, and by the time you've noticed it you're already becoming the version that keeps things smooth. It rarely feels like a decision. Most days it feels like being you.",
-      "If this fits, you know the strange part already. The closeness works. People relax around you, they call you easygoing, the one who never makes a fuss. And somewhere in all that harmony your own preferences go quiet. Someone asks what you want, or just where you'd like to eat, and there's a blank where the answer should be. Researchers who study this describe it the same way: the question of what you want gets overwritten, again and again, by what's wanted of you, until the signal goes faint.",
-      "People who answer the way you have tend to say the same thing. One cooler reply can take over a whole afternoon. And inside a relationship that looks fine from the outside, they often feel alone in it, close to someone who never quite met the real them.",
+      "It looks like you live by a quiet rule: as long as you're what they need, they have no reason to leave. So you read a room fast, and by the time you've caught a mood shift you're already becoming the version that keeps it smooth.",
+      "The catch is one you know. Someone asks what you want, even where to eat, and there's a blank where the answer should be. You end up close to people who never quite met the real you.",
       "We call this pattern **The Mirror**.",
     ],
     after: [
-      "A pattern like this grows for a reason. You learned it early, when reading people and adjusting to them was what kept you safe, and it worked well enough that it stopped feeling like a strategy and started feeling like your personality. What stays hidden for now is the part that changes everything: how early you catch the reflex, and how much say you still have once it starts. Two people carry the same pattern and live very different lives depending on that one thing.",
+      "You learned it somewhere it kept you safe, so it stopped feeling like a strategy. What matters now is how early you catch the reflex, and how much say you keep once it starts.",
     ],
   },
   'Guetteur': {
     head: "Halfway there. Something is already showing.",
     body: [
-      "It looks like you live by a quiet rule: what you see coming can't blindside you. So you track things other people never register. A reply that lands slower than usual, a hug that ends half a second early, a tone one shade cooler than yesterday. You notice before you've decided to look, and once you've noticed, you start building the case.",
-      "If this fits, you know the strange part already. The watching feels like protection. If you can spot the leaving early enough, it can never blindside you. But you're never off duty. Even the good evenings get scanned for evidence, and reassurance works for about an hour before the checking starts again.",
-      "People who answer the way you have describe the same exhaustion. A silence anyone else would read as neutral sets off an alarm in the body, and the alarm doesn't care that you know better. Researchers who study this call it hypervigilance: a nervous system that learned, somewhere along the way, to treat love and danger as neighbors. It's tiring in a way that's hard to explain to someone who doesn't live it.",
+      "It looks like you live by a quiet rule: what you see coming can't blindside you. So you track what others miss, a reply a shade slower, a hug that ends early, and once you've noticed you start building the case.",
+      "You're never off duty. Reassurance holds for an hour, then the scanning starts again, and a silence anyone else would call neutral sets off an alarm you can't talk down.",
       "We call this pattern **The Watcher**.",
     ],
     after: [
-      "A pattern like this grows for a reason. You learned it where attention was the difference between being cared for and being missed, and watching worked. It kept you a step ahead of the hurt often enough that it stopped feeling like a skill and started feeling like who you are. What stays hidden for now is the part that changes everything: how early you catch yourself scanning, and whether you can set the evidence down once you've picked it up. Two people carry the same pattern and live very different lives depending on that.",
+      "You learned it where attention was the difference between being held and being missed, so it feels like care. What matters now is how early you catch the scanning, and whether you can set the evidence down.",
     ],
   },
   'Sauveur': {
     head: "Halfway there. Something is already showing.",
     body: [
-      "It looks like you live by a quiet rule: someone who needs you won't leave you. So you see what's missing in someone before they've said it, and you step in to supply it. Their problem becomes your project, sometimes before they've asked, and taking care of things is how you say the things you don't say out loud.",
-      "If this fits, you know the strange part already. Being needed feels like being loved, and for long stretches the two are impossible to tell apart. People lean on you. They say they don't know what they'd do without you, and it lands like warmth. Meanwhile your own needs go to the back of the line so quietly that even you stop hearing them.",
-      "People who answer the way you have tend to notice the cost late. The tiredness that doesn't sleep off. The flicker of resentment when nobody thinks to ask how you are, followed fast by guilt for feeling it. Researchers describe the same trade: when love gets earned through what you do, being known for who you are starts to feel unsafe. And if the person you're carrying gets better, a small panic can show up right where the relief should be.",
+      "It looks like you live by a quiet rule: someone who needs you won't leave you. So you see what's missing before it's said and step in to supply it, and their problem becomes your project before they've asked.",
+      "Being needed feels like being loved, and for long stretches you can't tell them apart. Meanwhile your own needs slip to the back of the line so quietly you stop hearing them, until the resentment shows up and the guilt right after it.",
       "We call this pattern **The Savior**.",
     ],
     after: [
-      "A pattern like this grows for a reason. You learned it where love was something you earned by being useful, and it worked. Useful got you kept. It worked well enough that it stopped feeling like a role and started feeling like your worth. What stays hidden for now is the part that changes everything: how early you feel the pull to step in, and how much of you is left when you resist it. Two people carry the same pattern and live very different lives depending on that.",
+      "You learned it where love was earned by being useful, so it feels like your worth. What matters now is how early you feel the pull to fix, and how much of you is left when you don't.",
     ],
   },
   'Incendiaire': {
     head: "Halfway there. Something is already showing.",
     body: [
-      "It looks like you live by a quiet rule: you can survive their anger, but not their silence. So when you feel someone drifting, something in you moves to force contact, any contact. A sharp question, a test, a spark you already know will catch.",
-      "If this fits, you know the strange part already. A fight, even a painful one, is still connection. Couples therapists hear it from people who carry this pattern in almost the same words every time: at least when we're fighting, I know you're still here. The flare is a question wearing armor. It asks whether they still care, in the only dialect that feels safe to ask it in.",
-      "People who answer the way you have know the after. The shame that arrives once the smoke clears, sometimes minutes later, when you can see the crater and remember lighting the match. Researchers call these protest behaviors: moves designed to force a response from someone who feels out of reach. They tend to get the response, and lose the reach.",
+      "It looks like you live by a quiet rule: you can survive their anger, but not their silence. So when you feel someone drift, something in you moves to force contact, a sharp question, a test, a spark you know will catch.",
+      "A fight is still connection. While it burns, you know they're still there. Then the smoke clears and the shame arrives, and you can see the crater and remember lighting the match.",
       "We call this pattern **The Arsonist**.",
     ],
     after: [
-      "A pattern like this grows for a reason. You learned it where calm never stayed safe for long, and where being loud was the surest way to be found. It worked. The fire got answered when nothing else did, and over time it stopped feeling like an emergency signal and started feeling like your temperament. What stays hidden for now is the part that changes everything: the length of the gap between the spark and the strike, and how much say you keep inside that gap. Two people carry the same pattern and live very different lives depending on it.",
+      "You learned it where calm never stayed safe and loud got you found, so it feels like your temperament. What matters now is the gap between the spark and the strike, and how much say you keep inside it.",
     ],
   },
   'Fugitif': {
     head: "Halfway there. Something is already showing.",
     body: [
-      "It looks like you live by a quiet rule: nothing can trap you if you never fully arrive. So some part of you keeps a bag packed. Things can be good, genuinely good, and still a quiet inventory runs in the background: where the exits are, what leaving would cost, who you'd be on the other side of it. The closer someone gets, the louder the inventory.",
-      "If this fits, you know the strange part already. You want the closeness. That's the part people miss about you. But when it actually arrives, it can feel like a room slowly shrinking, and the urge to go shows up precisely when things start to matter. Leaving first means never being left. It works the way a fire escape works: you end up safe, and you end up outside.",
-      "People who answer the way you have describe a string of almosts. Relationships that ended right as they turned real. A freedom that feels strangely like loss once the door has shut behind you. Researchers who study this say the urge was never about not wanting love; it's a nervous system that learned closeness and captivity can feel identical from the inside.",
+      "It looks like you live by a quiet rule: nothing can trap you if you never fully arrive. So part of you keeps a bag packed, and the closer someone gets, the louder it runs.",
+      "You want the closeness, that's the part people miss. But when it arrives the room seems to shrink, and the urge to go shows up exactly when things start to matter. Leaving first means never being left.",
       "We call this pattern **The Runaway**.",
     ],
     after: [
-      "A pattern like this grows for a reason. You learned it where depending on someone didn't end well, and distance became the one thing that never betrayed you. It worked well enough that it stopped feeling like an escape and started feeling like your nature. What stays hidden for now is the part that changes everything: how early you feel the exit opening, and whether staying is still a choice by the time you do. Two people carry the same pattern and live very different lives depending on that.",
+      "You learned it where depending on someone didn't end well, so distance feels like safety. What matters now is how early you feel the exit open, and whether staying is still a choice by the time you do.",
     ],
   },
   'Bastion': {
     head: "Halfway there. Something is already showing.",
     body: [
-      "It looks like you live by a quiet rule: if you need no one, no one can hurt you. So when things get heavy, you go quiet and hold. The feelings don't flood you in the moment; they file somewhere out of reach, and what's left is calm, practical, a little far away. People in your life have probably called it coldness. From the inside it's closer to a door easing shut on its own.",
-      "If this fits, you know the strange part already. The calm is real, and it's also the trick. You don't feel less than other people. You feel later. Hours later, sometimes days, sometimes only once the whole thing is over and there's no one left to tell. In the moment there's mostly quiet, and the old certainty that you can handle this alone, because you've always had to.",
-      "People who answer the way you have often learn the price from the outside. A partner who stopped knocking. A breakup speech with the same sentence in it: I never felt like I could reach you. Researchers describe the mechanism as deactivation, a nervous system that mutes the signal rather than risk the flood, and the people who love you keep reading that silence as indifference.",
+      "It looks like you live by a quiet rule: if you need no one, no one can hurt you. So when things get heavy you go quiet and hold, and the feelings file somewhere out of reach while you stay calm and a little far away.",
+      "You don't feel less than other people. You feel later, sometimes once it's all over and there's no one left to tell. The people who love you keep reading that silence as indifference.",
       "We call this pattern **The Bastion**.",
     ],
     after: [
-      "A pattern like this grows for a reason. You learned it where needing someone was a risk that rarely paid, and self-reliance was the one strategy that never let you down. It worked well enough that it stopped feeling like armor and started feeling like your character. What stays hidden for now is the part that changes everything: how early you feel the door closing, and whether you can still hold it open a crack. Two people carry the same pattern and live very different lives depending on that.",
+      "You learned it where needing someone rarely paid, so self-reliance feels like your character. What matters now is how early you feel the door closing, and whether you can hold it open a crack.",
     ],
   },
   'Caméléon': {
     head: "Halfway there. Something is already showing.",
     body: [
-      "It looks like you live by a quiet rule: no one leaves someone who never causes a problem. So you read what this particular person wants to hear, and that's what comes out. Your real opinion stays inside, folded small. Most people around you would say you're wonderfully easy to get along with, and every one of them would be describing the costume.",
-      "If this fits, you know the strange part already. Never fighting looks, from the outside, like a great relationship. That's the trap of it. Years can go by without one real argument, and without one moment where somebody met the person underneath all the agreeing. And you know the quiet shame that follows a yes you didn't mean. It shows up a beat after the words do, every time.",
-      "People who answer the way you have describe feeling invisible in plain sight, cared for by people who have never actually met them. Researchers link it to a learned reflex sometimes called fawning: when disagreement once meant danger, agreement becomes armor. The body says no while the mouth says yes, and the gap between the two gets wider every year it goes unspoken.",
+      "It looks like you live by a quiet rule: no one leaves someone who never causes a problem. So you read what this person wants to hear and that's what comes out, while your real opinion stays folded small.",
+      "Never fighting looks like a great relationship from the outside. That's the trap. Years pass without one real argument and without anyone meeting the person under all the agreeing, and a yes you didn't mean leaves a small shame a beat behind it.",
       "We call this pattern **The Chameleon**.",
     ],
     after: [
-      "A pattern like this grows for a reason. You learned it where your real reactions caused trouble, and blending in bought you peace. It worked well enough that it stopped feeling like hiding and started feeling like politeness, or kindness, or just your personality. What stays hidden for now is the part that changes everything: how early you feel yourself folding, and whether your real answer can survive the moment. Two people carry the same pattern and live very different lives depending on that.",
+      "You learned it where your real reactions caused trouble, so blending in feels like kindness. What matters now is how early you feel yourself folding, and whether your real answer survives the moment.",
     ],
   },
   'Alchimiste': {
     head: "Halfway there. Something is already showing.",
     body: [
-      "It looks like you live by a quiet rule: what you can explain can't drown you. So you meet feelings the way you meet problems: you take them apart. Something hurts, and within minutes you have the diagram, the likely cause, the pattern it fits, maybe even the attachment style it maps onto. There's a decent chance you've read more about all of this than anyone you know. Understanding is your first language.",
-      "If this fits, you know the strange part already. Understanding lets you describe the pain without ever touching it. You can lay out your feelings in clean, accurate terms and still go blank when someone asks what you feel right now, in this room. The analysis is true. None of it is felt. And the people close to you can sense that difference, even when they can't put words on it.",
-      "People who answer the way you have tend to hear the same feedback in different phrasings: you feel managed, not met. Researchers call the mechanism intellectualization, a mind that files each emotion under things I understand so the body never has to carry it. It works. And it leaves whoever loves you having a conversation with the file.",
+      "It looks like you live by a quiet rule: what you can explain can't drown you. So you meet feelings the way you meet problems, and within minutes you have the cause, the pattern, maybe the very style it maps onto.",
+      "Understanding lets you describe the pain without touching it. You can lay it out in clean terms and still go blank when someone asks what you feel right now, and the people close to you feel managed, not met.",
       "We call this pattern **The Alchemist**.",
     ],
     after: [
-      "A pattern like this grows for a reason. You learned it where feelings were unwelcome or unsafe, and thinking was the one room you controlled. Turning pain into ideas worked well enough that it stopped feeling like a defense and started feeling like intelligence. What stays hidden for now is the part that changes everything: how early you catch the retreat into analysis, and whether the feeling ever gets its turn. Two people carry the same pattern and live very different lives depending on that.",
+      "You learned it where feelings were unsafe and thinking was the room you controlled, so it feels like intelligence. What matters now is how early you catch the retreat into analysis, and whether the feeling gets its turn.",
     ],
   },
 };
@@ -380,67 +372,59 @@ const LP_HALTE_REVEALS = {
 /* HALTE 2 — intros de l'Ancre, une par mécanisme (courtes, verbatim). */
 const LP_HALTE_ANCHOR_INTROS = {
   'Miroir': {
-    head: "One thing changes how you read everything that follows.",
+    head: "One last thing, and it matters most.",
     body: [
-      "Knowing you run The Mirror names the pattern. It doesn't tell you how much it's costing you. Decades of attachment research point the same way: patterns like this sit on a dial, not in a set of boxes, and everyone lands somewhere on it. What shapes your relationships is where you land, how early you feel yourself start to reflect someone, and how much say you keep once it starts.",
-      "That's what the Anchor measures, and everything in your result is built on it.",
-      "Six questions. Same lens as before, your life now. Answer with what actually happens, even when the honest option is the less flattering one.",
+      "You run The Mirror. The Anchor measures how deep it goes: how early you feel yourself start to reflect someone, and how much say you keep once you do. Everything in your result is built on it.",
+      "Six questions, your life now. Answer with what actually happens, even when the honest one is the less flattering one.",
     ],
   },
   'Guetteur': {
-    head: "One thing changes how you read everything that follows.",
+    head: "One last thing, and it matters most.",
     body: [
-      "Knowing you run The Watcher names the pattern. It doesn't tell you how much of your life it patrols. Decades of attachment research point the same way: patterns like this sit on a dial, not in a set of boxes, and everyone lands somewhere on it. What shapes your relationships is where you land, how early you notice the scanning start, and whether you can put the evidence down.",
-      "That's what the Anchor measures, and everything in your result is built on it.",
-      "Six questions. Same lens as before, your life now. Answer with what actually happens, even when the honest option is the less flattering one.",
+      "You run The Watcher. The Anchor measures how deep it goes: how early you notice the scanning, and whether you can put the evidence down. Everything in your result is built on it.",
+      "Six questions, your life now. Answer with what actually happens, even when the honest one is the less flattering one.",
     ],
   },
   'Sauveur': {
-    head: "One thing changes how you read everything that follows.",
+    head: "One last thing, and it matters most.",
     body: [
-      "Knowing you run The Savior names the pattern. It doesn't tell you what it's costing you. Decades of attachment research point the same way: patterns like this sit on a dial, not in a set of boxes, and everyone lands somewhere on it. What shapes your relationships is where you land, how early you feel the pull to fix, and how much of you is left when you don't.",
-      "That's what the Anchor measures, and everything in your result is built on it.",
-      "Six questions. Same lens as before, your life now. Answer with what actually happens, even when the honest option is the less flattering one.",
+      "You run The Savior. The Anchor measures how deep it goes: how early the pull to fix hits, and how much of you is left when you resist it. Everything in your result is built on it.",
+      "Six questions, your life now. Answer with what actually happens, even when the honest one is the less flattering one.",
     ],
   },
   'Incendiaire': {
-    head: "One thing changes how you read everything that follows.",
+    head: "One last thing, and it matters most.",
     body: [
-      "Knowing you run The Arsonist names the pattern. It doesn't tell you how much keeps burning down. Decades of attachment research point the same way: patterns like this sit on a dial, not in a set of boxes, and everyone lands somewhere on it. What shapes your relationships is where you land, the gap between the spark and the strike, and how much say you keep inside it.",
-      "That's what the Anchor measures, and everything in your result is built on it.",
-      "Six questions. Same lens as before, your life now. Answer with what actually happens, even when the honest option is the less flattering one.",
+      "You run The Arsonist. The Anchor measures how deep it goes: the gap between the spark and the strike, and how much say you keep inside it. Everything in your result is built on it.",
+      "Six questions, your life now. Answer with what actually happens, even when the honest one is the less flattering one.",
     ],
   },
   'Fugitif': {
-    head: "One thing changes how you read everything that follows.",
+    head: "One last thing, and it matters most.",
     body: [
-      "Knowing you run The Runaway names the pattern. It doesn't tell you how many rooms you've already left. Decades of attachment research point the same way: patterns like this sit on a dial, not in a set of boxes, and everyone lands somewhere on it. What shapes your relationships is where you land, how early you feel the exit opening, and whether staying is still a choice.",
-      "That's what the Anchor measures, and everything in your result is built on it.",
-      "Six questions. Same lens as before, your life now. Answer with what actually happens, even when the honest option is the less flattering one.",
+      "You run The Runaway. The Anchor measures how deep it goes: how early the exit opens, and whether staying is still a choice. Everything in your result is built on it.",
+      "Six questions, your life now. Answer with what actually happens, even when the honest one is the less flattering one.",
     ],
   },
   'Bastion': {
-    head: "One thing changes how you read everything that follows.",
+    head: "One last thing, and it matters most.",
     body: [
-      "Knowing you run The Bastion names the pattern. It doesn't tell you how thick the wall has gotten. Decades of attachment research point the same way: patterns like this sit on a dial, not in a set of boxes, and everyone lands somewhere on it. What shapes your relationships is where you land, how early you feel the door closing, and whether you can hold it open.",
-      "That's what the Anchor measures, and everything in your result is built on it.",
-      "Six questions. Same lens as before, your life now. Answer with what actually happens, even when the honest option is the quieter one.",
+      "You run The Bastion. The Anchor measures how deep it goes: how early the door closes, and whether you can hold it open. Everything in your result is built on it.",
+      "Six questions, your life now. Answer with what actually happens, even when the honest one is the quieter one.",
     ],
   },
   'Caméléon': {
-    head: "One thing changes how you read everything that follows.",
+    head: "One last thing, and it matters most.",
     body: [
-      "Knowing you run The Chameleon names the pattern. It doesn't tell you how much of you has gone quiet. Decades of attachment research point the same way: patterns like this sit on a dial, not in a set of boxes, and everyone lands somewhere on it. What shapes your relationships is where you land, how early you feel yourself folding, and whether your real answer survives.",
-      "That's what the Anchor measures, and everything in your result is built on it.",
-      "Six questions. Same lens as before, your life now. Answer with what actually happens, even when the honest option is the less flattering one.",
+      "You run The Chameleon. The Anchor measures how deep it goes: how early you feel yourself fold, and whether your real answer survives. Everything in your result is built on it.",
+      "Six questions, your life now. Answer with what actually happens, even when the honest one is the less flattering one.",
     ],
   },
   'Alchimiste': {
-    head: "One thing changes how you read everything that follows.",
+    head: "One last thing, and it matters most.",
     body: [
-      "Knowing you run The Alchemist names the pattern. It doesn't tell you what never gets felt. Decades of attachment research point the same way: patterns like this sit on a dial, not in a set of boxes, and everyone lands somewhere on it. What shapes your relationships is where you land, how early you catch the retreat into analysis, and whether the feeling gets a turn.",
-      "That's what the Anchor measures, and everything in your result is built on it.",
-      "Six questions. Same lens as before, your life now. Answer with what actually happens, even when the honest option is the less flattering one.",
+      "You run The Alchemist. The Anchor measures how deep it goes: how early you retreat into analysis, and whether the feeling gets a turn. Everything in your result is built on it.",
+      "Six questions, your life now. Answer with what actually happens, even when the honest one is the less flattering one.",
     ],
   },
 };
