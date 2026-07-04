@@ -202,7 +202,6 @@ function LoveTest({ go }){
   const [phase,setPhase] = useState('intro');      // 'intro' | 'test' | 'result'
   const [index,setIndex] = useState(0);
   const [answers,setAnswers] = useState({});
-  const [leaving,setLeaving] = useState(false);
 
   /* Mécanisme figé à la fin de l'Étage 1 (avant la révélation). Contient
      { secure, axes, dominant, secondaire } et ne change plus ensuite : la
@@ -270,27 +269,30 @@ function LoveTest({ go }){
     }
   }, [index, card, frozen]);
 
-  /* ---- navigation --------------------------------------------------------- */
+  /* ---- navigation --------------------------------------------------------- *
+     Transitions pilotées 100% par l'état React : on change d'étape tout de
+     suite, et chaque écran (keyé par index) se monte/démonte proprement avec
+     une animation d'ENTRÉE CSS. Pas de setTimeout ni d'animation de sortie qui
+     laisserait React démonter un nœud texte déjà déplacé par un script tiers
+     (traduction navigateur, analytics) — c'est ce qui provoquait le crash
+     removeChild pendant le passage au résultat. */
   function goForward(currentAnswers){
-    setLeaving(true);
-    setTimeout(()=>{
-      const nextI = index + 1;
-      if(!frozen && nextI === pre.length){
-        /* Fin de l'Étage 1 : on fige le mécanisme (ou la route sécure). */
-        setFrozen(window.LP_ENGINE.freeze(currentAnswers || answers));
-        setIndex(nextI);
-      } else if(nextI < cards.length){
-        setIndex(nextI);
-      } else {
-        setPhase('result');
-      }
-      setLeaving(false); window.scrollTo(0,0);
-    }, 220);
+    const nextI = index + 1;
+    if(!frozen && nextI === pre.length){
+      /* Fin de l'Étage 1 : on fige le mécanisme (ou la route sécure). */
+      setFrozen(window.LP_ENGINE.freeze(currentAnswers || answers));
+      setIndex(nextI);
+    } else if(nextI < cards.length){
+      setIndex(nextI);
+    } else {
+      setPhase('result');
+    }
+    window.scrollTo(0,0);
   }
   function goBack(){
     if(index===0){ setPhase('intro'); return; }
-    setLeaving(true);
-    setTimeout(()=>{ setIndex(index-1); setLeaving(false); window.scrollTo(0,0); }, 180);
+    setIndex(index-1);
+    window.scrollTo(0,0);
   }
   function answerQuestion(c, value){
     const stored = c.phaseB ? { 0: value } : value;   /* Phase B en forme matrice */
@@ -367,26 +369,36 @@ function LoveTest({ go }){
 
   return (
     <TestShell go={go}>
+      <style>{`
+        @media (prefers-reduced-motion: no-preference){
+          .lp-step{ animation: lpStepIn .28s cubic-bezier(.22,.61,.36,1) both; will-change:transform,opacity; }
+        }
+        @keyframes lpStepIn{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:none; } }
+      `}</style>
       <div style={{ display:'flex', flexDirection:'column', minHeight:'calc(100vh - 132px)' }}>
         <TopProgress fill={fill}/>
 
-        <div style={{ flex:1, display:'flex', flexDirection:'column', justifyContent:'center', padding: narrow ? '8px 0' : 'clamp(20px,3.4vw,40px) 0',
-          opacity:leaving?0:1, transform:leaving?'translateY(10px)':'none', transition:'all .24s cubic-bezier(.22,.61,.36,1)' }}>
-          {body}
+        {/* Chaque écran est keyé : React démonte l'ancien / monte le nouveau en
+            entier (niveau élément), jamais une réconciliation de nœud texte en
+            place. L'animation est purement une ENTRÉE, sans timer de sortie. */}
+        <div style={{ flex:1, display:'flex', flexDirection:'column', justifyContent:'center',
+          padding: narrow ? '8px 0' : 'clamp(20px,3.4vw,40px) 0' }}>
+          <div key={index} className="lp-step">{body}</div>
         </div>
 
-        {/* footer: Back (+ Private on question screens) */}
+        {/* footer: Back (+ Private on question screens). Le libellé Privé reste
+            TOUJOURS monté (on bascule la visibilité) pour ne jamais retirer son
+            nœud texte pendant une transition. */}
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:'16px',
           padding:'clamp(14px,2.4vw,22px) 0', borderTop:'1px solid var(--hairline)' }}>
           <button onClick={goBack} style={{ display:'inline-flex', alignItems:'center', gap:'6px', background:'none',
             border:'none', cursor:'pointer', color:'var(--ink-2)', fontFamily:'var(--font-body)', fontWeight:600, fontSize:'.92rem', padding:0 }}>
             <Icon name="arrow-left" size={16}/> {tx({ fr:'Retour', en:'Back' })}
           </button>
-          {isQuestion
-            ? <span style={{ display:'inline-flex', alignItems:'center', gap:'6px', color:'var(--ink-3)', fontSize:'.82rem', fontWeight:600 }}>
-                <Icon name="lock" size={14}/> {tx({ fr:'Privé', en:'Private' })}
-              </span>
-            : <span/>}
+          <span style={{ display:'inline-flex', alignItems:'center', gap:'6px', color:'var(--ink-3)', fontSize:'.82rem', fontWeight:600,
+            visibility: isQuestion ? 'visible' : 'hidden' }}>
+            <Icon name="lock" size={14}/> {tx({ fr:'Privé', en:'Private' })}
+          </span>
         </div>
       </div>
     </TestShell>
