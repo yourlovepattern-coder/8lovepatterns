@@ -1,16 +1,31 @@
 /* ============================================================================
-   8LovePatterns — MOTEUR DE CALCUL
-   Implémente fidèlement uploads/8lovepatterns_Moteur_de_calcul.md
-   + les 3 arbitrages utilisateur (11 juin 2026) :
-     · Section 1 : dénominateur = nombre RÉEL d'apparitions du pattern dans le
-       Chapitre 1 × 4. Jamais de dénominateurs fixes écrits en dur.
-     · Variante d'Ancre : celle jouée pendant le test (figée à l'arrivée au
-       Chapitre 2), jamais recalculée après coup.
+   8LovePatterns — MOTEUR DE CALCUL  (v2 : deux axes + routage par pôle)
+   ----------------------------------------------------------------------------
+   Fidèle à uploads/8lovepatterns_Moteur_de_calcul.md + les 3 arbitrages
+   utilisateur (11 juin 2026) :
+     · Section 1 : dénominateur = nombre RÉEL d'apparitions du pattern × 4.
+     · Variante d'Ancre : celle jouée pendant le test (figée à la fin de
+       l'Étage 1), jamais recalculée après coup.
      · S3+S4 : stocké dans `intensite_poursuite`, ne modifie JAMAIS `axe`.
-   Aucune autre règle que celles écrites dans la spec.
+
+   NOUVEAU v2 (brief) :
+     · lpAxesCalc : deux moyennes 0-4 sur les 8 items d'axe (T.axes).
+     · Routage par pôle : SECURE_MAX / POLE_GAP en tête, faciles à régler. Les
+       moyennes d'axe choisissent les mécanismes éligibles ; le dominant est le
+       mieux classé PARMI les éligibles par lpPatternCalc (inchangé).
+     · `axe` du résultat dérivé des moyennes d'axe (fallback LP_AXE_MAP).
+     · Route sécure : deux axes bas -> aucun mécanisme forcé.
    ========================================================================== */
 
-/* ---- Section 1 : PATTERN (Chapitre 1) ------------------------------------ */
+/* ---- Constantes de routage (faciles à régler) ---------------------------- */
+const SECURE_MAX = 1.0;   /* les deux axes <= 1.0 -> route sécure */
+const POLE_GAP   = 0.5;   /* écart mini pour trancher un pôle */
+
+const LP_POLE_ANXIEUX    = ['Guetteur', 'Miroir', 'Sauveur', 'Incendiaire'];
+const LP_POLE_DISTANCIANT = ['Fugitif', 'Bastion'];
+const LP_POLE_TOUS = ['Miroir', 'Fugitif', 'Bastion', 'Guetteur', 'Sauveur', 'Caméléon', 'Alchimiste', 'Incendiaire'];
+
+/* ---- Section 1 : PATTERN (Étage 1 Phase B) -------------------------------- */
 function lpPatternCalc(answers){
   const T = window.LP_TEST;
   const sums = {}, counts = {}, fours = {};
@@ -51,18 +66,66 @@ function lpPatternCalc(answers){
     profil_type = (scores[dominant] - scores[secondaire] >= 15) ? 'net' : 'melange';
   }
 
-  /* Cas particuliers : moyenne de TOUTES les notes du chapitre 1 */
+  /* Cas particuliers : moyenne de TOUTES les notes de la Phase B */
   const moyenne = allN ? (allSum / allN) : 0;
 
   return {
-    scores, dominant, secondaire, profil_type,
+    scores, fours, dominant, secondaire, profil_type,
     ecart: scores[dominant] - scores[secondaire],
     profil_tres_active: moyenne >= 3,
     profil_peu_declenche: moyenne <= 1,
   };
 }
 
-/* ---- Section 2 : ANCRE (Chapitre 2, sur la variante jouée) --------------- */
+/* ---- Section 1 bis : LES DEUX AXES (Étage 1 Phase A) ---------------------- *
+   Deux moyennes 0-4 sur les items de T.axes : `anxiete` (AX*) et `evitement`
+   (AV*). Servent au routage ET aux coordonnées de la carte du rapport payant. */
+function lpAxesCalc(answers){
+  const T = window.LP_TEST;
+  const sum = { anxiete:0, evitement:0 }, n = { anxiete:0, evitement:0 };
+  (T.axes || []).forEach(q => {
+    const v = answers[q.id];
+    if(v != null && (q.axe === 'anxiete' || q.axe === 'evitement')){
+      sum[q.axe] += v; n[q.axe] += 1;
+    }
+  });
+  return {
+    anxiete:   n.anxiete   ? (sum.anxiete   / n.anxiete)   : 0,
+    evitement: n.evitement ? (sum.evitement / n.evitement) : 0,
+  };
+}
+
+/* ---- Routage : les moyennes d'axe -> mécanismes éligibles ----------------- */
+function lpEligibles(axes){
+  if(axes.anxiete <= SECURE_MAX && axes.evitement <= SECURE_MAX){
+    return { secure:true, list:[] };
+  }
+  if(axes.anxiete >= axes.evitement + POLE_GAP){
+    return { secure:false, list: LP_POLE_ANXIEUX };
+  }
+  if(axes.evitement >= axes.anxiete + POLE_GAP){
+    return { secure:false, list: LP_POLE_DISTANCIANT };
+  }
+  return { secure:false, list: LP_POLE_TOUS };   /* écart faible OU les deux hauts */
+}
+
+/* ---- Figement : le mécanisme dominant à la fin de l'Étage 1 --------------- *
+   Le dominant = le mieux classé par lpPatternCalc PARMI les éligibles. Les
+   égalités suivent la logique existante (départage par les « Tout à fait moi »).
+   Retourne aussi les moyennes d'axe (pour la carte + l'axe du résultat). */
+function lpFreeze(answers){
+  const axes = lpAxesCalc(answers);
+  const elig = lpEligibles(axes);
+  if(elig.secure){
+    return { secure:true, axes, dominant:null, secondaire:null, eligibles:[] };
+  }
+  const pat = lpPatternCalc(answers);
+  const ranked = elig.list.slice()
+    .sort((a,b) => (pat.scores[b]-pat.scores[a]) || (pat.fours[b]-pat.fours[a]));
+  return { secure:false, axes, dominant: ranked[0], secondaire: ranked[1], eligibles: elig.list };
+}
+
+/* ---- Section 2 : ANCRE (Étage 2, sur la variante jouée) ------------------- */
 function lpAncreCalc(answers, variante){
   const T = window.LP_TEST;
   const qs = (T.ancre && T.ancre[variante]) || [];
@@ -88,7 +151,7 @@ function lpAncreCalc(answers, variante){
   return { counts, position, bascule };
 }
 
-/* ---- Section 3 : SABOTAGE (Chapitre 3) ----------------------------------- */
+/* ---- Section 3 : SABOTAGE (Étage 2 bis) ---------------------------------- */
 function lpSabotageCalc(answers){
   const T = window.LP_TEST;
   const raw = { defensivite:0, confiance:0, competences:0 };
@@ -105,22 +168,28 @@ function lpSabotageCalc(answers){
 
   /* Levier principal = dimension au plus haut score.
      Règle d'égalité (confirmée) : priorité défensivité, puis difficulté de
-     confiance, puis déficit de compétences. Du plus visible et structurant au
-     plus fin : la défensivité est le mécanisme le plus central du sabotage et
-     le plus parlant pour la personne, donc mise en avant à égalité.
-     (L'ordre de T.sabotage encode cette priorité.) */
+     confiance, puis déficit de compétences. (L'ordre de T.sabotage encode
+     cette priorité.) */
   let principal = T.sabotage[0].key;
   T.sabotage.forEach(s => { if(scores[s.key] > scores[principal]) principal = s.key; });
 
   return { scores, principal, intensite_poursuite };
 }
 
-/* ---- Section 3 (suite) : AXE, déduit du pattern uniquement --------------- */
+/* ---- Section 3 (suite) : AXE ---------------------------------------------- *
+   v2 : l'axe du résultat est dérivé des moyennes d'axe (plus défendable).
+   Fallback LP_AXE_MAP (déduit du pattern) si les axes manquent. */
 const LP_AXE_MAP = {
   'Miroir':'poursuivant', 'Guetteur':'poursuivant', 'Sauveur':'poursuivant', 'Incendiaire':'poursuivant',
   'Fugitif':'distanciant', 'Bastion':'distanciant',
   'Caméléon':'transversal', 'Alchimiste':'transversal',
 };
+function lpAxeFromAxes(axes){
+  if(!axes) return null;
+  const d = axes.anxiete - axes.evitement;
+  if(Math.abs(d) < POLE_GAP) return 'mixte';
+  return d > 0 ? 'poursuivant' : 'distanciant';
+}
 function lpAxe(dominant, secondaire, profil_type){
   const resolve = (k, other) => {
     if(LP_AXE_MAP[k] !== 'transversal') return LP_AXE_MAP[k];
@@ -128,18 +197,26 @@ function lpAxe(dominant, secondaire, profil_type){
     return 'mixte';   /* le secondaire est aussi transversal */
   };
   if(profil_type === 'mixte'){
-    /* Règle confirmée pour le profil mixte parfait :
-       · même côté (deux poursuivants ou deux distanciants) → cette valeur ;
-       · côtés opposés → mixte ;
-       · l'un des deux transversal (Caméléon, Alchimiste) → l'autre donne l'axe. */
     const a1 = resolve(dominant, secondaire), a2 = resolve(secondaire, dominant);
     return a1 === a2 ? a1 : 'mixte';
   }
   return resolve(dominant, secondaire);
 }
 
+/* ---- BLOC 0 : lookups robustes (l'ordre des questions peut bouger) -------- */
+function lpFindC0(field){
+  const T = window.LP_TEST;
+  return (T.c0 || []).find(q => q.options && q.options.some(o => field in o)) || null;
+}
+function lpC0Value(answers, field){
+  const q = lpFindC0(field);
+  if(!q) return null;
+  const idx = answers[q.id];
+  return (idx != null && q.options[idx]) ? q.options[idx][field] : null;
+}
+
 /* ---- Sections 4-6 : ordre d'exécution + objet résultat ------------------- */
-function lpComputeResultat(answers, ancre_variante){
+function lpComputeResultat(answers, frozen){
   const T = window.LP_TEST;
 
   /* 1. Garde-fou sécurité d'abord (prime sur tout, jamais sautée) */
@@ -147,28 +224,60 @@ function lpComputeResultat(answers, ancre_variante){
   const securite = (safetyQ && answers[safetyQ.id] != null)
     ? safetyQ.options[answers[safetyQ.id]].securite : 'ok';
 
-  /* 2. Pattern */
+  /* Contexte non scoré (personnalisation). */
+  const contexte = {
+    sexe:       lpC0Value(answers, 'sexe'),
+    age:        lpC0Value(answers, 'age'),
+    statut:     lpC0Value(answers, 'branche'),
+    repetition: lpC0Value(answers, 'repetition'),
+  };
+
+  /* 2. Figement : reçu du flux (variante jouée) ou recalculé. */
+  const fr = frozen || lpFreeze(answers);
+  const axes = fr.axes || lpAxesCalc(answers);
+
+  /* Scores pattern (carte des 8 + drapeaux d'intensité). */
   const pat = lpPatternCalc(answers);
 
-  /* 3. La variante d'Ancre jouée pendant le test (figée par le flux) */
-  const variante = ancre_variante || pat.dominant;
+  /* --- Route sécure : aucun mécanisme forcé, pas d'Ancre. --- */
+  if(fr.secure){
+    return {
+      securite,
+      secure: true,
+      axes,
+      axe: lpAxeFromAxes(axes),
+      tous_les_scores_pattern: pat.scores,
+      profil_tres_active: pat.profil_tres_active,
+      profil_peu_declenche: pat.profil_peu_declenche,
+      contexte,
+    };
+  }
 
-  /* 4. Ancre · 5. Sabotage */
+  /* --- Route mécanisme --- */
+  const dominant = fr.dominant, secondaire = fr.secondaire;
+  const ecart = pat.scores[dominant] - pat.scores[secondaire];
+  let profil_type;
+  if(pat.scores[dominant] === pat.scores[secondaire] && pat.fours[dominant] === pat.fours[secondaire]){
+    profil_type = 'mixte';
+  } else {
+    profil_type = (ecart >= 15) ? 'net' : 'melange';
+  }
+
+  const variante = dominant;                 /* la variante jouée = le figé */
   const anc = lpAncreCalc(answers, variante);
   const sab = lpSabotageCalc(answers);
-
   const lib = v => T.paliers.find(p => p.v === v) || {};
-  const statutQ = T.c0[0], repQ = T.c0[1];
 
-  /* 6. L'objet résultat final */
   return {
     securite,
+    secure: false,
+    axes,
 
-    pattern_dominant: pat.dominant,
-    pattern_dominant_score: pat.scores[pat.dominant],
-    pattern_secondaire: pat.secondaire,
-    pattern_secondaire_score: pat.scores[pat.secondaire],
-    profil_type: pat.profil_type,
+    pattern_dominant: dominant,
+    pattern_dominant_score: pat.scores[dominant],
+    pattern_secondaire: secondaire,
+    pattern_secondaire_score: pat.scores[secondaire],
+    profil_type,
     tous_les_scores_pattern: pat.scores,
     profil_tres_active: pat.profil_tres_active,
     profil_peu_declenche: pat.profil_peu_declenche,
@@ -182,18 +291,18 @@ function lpComputeResultat(answers, ancre_variante){
     sabotage_principal: sab.principal,
     sabotage_scores: sab.scores,
     intensite_poursuite: sab.intensite_poursuite,
-    axe: lpAxe(pat.dominant, pat.secondaire, pat.profil_type),
+    axe: lpAxeFromAxes(axes) || lpAxe(dominant, secondaire, profil_type),
 
-    contexte: {
-      statut: answers[statutQ.id] != null ? statutQ.options[answers[statutQ.id]].branche : null,
-      repetition: answers[repQ.id] != null ? repQ.options[answers[repQ.id]].repetition : null,
-    },
+    contexte,
   };
 }
 
 window.LP_ENGINE = {
   computeResultat: lpComputeResultat,
   patternCalc: lpPatternCalc,
+  axesCalc: lpAxesCalc,
+  eligibles: lpEligibles,
+  freeze: lpFreeze,
   ancreCalc: lpAncreCalc,
   sabotageCalc: lpSabotageCalc,
 };

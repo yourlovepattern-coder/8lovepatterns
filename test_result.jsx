@@ -545,6 +545,63 @@ function PaidReportBlock({ X, tx, onCta, onRestart, pattern }){
   );
 }
 
+/* ===========================================================================
+   PAGE RÉSULTAT SÉCURE  (les deux axes bas) — honnête, valorisante, SANS offre
+   ----------------------------------------------------------------------------
+   Décision verrouillée (brief) : pas d'offre, pas de CTA d'achat. Reframé comme
+   le rivage / le cran Clear que le produit fait viser à tout le monde. Un
+   moment partageable « j'ai repris la barre ». Texte VERBATIM (window.LP_TEST
+   .haltes.secureResult). L'Étage 2 (Ancre) a été sauté en amont par le flux.
+   ======================================================================== */
+function SecureResult({ onRestart }){
+  const tx = useTx();
+  const data = (window.LP_TEST.haltes && window.LP_TEST.haltes.secureResult) || { head:'', body:[] };
+  const [shared, setShared] = rsUseState(false);
+
+  function onShare(){
+    const url = (window.location && window.location.origin) ? window.location.origin : 'https://8lovepatterns.com';
+    const shareData = { title: '8LovePatterns', text: "I came out Clear on the 8LovePatterns attachment test.", url };
+    try {
+      if(navigator.share){ navigator.share(shareData).catch(()=>{}); return; }
+    } catch(e){}
+    try {
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(url).then(()=>{ setShared(true); setTimeout(()=>setShared(false), 2200); }).catch(()=>{});
+      }
+    } catch(e){}
+  }
+
+  return (
+    <div>
+      <ResultMotionStyles/>
+      <section style={{ background:'var(--paper)', borderBottom:'1px solid var(--hairline)' }}>
+        <div style={{ maxWidth:720, margin:'0 auto', padding:'clamp(40px,7vw,90px) clamp(20px,5vw,44px) clamp(32px,5vw,60px)', textAlign:'center' }}>
+          <div className="lp-anim-perso" style={{ display:'grid', placeItems:'center', width:78, height:78, borderRadius:'50%', margin:'0 auto 22px',
+            background:'var(--fam-ancre-soft)', color:'var(--fam-ancre)' }}><Icon name="anchor" size={34}/></div>
+          <h1 className="lp-anim-fade" style={{ animationDelay:'.15s', fontFamily:'var(--font-display)', fontWeight:800, letterSpacing:'-.02em',
+            color:'var(--ink)', fontSize:'clamp(2.2rem,1.5rem+3vw,3.4rem)', lineHeight:1.06, margin:0, textWrap:'balance' }}>{data.head}</h1>
+        </div>
+      </section>
+
+      <section style={{ maxWidth:660, margin:'0 auto', padding:'clamp(32px,6vw,60px) clamp(20px,5vw,40px) 0' }}>
+        {(data.body||[]).map((p,i)=>(
+          <InView key={i} delay={i*70}>
+            <p style={{ margin:'0 0 1.15em', fontSize:'1.12rem', lineHeight:1.72, color:'var(--ink)', textWrap:'pretty' }}>{p}</p>
+          </InView>
+        ))}
+        <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:'14px', marginTop:'clamp(30px,5vw,46px)' }}>
+          <Button size="lg" onClick={onShare}>{tx({ fr:"Partager", en:'Share this' })}</Button>
+          {shared && <span style={{ color:'var(--fam-ancre)', fontSize:'.88rem', fontWeight:700 }}>{tx({ fr:'Lien copié', en:'Link copied' })}</span>}
+          <Button variant="ghost" onClick={onRestart}>{tx(LP_RESULT_TEXTS.retake)}</Button>
+        </div>
+      </section>
+
+      {/* Preuve : bande science (crédibilité), pas d'offre. */}
+      <ScienceBand/>
+    </div>
+  );
+}
+
 /* ---- écran provisoire d'achat --------------------------------------------- */
 function PendingReport({ onBack }){
   const tx = useTx();
@@ -565,18 +622,20 @@ function PendingReport({ onBack }){
 /* ===========================================================================
    L'ÉCRAN DE RÉSULTAT GRATUIT (assemblage des 7 sections)
    ======================================================================== */
-function TestResult({ answers, ancreVariant, onRestart, go }){
+function TestResult({ answers, frozen, onRestart, go }){
   const tx = useTx();
   const T = window.LP_TEST;
   const X = LP_RESULT_TEXTS;
-  const R = rsUseMemo(()=> window.LP_ENGINE.computeResultat(answers, ancreVariant), [answers, ancreVariant]);
+  const R = rsUseMemo(()=> window.LP_ENGINE.computeResultat(answers, frozen), [answers, frozen]);
   const [gateDone,setGateDone] = rsUseState(R.securite!=='alerte');
   const [pending,setPending] = rsUseState(false);
   const dev = /[?&]lpdev=1/.test(window.location.search);
 
   /* Persist the engine result (profile-key shape the server reads) for the CTA
-     and for rapport.html's success_url round-trip. */
+     and for rapport.html's success_url round-trip. Skipped on the secure route:
+     no mechanism, no offer, nothing to hand to the purchase tunnel. */
   rsUseEffect(()=>{
+    if(R.secure) return;
     try { localStorage.setItem(LP_RESULT_V2_KEY, JSON.stringify(lpResultV2(R))); } catch(e){}
   }, [R]);
 
@@ -587,7 +646,7 @@ function TestResult({ answers, ancreVariant, onRestart, go }){
   rsUseEffect(()=>{
     if(gateDone && !pending && !resultViewedRef.current){
       resultViewedRef.current = true;
-      window.LP_PH && window.LP_PH('result_viewed', { pattern: R.pattern_dominant });
+      window.LP_PH && window.LP_PH('result_viewed', R.secure ? { secure:true } : { pattern: R.pattern_dominant });
     }
   }, [gateDone, pending, R]);
 
@@ -605,6 +664,12 @@ function TestResult({ answers, ancreVariant, onRestart, go }){
   if(R.securite==='alerte' && !gateDone){
     return <SafetyScreen onContinue={()=>setGateDone(true)} go={go}/>;
   }
+
+  /* Route sécure : page honnête et valorisante, AUCUNE offre ni CTA d'achat. */
+  if(R.secure){
+    return <SecureResult onRestart={onRestart}/>;
+  }
+
   if(pending) return <PendingReport onBack={()=>setPending(false)}/>;
 
   const patOf = k => T.patterns.find(p=>p.key===k) || { key:k, fr:k, en:k };

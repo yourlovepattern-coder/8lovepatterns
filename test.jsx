@@ -1,29 +1,49 @@
 /* ============================================================================
-   8LovePatterns — TEST FLOW  (formatting only; the scoring engine is separate)
+   8LovePatterns — TEST FLOW  (v2 : entonnoir en deux temps)
    ----------------------------------------------------------------------------
-   Renders the 27 screens from window.LP_TEST: intro → 4 chapters → provisional
-   result. Three screen kinds:
-     · 'single'    — single choice, auto-advances (chapters 0 and 2)
-     · 'matrix'    — rate EACH of 5 reactions on the 5-level scale (chapter 1)
-     · 'statement' — one statement on the 5-level scale, auto-advances (chapter 3)
-   No bracketed label is ever rendered. No score is computed here. The result
-   screen is a layout shell; the safety gate (Q-C3 = alerte) is a display rule.
+   Rend les 33 écrans-question de window.LP_TEST, coupés en deux par la
+   révélation partielle. Machine à étapes (pas de "chapitres" à l'écran) :
+     Bloc 0 (5) · cadrage · Étage 1 A (8 axes) · Étage 1 B (8 mécanisme)
+     → FIGEMENT → Halte 1 (révélation) · Halte 2 (intro Ancre + 1re question)
+     · Étage 2 (5 questions d'Ancre restantes) · Étage 2 bis (6 sabotage)
+     · écran de fin → résultat.
+   Route sécure : Halte 1 sécure, Étage 2 sauté, résultat sécure sans offre.
+
+   Kinds d'écran-question :
+     · 'single'    — choix unique, auto-avance (Bloc 0, Ancre)
+     · 'statement' — une affirmation sur l'échelle 5 degrés, auto-avance
+                     (Étage 1 A + B, Sabotage)
+   Barre de progression : une ligne fine en haut, se REMPLIT, jamais un chiffre.
+   Aucun label entre crochets n'est rendu. Aucun score calculé ici.
    ========================================================================== */
 
 /* Current-language text picker for { fr, en } objects. */
 function useTx(){ const { lang } = useLang(); return (o)=> !o ? '' : (o[lang] != null ? o[lang] : (o.fr != null ? o.fr : o.en)); }
 
-/* Live viewport width (drives the responsive matrix). */
+/* Live viewport width (drives the responsive statement scale). */
 function useWidth(){
   const [w,setW] = useState(typeof window!=='undefined' ? window.innerWidth : 1200);
   useEffect(()=>{ const f=()=>setW(window.innerWidth); window.addEventListener('resize',f); return ()=>window.removeEventListener('resize',f); },[]);
   return w;
 }
 
+/* Fisher-Yates : renvoie une copie mélangée (ordre d'affichage). */
+function lpShuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1; i>0; i--){ const j = Math.floor(Math.random()*(i+1)); const t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+
+/* Inline **bold** renderer for verbatim halte texts. */
+function InlineRich({ text }){
+  const parts = String(text).split('**');
+  return parts.map((s,i)=> i%2===1 ? <strong key={i}>{s}</strong> : <React.Fragment key={i}>{s}</React.Fragment>);
+}
+
 /* 5-level intensity ramp: neutral (not me) → coral (completely me). */
 const LP_RAMP = ['#A7A2BC','#C49A93','#DC8870','#EA7058','#EE6352'];
 
-/* ---- One scale dot (used by matrix + statement) ------------------------- */
+/* ---- One scale dot (used by the statement scale) ------------------------ */
 function ScaleDot({ v, size=30, active, onPick, label }){
   const c = LP_RAMP[v];
   const [h,setH] = useState(false);
@@ -40,14 +60,14 @@ function ScaleDot({ v, size=30, active, onPick, label }){
 }
 
 /* ============================================================================
-   SCREEN — single choice  (chapters 0 + 2)
+   SCREEN — single choice  (Bloc 0 + Ancre)
    ========================================================================== */
-function SingleScreen({ q, value, onPick }){
+function SingleScreen({ q, value, onPick, compact }){
   const tx = useTx();
   return (
     <div>
-      <h2 className="lp-h2" style={{ lineHeight:1.28, fontWeight:700, marginBottom:'clamp(26px,3.4vw,40px)',
-        fontSize:'clamp(1.4rem, 1.02rem + 1.15vw, 2rem)', textWrap:'balance' }}>{tx(q.situation)}</h2>
+      <h2 className="lp-h2" style={{ lineHeight:1.28, fontWeight:700, marginBottom: compact ? 'clamp(16px,2.4vw,24px)' : 'clamp(26px,3.4vw,40px)',
+        fontSize: compact ? 'clamp(1.24rem, .98rem + .9vw, 1.6rem)' : 'clamp(1.4rem, 1.02rem + 1.15vw, 2rem)', textWrap:'balance' }}>{tx(q.situation)}</h2>
       <div style={{ display:'flex', flexDirection:'column', gap:'12px', maxWidth:660 }}>
         {q.options.map((opt,i)=>{
           const active = value===i;
@@ -77,7 +97,7 @@ function ChoiceButton({ label, active, onClick }){
 }
 
 /* ============================================================================
-   SCREEN — statement on the 5-level scale  (chapter 3)
+   SCREEN — statement on the 5-level scale  (Étage 1 A + B, Sabotage)
    ========================================================================== */
 function StatementScreen({ q, value, onPick }){
   const tx = useTx();
@@ -87,7 +107,7 @@ function StatementScreen({ q, value, onPick }){
     <div>
       <div style={{ display:'inline-flex', alignItems:'center', gap:'9px', marginBottom:'18px' }}>
         <span style={{ fontSize:'.74rem', fontWeight:800, letterSpacing:'.12em', textTransform:'uppercase', color:'var(--ink-3)', whiteSpace:'nowrap' }}>
-          {useTx()({ fr:'À quel point est-ce toi ?', en:'How much is this you?' })}
+          {tx({ fr:'À quel point est-ce toi ?', en:'How much is this you?' })}
         </span>
       </div>
       <h2 className="lp-h2" style={{ lineHeight:1.28, fontWeight:700, marginBottom:'clamp(30px,4vw,48px)',
@@ -124,94 +144,46 @@ function StatementScreen({ q, value, onPick }){
 }
 
 /* ============================================================================
-   SCREEN — matrix: rate each of 5 reactions  (chapter 1)
+   PROGRESS — une ligne fine en haut, qui se REMPLIT (jamais un chiffre)
    ========================================================================== */
-function MatrixScreen({ q, value, onChange }){
-  const tx = useTx();
-  const scale = window.LP_TEST.scale;
-  const narrow = useWidth() < 860;
-  const set = (ri, v)=> onChange({ ...(value||{}), [ri]: v });
-
+function TopProgress({ fill }){
   return (
-    <div>
-      <h2 className="lp-h2" style={{ lineHeight:1.28, fontWeight:700, marginBottom:'8px',
-        fontSize:'clamp(1.32rem, 1rem + 1.05vw, 1.85rem)', textWrap:'balance', maxWidth:880 }}>{tx(q.situation)}</h2>
-      <p style={{ margin:'0 0 clamp(20px,2.6vw,30px)', color:'var(--ink-3)', fontSize:'.95rem', fontWeight:600 }}>
-        {tx({ fr:'Note chacune de ces réactions selon ce qui te ressemble.', en:'Rate each of these reactions by how much it sounds like you.' })}
-      </p>
-
-      {narrow ? (
-        /* ---- stacked (mobile) ---- */
-        <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
-          {q.reactions.map((r,ri)=>{
-            const v = value ? value[ri] : undefined;
-            return (
-              <div key={ri} style={{ background:'var(--surface)', border:`1.5px solid ${v!=null?'var(--hairline-2)':'var(--hairline)'}`,
-                borderRadius:'var(--r-lg)', padding:'16px 18px', boxShadow:'var(--sh-xs)' }}>
-                <div style={{ fontSize:'1.02rem', fontWeight:600, lineHeight:1.42, color:'var(--ink)', textWrap:'pretty' }}>{tx(r)}</div>
-                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginTop:'14px' }}>
-                  {scale.map(s=> <ScaleDot key={s.v} v={s.v} size={32} active={v===s.v} onPick={()=>set(ri,s.v)} label={tx(s)}/> )}
-                </div>
-                <div style={{ display:'flex', justifyContent:'space-between', marginTop:'7px', color:'var(--ink-3)', fontSize:'.72rem', fontWeight:600 }}>
-                  <span>{tx(scale[0])}</span><span>{tx(scale[4])}</span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      ) : (
-        /* ---- aligned grid (desktop): labels header + 5 reaction rows ---- */
-        <div>
-          <div style={{ display:'grid', gridTemplateColumns:'minmax(0,1fr) repeat(5, clamp(58px,6vw,82px))', alignItems:'end',
-            gap:'0 4px', paddingBottom:'10px', borderBottom:'1px solid var(--hairline)' }}>
-            <span></span>
-            {scale.map(s=>(
-              <span key={s.v} style={{ textAlign:'center', fontSize:'.72rem', fontWeight:700, lineHeight:1.22, color:'var(--ink-3)', padding:'0 2px' }}>{tx(s)}</span>
-            ))}
-          </div>
-          {q.reactions.map((r,ri)=>{
-            const v = value ? value[ri] : undefined;
-            const done = v!=null;
-            return (
-              <div key={ri} style={{ display:'grid', gridTemplateColumns:'minmax(0,1fr) repeat(5, clamp(58px,6vw,82px))',
-                alignItems:'center', gap:'0 4px', padding:'15px 0', borderBottom:'1px solid var(--hairline)' }}>
-                <span style={{ fontSize:'1.04rem', fontWeight:600, lineHeight:1.4, color: done?'var(--ink)':'var(--ink-2)', paddingRight:'18px', textWrap:'pretty' }}>{tx(r)}</span>
-                {scale.map(s=>(
-                  <span key={s.v} style={{ display:'grid', placeItems:'center' }}>
-                    <ScaleDot v={s.v} size={30} active={v===s.v} onPick={()=>set(ri,s.v)} label={tx(s)}/>
-                  </span>
-                ))}
-              </div>
-            );
-          })}
-        </div>
-      )}
+    <div style={{ height:6, borderRadius:'4px', background:'var(--hairline)', overflow:'hidden',
+      margin:'0 0 clamp(24px,3.6vw,40px)' }}>
+      <div style={{ width:`${Math.round(Math.max(0,Math.min(1,fill))*100)}%`, height:'100%', borderRadius:'4px',
+        background:'var(--corail)', transition:'width .45s cubic-bezier(.22,.61,.36,1)' }}/>
     </div>
   );
 }
 
 /* ============================================================================
-   CHAPTER PROGRESS — name + "Chapitre n sur 4" + 4 segment bars
+   HALTE — prose verbatim (cadrage, révélation, intro Ancre)
    ========================================================================== */
-function ChapterProgress({ chapters, current, fills }){
-  const tx = useTx();
-  const ch = chapters[current];
+function HalteProse({ data, code }){
+  const [imgOk,setImgOk] = useState(true);
   return (
-    <div>
-      <div style={{ display:'flex', alignItems:'baseline', gap:'12px', marginBottom:'9px', flexWrap:'wrap' }}>
-        <span style={{ fontSize:'.74rem', fontWeight:800, letterSpacing:'.13em', textTransform:'uppercase', color:'var(--corail)', whiteSpace:'nowrap' }}>
-          {tx({ fr:`Chapitre ${ch.n} sur 4`, en:`Chapter ${ch.n} of 4` })}
-        </span>
-        <span style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:'1.05rem', color:'var(--ink)', letterSpacing:'-.01em' }}>{tx(ch)}</span>
-      </div>
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(4, 1fr)', gap:'7px' }}>
-        {chapters.map((c,i)=>(
-          <div key={c.n} style={{ height:7, borderRadius:'4px', background:'var(--hairline)', overflow:'hidden' }}>
-            <div style={{ width:`${Math.round((fills[i]||0)*100)}%`, height:'100%', borderRadius:'4px',
-              background: i<current ? 'var(--or)' : 'var(--corail)', transition:'width .4s cubic-bezier(.22,.61,.36,1)' }}/>
-          </div>
-        ))}
-      </div>
+    <div style={{ maxWidth:720, margin:'0 auto' }}>
+      <h1 style={{ fontFamily:'var(--font-display)', fontWeight:800, letterSpacing:'-.02em', color:'var(--ink)',
+        fontSize:'clamp(1.6rem, 1.15rem + 1.6vw, 2.4rem)', lineHeight:1.12, margin:'0 0 clamp(18px,2.6vw,26px)', textWrap:'balance' }}>
+        <InlineRich text={data.head}/>
+      </h1>
+      {(data.body||[]).map((p,i)=>(
+        <p key={i} style={{ margin:'0 0 1.05em', fontSize:'1.08rem', lineHeight:1.7, color:'var(--ink)', textWrap:'pretty' }}>
+          <InlineRich text={p}/>
+        </p>
+      ))}
+      {code && imgOk && (
+        <div style={{ textAlign:'center', margin:'clamp(22px,3.4vw,34px) 0' }}>
+          <img src={`assets/archetypes/${code}.png`} alt="" onError={()=>setImgOk(false)}
+            style={{ width:'auto', height:'clamp(200px,34vw,300px)', maxWidth:'100%', display:'inline-block',
+              filter:'drop-shadow(0 22px 26px rgba(15,20,45,.26))' }}/>
+        </div>
+      )}
+      {(data.after||[]).map((p,i)=>(
+        <p key={i} style={{ margin:'0 0 1.05em', fontSize:'1.08rem', lineHeight:1.7, color:'var(--ink)', textWrap:'pretty' }}>
+          <InlineRich text={p}/>
+        </p>
+      ))}
     </div>
   );
 }
@@ -221,28 +193,61 @@ function ChapterProgress({ chapters, current, fills }){
    ========================================================================== */
 function LoveTest({ go }){
   const T = window.LP_TEST;
-  const chapters = T.chapters;
   const tx = useTx();
 
   const [phase,setPhase] = useState('intro');      // 'intro' | 'test' | 'result'
   const [index,setIndex] = useState(0);
-  const [answers,setAnswers] = useState({});        // by question id
+  const [answers,setAnswers] = useState({});
   const [leaving,setLeaving] = useState(false);
 
-  /* Anchor variant: frozen at the moment the person ARRIVES at Chapter 2,
-     using the exact Section 1 calculation. Never recomputed afterwards: the
-     Anchor is measured on the variant that was actually played. A perfect tie
-     at the result stage (profil mixte) only changes the report display. */
-  const [ancreVariant,setAncreVariant] = useState(null);
-  const leading = ancreVariant || window.LP_ENGINE.patternCalc(answers).dominant;
-  const Q = React.useMemo(()=> [].concat(T.c0, T.c1, (T.ancre && T.ancre[leading]) || T.ancre['Miroir'], T.c3), [leading]);
-  /* Dev hook (debugging + future integrations). Read-only. */
-  useEffect(()=>{ window.__lpState = { answers, ancreVariant }; }, [answers, ancreVariant]);
+  /* Mécanisme figé à la fin de l'Étage 1 (avant la révélation). Contient
+     { secure, axes, dominant, secondaire } et ne change plus ensuite : la
+     révélation, l'intro d'Ancre et la variante jouée se lisent dessus. */
+  const [frozen,setFrozen] = useState(null);
 
-  /* Analytics (cookieless, non-blocking). quiz_started when the questionnaire
-     actually begins; quiz_completed when the last answer is validated and the
-     flow crosses into the result phase (score computed downstream). Fires on
-     each real transition, so a retake counts as a fresh start. */
+  /* Ordre d'affichage mélangé, stable pour la session (Phase A avant Phase B). */
+  const shuffleRef = React.useRef(null);
+  if(!shuffleRef.current){
+    shuffleRef.current = { axes: lpShuffle(T.axes), phaseB: lpShuffle(T.c1) };
+  }
+
+  /* Partie fixe (pré-figement) : Bloc 0 · cadrage · Étage 1 A · Étage 1 B. */
+  const pre = React.useMemo(()=> []
+    .concat(T.c0.map(q=>({ type:'q', q })))
+    .concat([{ type:'framing' }])
+    .concat(shuffleRef.current.axes.map(q=>({ type:'q', q })))
+    .concat(shuffleRef.current.phaseB.map(q=>({ type:'q', q, phaseB:true })))
+  , [T]);
+
+  /* Liste complète : la partie post-figement dépend du mécanisme/route figés. */
+  const cards = React.useMemo(()=>{
+    if(!frozen) return pre;
+    const post = [{ type:'reveal' }];
+    if(!frozen.secure){
+      const aq = (T.ancre && T.ancre[frozen.dominant]) || T.ancre['Miroir'];
+      post.push({ type:'anchorIntro', q: aq[0] });
+      for(let i=1;i<aq.length;i++) post.push({ type:'q', q: aq[i] });
+    }
+    T.c3.forEach(q=> post.push({ type:'q', q }));
+    post.push({ type:'preResult' });
+    return pre.concat(post);
+  }, [pre, frozen, T]);
+
+  const card = cards[index];
+
+  /* Barre : nb de questions répondues / total du parcours. Avant le figement,
+     on projette le parcours mécanisme (33) pour poser la révélation à ~65 % ;
+     après, on prend le total réel (secure : moins de questions, recalage muet). */
+  const qCards = cards.filter(c=> c.type==='q' || c.type==='anchorIntro');
+  const answered = qCards.filter(c=> answers[c.q.id] != null).length;
+  const total = frozen ? qCards.length : 33;
+  const fill = total ? answered/total : 0;
+
+  /* Dev hook (read-only). */
+  useEffect(()=>{ window.__lpState = { answers, frozen }; }, [answers, frozen]);
+
+  /* Analytics : quiz_started (le questionnaire commence) / quiz_completed
+     (dernière réponse validée, passage au résultat). Inchangés. */
   const phasePrevRef = React.useRef(phase);
   React.useEffect(()=>{
     if(phase !== phasePrevRef.current){
@@ -252,95 +257,143 @@ function LoveTest({ go }){
     }
   }, [phase]);
 
-  const q = Q[index];
-  const curChapter = q ? q.chapter : 0;
-  const fills = chapters.map(ch=>{
-    const total = Q.filter(x=>x.chapter===ch.n).length;
-    const before = Q.slice(0,index).filter(x=>x.chapter===ch.n).length;
-    if(ch.n < curChapter) return 1;
-    if(ch.n === curChapter) return total ? before/total : 0;
-    return 0;
-  });
+  /* Analytics : reveal_viewed à l'affichage de la révélation partielle (1 fois). */
+  const revealFiredRef = React.useRef(false);
+  React.useEffect(()=>{
+    if(card && card.type==='reveal' && !revealFiredRef.current){
+      revealFiredRef.current = true;
+      window.LP_PH && window.LP_PH('reveal_viewed', frozen && frozen.secure ? { secure:true } : { pattern: frozen ? frozen.dominant : null });
+    }
+  }, [index, card, frozen]);
 
-  function setAnswer(v){ setAnswers(a=>({ ...a, [q.id]: v })); }
-
-  function go_next(){
+  /* ---- navigation --------------------------------------------------------- */
+  function goForward(currentAnswers){
     setLeaving(true);
     setTimeout(()=>{
-      const next = index+1;
-      /* Crossing into Chapter 2: freeze the Anchor variant on the pattern
-         leading right now (Section 1 calc). Kept for the rest of the test. */
-      if(ancreVariant==null && Q[next] && Q[next].chapter===2){
-        setAncreVariant(window.LP_ENGINE.patternCalc(answers).dominant);
+      const nextI = index + 1;
+      if(!frozen && nextI === pre.length){
+        /* Fin de l'Étage 1 : on fige le mécanisme (ou la route sécure). */
+        setFrozen(window.LP_ENGINE.freeze(currentAnswers || answers));
+        setIndex(nextI);
+      } else if(nextI < cards.length){
+        setIndex(nextI);
+      } else {
+        setPhase('result');
       }
-      if(next < Q.length){ setIndex(next); setLeaving(false); window.scrollTo(0,0); }
-      else { setPhase('result'); setLeaving(false); window.scrollTo(0,0); }
-    }, 230);
+      setLeaving(false); window.scrollTo(0,0);
+    }, 220);
   }
-  function go_back(){
+  function goBack(){
     if(index===0){ setPhase('intro'); return; }
     setLeaving(true);
     setTimeout(()=>{ setIndex(index-1); setLeaving(false); window.scrollTo(0,0); }, 180);
   }
-  function pickSingle(v){ setAnswer(v); setLeaving(true);
-    setTimeout(()=>{ if(index+1<Q.length){ setIndex(index+1);} else { setPhase('result'); } setLeaving(false); window.scrollTo(0,0); }, 240); }
+  function answerQuestion(c, value){
+    const stored = c.phaseB ? { 0: value } : value;   /* Phase B en forme matrice */
+    const next = { ...answers, [c.q.id]: stored };
+    setAnswers(next);
+    goForward(next);
+  }
 
   /* ---- intro splash ---- */
   if(phase==='intro'){
-    return <TestShell go={go}>
-      <TestIntro chapters={chapters} onStart={()=>{ setPhase('test'); setIndex(0); window.scrollTo(0,0); }}/>
-    </TestShell>;
+    return <TestShell go={go}><TestIntro onStart={()=>{ setPhase('test'); setIndex(0); window.scrollTo(0,0); }}/></TestShell>;
   }
 
   /* ---- result ---- */
   if(phase==='result'){
     return <TestShell go={go}>
-      <TestResult answers={answers} ancreVariant={ancreVariant} onRestart={()=>{ setAnswers({}); setAncreVariant(null); setIndex(0); setPhase('intro'); window.scrollTo(0,0); }} go={go}/>
+      <TestResult answers={answers} frozen={frozen}
+        onRestart={()=>{ setAnswers({}); setFrozen(null); setIndex(0); revealFiredRef.current=false;
+          shuffleRef.current = { axes: lpShuffle(T.axes), phaseB: lpShuffle(T.c1) }; setPhase('intro'); window.scrollTo(0,0); }}
+        go={go}/>
     </TestShell>;
   }
 
-  /* ---- a question ---- */
-  const v = answers[q.id];
-  const isMatrix = q.kind==='matrix';
-  const matrixComplete = isMatrix && v && Object.keys(v).length===q.reactions.length;
-  const globalN = index+1;
+  /* ---- a screen (question or halte) ---- */
+  const isQuestion = card && (card.type==='q' || card.type==='anchorIntro');
+
+  let body = null;
+  if(card.type==='q'){
+    const q = card.q;
+    if(card.phaseB){
+      const v = answers[q.id] ? answers[q.id][0] : undefined;
+      body = <StatementScreen q={q} value={v} onPick={(val)=>answerQuestion(card, val)}/>;
+    } else if(q.kind==='single'){
+      body = <SingleScreen q={q} value={answers[q.id]} onPick={(i)=>answerQuestion(card, i)}/>;
+    } else {
+      body = <StatementScreen q={q} value={answers[q.id]} onPick={(val)=>answerQuestion(card, val)}/>;
+    }
+  } else if(card.type==='framing'){
+    body = <div>
+      <HalteProse data={T.haltes.framing}/>
+      <div style={{ textAlign:'center', marginTop:'clamp(28px,4vw,42px)' }}>
+        <Button size="lg" icon="arrow-right" onClick={()=>goForward()}>{tx({ fr:'Continuer', en:'Continue' })}</Button>
+      </div>
+    </div>;
+  } else if(card.type==='reveal'){
+    const secure = frozen && frozen.secure;
+    const data = secure ? T.haltes.secureReveal : (T.haltes.reveals[frozen.dominant] || T.haltes.reveals['Miroir']);
+    const code = secure ? null : (LP_HALTE_CODE[frozen.dominant] || 'mir');
+    body = <div>
+      <HalteProse data={data} code={code}/>
+      <div style={{ textAlign:'center', marginTop:'clamp(28px,4vw,42px)' }}>
+        <Button size="lg" icon="arrow-right" onClick={()=>goForward()}>{tx({ fr:'Continuer', en:'Continue' })}</Button>
+      </div>
+    </div>;
+  } else if(card.type==='anchorIntro'){
+    const data = T.haltes.anchorIntros[frozen.dominant] || T.haltes.anchorIntros['Miroir'];
+    body = <div style={{ maxWidth:720, margin:'0 auto' }}>
+      <HalteProse data={data}/>
+      <div style={{ marginTop:'clamp(22px,3vw,32px)', paddingTop:'clamp(18px,2.6vw,26px)', borderTop:'1px solid var(--hairline)' }}>
+        <SingleScreen q={card.q} value={answers[card.q.id]} onPick={(i)=>answerQuestion(card, i)} compact/>
+      </div>
+    </div>;
+  } else if(card.type==='preResult'){
+    body = <div style={{ maxWidth:620, margin:'clamp(20px,6vw,60px) auto 0', textAlign:'center' }}>
+      <div style={{ display:'grid', placeItems:'center', width:60, height:60, borderRadius:'50%', margin:'0 auto 18px',
+        background:'var(--fam-ancre-soft)', color:'var(--fam-ancre)' }}><Icon name="anchor" size={26}/></div>
+      <h1 className="lp-h1">{tx({ fr:"C'est tout ce qu'on avait à te demander.", en:"That's everything we needed to ask." })}</h1>
+      <p className="lp-lead" style={{ marginTop:14 }}>{tx({ fr:"Ton résultat est prêt.", en:"Your result is ready." })}</p>
+      <div style={{ marginTop:28 }}>
+        <Button size="lg" icon="arrow-right" onClick={()=>goForward()}>{tx({ fr:'Voir mon résultat', en:'See my result' })}</Button>
+      </div>
+    </div>;
+  }
 
   return (
     <TestShell go={go}>
       <div style={{ display:'flex', flexDirection:'column', minHeight:'calc(100vh - 132px)' }}>
-        <ChapterProgress chapters={chapters} current={curChapter} fills={fills}/>
+        <TopProgress fill={fill}/>
 
-        <div style={{ flex:1, display:'flex', flexDirection:'column', justifyContent:'center', padding:'clamp(26px,4vw,48px) 0',
+        <div style={{ flex:1, display:'flex', flexDirection:'column', justifyContent:'center', padding:'clamp(20px,3.4vw,40px) 0',
           opacity:leaving?0:1, transform:leaving?'translateY(10px)':'none', transition:'all .24s cubic-bezier(.22,.61,.36,1)' }}>
-          {q.kind==='single'    && <SingleScreen    q={q} value={v} onPick={pickSingle}/>}
-          {q.kind==='statement' && <StatementScreen q={q} value={v} onPick={(val)=>{ setAnswer(val); pickSingle(val); }}/>}
-          {q.kind==='matrix'    && <MatrixScreen    q={q} value={v} onChange={setAnswer}/>}
+          {body}
         </div>
 
-        {/* footer: back · counter · (continue for matrix) */}
+        {/* footer: Back (+ Private on question screens) */}
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:'16px',
           padding:'clamp(14px,2.4vw,22px) 0', borderTop:'1px solid var(--hairline)' }}>
-          <button onClick={go_back} style={{ display:'inline-flex', alignItems:'center', gap:'6px', background:'none',
+          <button onClick={goBack} style={{ display:'inline-flex', alignItems:'center', gap:'6px', background:'none',
             border:'none', cursor:'pointer', color:'var(--ink-2)', fontFamily:'var(--font-body)', fontWeight:600, fontSize:'.92rem', padding:0 }}>
             <Icon name="arrow-left" size={16}/> {tx({ fr:'Retour', en:'Back' })}
           </button>
-
-          <span style={{ fontSize:'.85rem', fontWeight:700, color:'var(--ink-3)' }}>
-            {tx({ fr:'Question', en:'Question' })} {globalN} <span style={{ color:'var(--ink-3)', opacity:.7 }}>/ {Q.length}</span>
-          </span>
-
-          {isMatrix
-            ? <Button size="md" icon="arrow-right" onClick={go_next} style={ matrixComplete?{}:{ opacity:.4, pointerEvents:'none' } }>
-                {tx({ fr:'Continuer', en:'Continue' })}
-              </Button>
-            : <span style={{ display:'inline-flex', alignItems:'center', gap:'6px', color:'var(--ink-3)', fontSize:'.82rem', fontWeight:600 }}>
+          {isQuestion
+            ? <span style={{ display:'inline-flex', alignItems:'center', gap:'6px', color:'var(--ink-3)', fontSize:'.82rem', fontWeight:600 }}>
                 <Icon name="lock" size={14}/> {tx({ fr:'Privé', en:'Private' })}
-              </span>}
+              </span>
+            : <span/>}
         </div>
       </div>
     </TestShell>
   );
 }
+
+/* pattern key -> code archétype (image de la révélation, art existant du profil) */
+const LP_HALTE_CODE = {
+  'Miroir':'mir', 'Fugitif':'fug', 'Bastion':'bas', 'Guetteur':'gue',
+  'Sauveur':'sau', 'Caméléon':'cam', 'Alchimiste':'alc', 'Incendiaire':'inc',
+};
 
 /* ---- shared shell: slim header + centered column ------------------------ */
 function TestShell({ children, go }){
@@ -359,41 +412,17 @@ function TestShell({ children, go }){
 }
 
 /* ---- intro splash ------------------------------------------------------- */
-function TestIntro({ chapters, onStart }){
+function TestIntro({ onStart }){
   const tx = useTx();
-  const meta = {
-    0:{ fr:'Trois questions pour situer où tu en es.',          en:'Three questions to place where you are.',          n:3 },
-    1:{ fr:'Des scènes du quotidien, et ce qui monte en toi.',  en:'Everyday scenes, and what rises in you.',          n:12 },
-    2:{ fr:'À quel moment tu arrives encore à te reprendre.',   en:'When you can still catch yourself in time.',        n:6 },
-    3:{ fr:'Ce que ton mécanisme change dans tes relations.',   en:'What your mechanism changes in your relationships.', n:6 },
-  };
   return (
-    <div style={{ maxWidth:760, margin:'clamp(10px,4vw,46px) auto 0' }}>
-      <div style={{ textAlign:'center' }}>
-        <Avatar code="anc" size={84}/>
-        <h1 className="lp-h1" style={{ marginTop:18 }}>{tx({ fr:'On commence en douceur.', en:"Let's start gently." })}</h1>
-        <p className="lp-lead" style={{ marginTop:14, maxWidth:560, marginInline:'auto' }}>
-          {tx({ fr:"27 écrans, une question à la fois, en 4 chapitres. Réponds avec ton instinct, il n'y a pas de bonne réponse. On parle de ta vie à toi.",
-                en:"27 screens, one question at a time, in 4 chapters. Answer with your gut, there is no right answer. We're talking about your life." })}
-        </p>
-      </div>
-
-      <div style={{ display:'flex', flexDirection:'column', gap:'12px', marginTop:'clamp(30px,4vw,44px)' }}>
-        {chapters.map(ch=>(
-          <div key={ch.n} style={{ display:'flex', alignItems:'center', gap:'18px', background:'var(--surface)',
-            border:'1px solid var(--hairline)', borderRadius:'var(--r-lg)', padding:'18px 22px', boxShadow:'var(--sh-xs)' }}>
-            <span style={{ display:'grid', placeItems:'center', width:42, height:42, borderRadius:'50%', flexShrink:0,
-              background:'var(--encre)', color:'#fff', fontFamily:'var(--font-display)', fontWeight:800, fontSize:'1.05rem' }}>{ch.n}</span>
-            <div style={{ flex:1 }}>
-              <div style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:'1.12rem', color:'var(--ink)' }}>{tx(ch)}</div>
-              <div style={{ color:'var(--ink-2)', fontSize:'.96rem', lineHeight:1.45 }}>{tx(meta[ch.n])}</div>
-            </div>
-            <span style={{ fontSize:'.8rem', fontWeight:700, color:'var(--ink-3)', whiteSpace:'nowrap' }}>{meta[ch.n].n} {tx({ fr:'questions', en:'questions' })}</span>
-          </div>
-        ))}
-      </div>
-
-      <div style={{ textAlign:'center', marginTop:'clamp(28px,4vw,40px)' }}>
+    <div style={{ maxWidth:620, margin:'clamp(20px,6vw,80px) auto 0', textAlign:'center' }}>
+      <Avatar code="anc" size={84}/>
+      <h1 className="lp-h1" style={{ marginTop:18 }}>{tx({ fr:'On commence en douceur.', en:"Let's start gently." })}</h1>
+      <p className="lp-lead" style={{ marginTop:14, maxWidth:520, marginInline:'auto' }}>
+        {tx({ fr:"Une question à la fois. Réponds avec ton instinct, il n'y a pas de bonne réponse. On parle de ta vie à toi, telle qu'elle est aujourd'hui.",
+              en:"One question at a time. Answer with your gut, there is no right answer. We're talking about your life, as it is today." })}
+      </p>
+      <div style={{ marginTop:'clamp(28px,4vw,40px)' }}>
         <Button size="lg" icon="arrow-right" onClick={onStart}>{tx({ fr:'Commencer', en:'Begin' })}</Button>
         <div style={{ display:'inline-flex', alignItems:'center', gap:'8px', marginTop:18, color:'var(--ink-3)', fontSize:'.9rem' }}>
           <Icon name="lock" size={15}/> {tx({ fr:'Tes réponses restent privées, sans inscription.', en:'Your answers stay private, no sign-up.' })}
@@ -403,7 +432,7 @@ function TestIntro({ chapters, onStart }){
   );
 }
 
-/* TestResult (écran de résultat gratuit, séquence en 5 temps) vit dans
+/* TestResult (écran de résultat gratuit) et SecureResult vivent dans
    test_result.jsx. SafetyScreen reste ici et est exporté pour lui. */
 
 /* ---- safety screen (Q-C3 = alerte) -------------------------------------- */
@@ -415,7 +444,7 @@ function SafetyScreen({ onContinue, go }){
         background:'var(--fam-ancre-soft)', color:'var(--fam-ancre)' }}>
         <Icon name="heart" size={30}/>
       </div>
-      <h1 className="lp-h1" style={{ textAlign:'center', marginTop:20 }}>{tx({ fr:"Avant tout, prenons soin de toi.", en:'Before anything, let\u2019s take care of you.' })}</h1>
+      <h1 className="lp-h1" style={{ textAlign:'center', marginTop:20 }}>{tx({ fr:"Avant tout, prenons soin de toi.", en:'Before anything, let’s take care of you.' })}</h1>
       <p className="lp-lead" style={{ marginTop:14, textAlign:'center' }}>
         {tx({ fr:"Certaines de tes réponses parlent d'avoir eu peur, de t'être sentie rabaissée ou pas libre. Ça compte plus que n'importe quel résultat de test. Tu n'as pas à porter ça seule.",
               en:"Some of your answers speak of feeling afraid, put down, or not free. That matters more than any test result. You don't have to carry it alone." })}
