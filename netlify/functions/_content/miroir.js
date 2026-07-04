@@ -372,8 +372,13 @@ export const content = {
           { title: 'Set Boundaries, Find Peace', author: 'Nedra Glover Tawwab', blurb: 'A practical, warm guide to the plain no and the named preference, the exact skill the mirror never let you build.' },
         ],
       },
+    },
+
+    {
+      id: 'lecturesWarning', zone: 'paid', type: 'prose',
+      when: { if: { palier: 4 } },
       callouts: [
-        { if: { palier: 4 }, tone: 'care', text: 'A word, in honesty. This is a heavy read with difficult passages, and it can stir up more than a book alone is built to hold. If it does, pause it and consider bringing a professional into your corner. At this depth, that isn\u2019t a failure of the plan, it\u2019s the strongest move on the board.' },
+        { tone: 'care', text: 'A word, in honesty. This is a heavy read with difficult passages, and it can stir up more than a book alone is built to hold. If it does, pause it and consider bringing a professional into your corner. At this depth, that isn\u2019t a failure of the plan, it\u2019s the strongest move on the board.' },
       ],
     },
 
