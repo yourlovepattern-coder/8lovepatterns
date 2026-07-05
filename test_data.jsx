@@ -459,6 +459,108 @@ const LP_HALTES = {
    pattern figé at the end of Étage 1. */
 const LP_ANCRE_ALL = Object.assign({ 'Miroir': LP_TEST_C2_MIROIR }, window.LP_ANCRE_VARIANTS || {});
 
+/* ============================================================================
+   OFFRE (v3) — données par mécanisme lues par test_result.jsx.
+   ----------------------------------------------------------------------------
+   La page résultat → offre v3 est presque entièrement de la copy PARTAGÉE
+   (verbatim, EN) vivant dans test_result.jsx. Seuls quelques éléments varient
+   par mécanisme, et ils vivent ici :
+     · quiet   — la « quiet rule » du BLOC 1 (verbatim, fournie par le brief) ;
+     · loopAnchor — l'index de l'étape « le pattern prend la barre » dans la
+                    boucle de free_content.client.js (BLOC 2) ;
+     · cost    — override verbatim du BLOC 4 (Miroir seul ; les 7 autres
+                 retombent sur le paragraphe du milieu de leur Halte 1) ;
+     · deliver — les 3 éléments nommés du BLOC 5 (Catch, kit d'urgence, blind
+                 spot). Le Plan et la Reading List sont partagés + gabarités
+                 par palier dans test_result.jsx.
+   Miroir est VERBATIM (page-offre-miroir-nu-v3.md). Les 7 autres mécanismes
+   n'ont pas encore été portés à la marque « Anchor Map » côté rapport payant :
+   leurs libellés ici sont des INTERIMS ancrés sur la boucle + la quiet rule,
+   à remplacer par une passe de copy dédiée (comme les interims de coût). */
+const LP_OFFER = {
+  quiet: {
+    'Miroir':      `as long as you're what they need, they have no reason to leave.`,
+    'Guetteur':    `what you see coming can't blindside you.`,
+    'Sauveur':     `someone who needs you won't leave you.`,
+    'Incendiaire': `you can survive their anger, but not their silence.`,
+    'Fugitif':     `nothing can trap you if you never fully arrive.`,
+    'Bastion':     `if you need no one, no one can hurt you.`,
+    'Caméléon':    `no one leaves someone who never causes a problem.`,
+    'Alchimiste':  `what you can explain can't drown you.`,
+  },
+  /* Index (0-based) de l'étape de la boucle où TU exécutes ta stratégie —
+     « the moment the pattern takes the helm ». Aligné sur les steps du visuel
+     loop de free_content.client.js. */
+  loopAnchor: {
+    'Miroir':2, 'Bastion':2, 'Fugitif':2, 'Guetteur':2, 'Alchimiste':2,
+    'Caméléon':1, 'Sauveur':1, 'Incendiaire':1,
+  },
+  /* BLOC 4 — coût. Miroir verbatim v3 ; les autres retombent sur le paragraphe
+     du milieu de leur Halte 1 (interim, cf. brief). */
+  cost: {
+    'Miroir': `Every year, "what do you want?" takes longer to answer. Until it becomes the sentence people with this pattern know too well: I don't know who I am without them.`,
+  },
+  /* BLOC 5 — les 3 livrables nommés. Miroir = verbatim v3 ; 7 autres = interim. */
+  deliver: {
+    'Miroir': {
+      catch:  `The Mirror Catch`,
+      catchB: `one line that stops the shift mid-conversation, before you've become someone else.`,
+      kit:    `Before You Disappear`,
+      kitB:   `the pocket kit for the moment you feel yourself vanishing into what they need.`,
+      blindB: `the blind spot that keeps you loved and unmet.`,
+    },
+    'Guetteur': {
+      catch:  `The Watcher Catch`,
+      catchB: `one line that stops the scanning mid-conversation, before you start building the case.`,
+      kit:    `Before You Investigate`,
+      kitB:   `the pocket kit for the moment the search for proof takes over.`,
+      blindB: `the blind spot that keeps you watching and never reassured.`,
+    },
+    'Sauveur': {
+      catch:  `The Savior Catch`,
+      catchB: `one line that stops the rescue mid-conversation, before their problem becomes your project.`,
+      kit:    `Before You Take It On`,
+      kitB:   `the pocket kit for the moment you start carrying their weight as your own.`,
+      blindB: `the blind spot that keeps you needed and never chosen.`,
+    },
+    'Incendiaire': {
+      catch:  `The Arsonist Catch`,
+      catchB: `one line that stops the test mid-conversation, before the spark catches.`,
+      kit:    `Before You Strike`,
+      kitB:   `the pocket kit for the moment you feel the spark rising and reach for the match.`,
+      blindB: `the blind spot that keeps you close through fire and never at peace.`,
+    },
+    'Fugitif': {
+      catch:  `The Runaway Catch`,
+      catchB: `one line that stops the pull to the door mid-conversation, before distance decides for you.`,
+      kit:    `Before You Run`,
+      kitB:   `the pocket kit for the moment the exit opens and the room starts to shrink.`,
+      blindB: `the blind spot that keeps you free and never held.`,
+    },
+    'Bastion': {
+      catch:  `The Bastion Catch`,
+      catchB: `one line that stops the shutdown mid-conversation, before the door closes.`,
+      kit:    `Before You Shut Down`,
+      kitB:   `the pocket kit for the moment you feel yourself going cold and far away.`,
+      blindB: `the blind spot that keeps you safe and never reached.`,
+    },
+    'Caméléon': {
+      catch:  `The Chameleon Catch`,
+      catchB: `one line that stops the fold mid-conversation, before your real answer disappears.`,
+      kit:    `Before You Fold`,
+      kitB:   `the pocket kit for the moment you feel your real opinion folding small.`,
+      blindB: `the blind spot that keeps you liked and never known.`,
+    },
+    'Alchimiste': {
+      catch:  `The Alchemist Catch`,
+      catchB: `one line that stops the retreat into analysis mid-conversation, before the feeling gets filed away.`,
+      kit:    `Before You Explain It Away`,
+      kitB:   `the pocket kit for the moment feeling turns into analysis.`,
+      blindB: `the blind spot that keeps you understood and never touched.`,
+    },
+  },
+};
+
 /* Representative default (Miroir path). The flow rebuilds its own step list. */
 const LP_TEST_QUESTIONS = [].concat(LP_TEST_C0, LP_TEST_AXES, LP_TEST_C1, LP_TEST_C2_MIROIR, LP_TEST_C3);
 
@@ -472,6 +574,7 @@ const LP_TEST = {
   c3: LP_TEST_C3,       /* Étage 2 bis — sabotage */
   ancre: LP_ANCRE_ALL,
   haltes: LP_HALTES,
+  offer: LP_OFFER,   /* v3 : données par mécanisme de la page résultat → offre */
   /* Anchor palier reference (engine + result use these; not shown as a list). */
   paliers: [
     { v:0, fr:"Je le sens venir et je peux faire autrement", en:"I feel it coming and I can do otherwise" },
