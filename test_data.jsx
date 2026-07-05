@@ -465,14 +465,15 @@ const LP_ANCRE_ALL = Object.assign({ 'Miroir': LP_TEST_C2_MIROIR }, window.LP_AN
    La page résultat → offre v3 est presque entièrement de la copy PARTAGÉE
    (verbatim, EN) vivant dans test_result.jsx. Seuls quelques éléments varient
    par mécanisme, et ils vivent ici :
-     · quiet   — la « quiet rule » du BLOC 1 (verbatim, fournie par le brief) ;
-     · loopAnchor — l'index de l'étape « le pattern prend la barre » dans la
-                    boucle de free_content.client.js (BLOC 2) ;
-     · cost    — override verbatim du BLOC 4 (Miroir seul ; les 7 autres
-                 retombent sur le paragraphe du milieu de leur Halte 1) ;
-     · deliver — les 3 éléments nommés du BLOC 5 (Catch, kit d'urgence, blind
-                 spot). Le Plan et la Reading List sont partagés + gabarités
-                 par palier dans test_result.jsx.
+     · quiet      — la « quiet rule » du hero (verbatim, fournie par le brief) ;
+     · region     — le pôle affiché sur la carte science (anxious/distant/both) ;
+     · loop       — la boucle validée de Miroir (5 étapes) ; les 7 autres
+                    retombent sur le visuel loop de free_content + loopAnchor ;
+     · loopAnchor — l'index de l'étape « le pattern prend la barre » ;
+     · cost       — { lead, punch } du bloc coût (Miroir seul ; les 7 autres
+                    retombent sur le paragraphe du milieu de leur Halte 1) ;
+     · deliver    — les 5 livrables. Miroir = tableau {name, benefit} validé ;
+                    les 7 autres = objet interim monté en 5 cartes côté rendu.
    Miroir est VERBATIM (page-offre-miroir-nu-v3.md). Les 7 autres mécanismes
    n'ont pas encore été portés à la marque « Anchor Map » côté rapport payant :
    leurs libellés ici sont des INTERIMS ancrés sur la boucle + la quiet rule,
@@ -495,20 +496,40 @@ const LP_OFFER = {
     'Miroir':2, 'Bastion':2, 'Fugitif':2, 'Guetteur':2, 'Alchimiste':2,
     'Caméléon':1, 'Sauveur':1, 'Incendiaire':1,
   },
-  /* BLOC 4 — coût. Miroir verbatim v3 ; les autres retombent sur le paragraphe
-     du milieu de leur Halte 1 (interim, cf. brief). */
-  cost: {
-    'Miroir': `Every year, "what do you want?" takes longer to answer. Until it becomes the sentence people with this pattern know too well: I don't know who I am without them.`,
+  /* Carte science — région (pôle) par mécanisme. anxious / distant / both. */
+  region: {
+    'Miroir':'anxious', 'Guetteur':'anxious', 'Sauveur':'anxious', 'Incendiaire':'anxious',
+    'Fugitif':'distant', 'Bastion':'distant',
+    'Caméléon':'both', 'Alchimiste':'both',
   },
-  /* BLOC 5 — les 3 livrables nommés. Miroir = verbatim v3 ; 7 autres = interim. */
+  /* BLOC LOOP — Miroir : boucle 5 étapes validée (gabarit, point d'ancrage
+     = étape 3, index 2). Les 7 autres retombent sur le visuel loop (4 étapes)
+     de free_content.client.js + l'index loopAnchor. */
+  loop: {
+    'Miroir': { anchor:2, steps:[
+      `Their mood shifts. A tone, a silence, a shorter reply.`,
+      `You feel it before a word is said.`,
+      `You become what they need.`,
+      `Your own wants go quiet.`,
+      `Resentment, then emptiness. Then it restarts.`,
+    ] },
+  },
+  /* BLOC 4 — coût. { lead, punch }. Miroir verbatim gabarit ; les 7 autres
+     retombent sur le paragraphe du milieu de leur Halte 1 (interim, sans punch). */
+  cost: {
+    'Miroir': { lead:`Every year, "what do you want?" takes longer to answer.`, punch:`I don't know who I am without them.` },
+  },
+  /* BLOC 5 — les livrables. Miroir = les 5 titres-transformation validés du
+     gabarit (tableau {name, benefit}). Les 7 autres = interim (objet
+     catch/kit/blind ci-dessous), montés en 5 cartes par test_result.jsx. */
   deliver: {
-    'Miroir': {
-      catch:  `The Mirror Catch`,
-      catchB: `one line that stops the shift mid-conversation, before you've become someone else.`,
-      kit:    `Before You Disappear`,
-      kitB:   `the pocket kit for the moment you feel yourself vanishing into what they need.`,
-      blindB: `the blind spot that keeps you loved and unmet.`,
-    },
+    'Miroir': [
+      { name:`The Mirror Catch analysis`,              benefit:`We show you the exact pattern running you, named and mapped.` },
+      { name:`The 30-Day transformation plan`,         benefit:`A day-by-day path to take the helm back, built for where you are.` },
+      { name:`Your way back in the hardest moment`,    benefit:`The 90-second rescue for when you feel yourself starting to disappear.` },
+      { name:`Finally understand why closeness hurts`, benefit:`The hidden reason love keeps landing on a version of you, and never on you.` },
+      { name:`Your reading list`,                      benefit:`The right next step to keep going, chosen for you.` },
+    ],
     'Guetteur': {
       catch:  `The Watcher Catch`,
       catchB: `one line that stops the scanning mid-conversation, before you start building the case.`,
