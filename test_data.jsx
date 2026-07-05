@@ -559,9 +559,9 @@ const LP_OFFER = {
       blindB: `the blind spot that keeps you free and never held.`,
     },
     'Bastion': {
-      catch:  `The Bastion Catch`,
+      catch:  `The Wall Catch`,
       catchB: `one line that stops the shutdown mid-conversation, before the door closes.`,
-      kit:    `Before You Shut Down`,
+      kit:    `When the Room Gets Too Small`,
       kitB:   `the pocket kit for the moment you feel yourself going cold and far away.`,
       blindB: `the blind spot that keeps you safe and never reached.`,
     },
