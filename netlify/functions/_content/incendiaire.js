@@ -92,8 +92,8 @@ export const content = {
     },
 
     {
-      id: 'gensBien', zone: 'free', type: 'prose',
-      title: 'Why you set fire even to the people who love you',
+      id: 'blindSpot', zone: 'free', type: 'prose',
+      title: 'What You Don\u2019t See',
       paras: [
         'Here\u2019s the most unsettling part. When someone loves you with a calm, steady love, no drama, you don\u2019t feel reassured, you feel in danger. Your body reads that calm as indifference, as the silence before abandonment. So you provoke, to check the flame is still there. And in doing so, you damage exactly the quiet love that was the safest of all.',
         'The trap is that you confuse intensity with love. A calm bond looks dead to you, a stormy bond looks alive, when it\u2019s often the reverse. You test the people who love you until they crack, and then their exhaustion serves as proof you were right to doubt. Until you see this, you\u2019ll keep setting fire to people whose love only wanted to burn gently, for a long time.',
@@ -158,7 +158,7 @@ export const content = {
 
     {
       id: 'ctaPlan', zone: 'free', type: 'cta',
-      label: 'Get my plan',
+      label: 'Take the helm back',
     },
 
     /* ===================== PAID ZONES ================================== */
@@ -168,24 +168,23 @@ export const content = {
       title: 'Your plan, built on your exact position',
       visual: { n: 4 },
     },
-
     {
       id: 'deuxiemeMecanisme', zone: 'paid', type: 'prose',
-      title: '1. Your second mechanism',
+      title: 'Your second mechanism',
       paras: [
-        'Your Arsonist doesn\u2019t move alone. Right behind it sits {{pattern_secondaire}} ({{pattern_secondaire_score}}).',
+        'Your Arsonist doesn\u2019t move alone. Right behind it sits {{pattern_secondaire}} ({{pattern_secondaire_score}}), and until you see the two of them together, you risk fighting the wrong fire.',
         {
           bySecondaire: {
-            guetteur: 'You don\u2019t only provoke, you also watch for the signs before provoking. You scan for the coolness, you stack up the evidence of disinterest, then you light the fire to confirm. In your plan, we calm the watching that loads the gun first, before working on the provoking that pulls the trigger.',
+            guetteur: 'You don\u2019t only provoke, you also watch for the signs before you do. You scan for the coolness, you stack up the small evidence of disinterest, and then you light the fire to confirm what you already decided you\u2019d find. In your plan, we calm the watching that loads the match first, before working on the striking that lights it.',
           },
-          default: 'Whatever it is, it feeds the same fear of not mattering, your way of wrenching out the proof of love through intensity. Your plan starts by letting the fire settle, before working on this second mechanism.',
+          default: 'Whatever it is, it feeds the same fear of not mattering, your way of wrenching the proof of love out through intensity. Your plan starts by letting the fire settle, before we touch this second mechanism.',
         },
       ],
     },
 
     {
       id: 'compatibilite', zone: 'paid', type: 'prose',
-      title: '2. Who it can actually work with',
+      title: 'Who it can actually work with',
       paras: [
         'No mechanism is made for another, and none is doomed with another. You can build something solid with any profile. What decides isn\u2019t the other person\u2019s label, it\u2019s each person\u2019s Anchor level.',
         'Two people aware of their mechanisms, even opposite ones, love each other without destroying each other. Two compatible but unaware profiles hurt each other. So don\u2019t look at the other person\u2019s mechanism, look at whether they can see it, talk about it, and repair after a fight.',
@@ -216,118 +215,180 @@ export const content = {
     },
 
     {
-      id: 'protocole', zone: 'paid', type: 'prose',
-      title: '3. Your way back up',
-      paras: {
-        byPalier: {
-          '0': [
-            'You don\u2019t need an intensive program, you\u2019ve already done the work. You need enough to maintain your calm and to spot the moments when life could relight your old reflex.',
-          ],
-          '1': [
-            'You see yourself provoke, and you sometimes hold back the spark. What\u2019s left to do is finer, to turn every urge to test into a choice, and to express your need to be reassured instead of putting it to the test. This week, we move from provocation to the direct request. Get your notebook.',
-          ],
-          '2': [
-            'You watch yourself do it, and you provoke anyway. The lock is that between the rising doubt and the jab leaving, there\u2019s no space, the fire lights before you do. Your job is to put a delay before provoking, and to learn to ask for reassurance instead of forcing it out. Here\u2019s your program for two weeks. Get a notebook.',
-          ],
-          '3': [
-            'You already see that you provoke, that\u2019s your strength. Your problem is the lag, you understand it later, when the fight has died down and the harm is done. This week, we train your lucidity to arrive earlier, at the instant before the spark. It\u2019s a body-memory job.',
-          ],
-          '4': [
-            'Before you change anything, you need one thing, to see yourself light the fire. You don\u2019t calm a provocation you can\u2019t yet see yourself starting. This week, we change nothing, we just turn on the light. Get a notebook and keep it by your bed.',
-          ],
-        },
-        default: [
-          'Here\u2019s your way back up, built for your Anchor position. Get a notebook, and take one exercise at a time.',
-        ],
-      },
+      id: 'catch', zone: 'paid', type: 'prose',
+      title: 'The Arsonist Catch',
+      lead: 'Catch the spark before it becomes a strike. Ten seconds.',
+      paras: [
+        'Somewhere in an ordinary evening there\u2019s a moment you know by heart. A reply lands a little flat. A room that felt warm an hour ago goes quiet in a way that reads as being left. And before you\u2019ve decided anything, the first jab is already loading, the one that will make them look up and react and prove they\u2019re still here.',
+        'Your mechanism has a first move, and it happens fast, well before the fight it becomes. Most people at your position only catch it once the match is already thrown and the other person is either flaring up or going cold. The Arsonist Catch trains one narrow skill, feeling the spark in the second it lights, instead of ten minutes later in the wreckage.',
+        'You won\u2019t be trying to kill the spark. The heat that rises in you when you feel forgotten is old and quick, and people who try to shut it off by force usually end up striking harder. You\u2019re learning to see it light. That turns out to be almost everything.',
+        'What you\u2019re feeling has a name in the research, and it helps to know it. Attachment scientists call the testing, the threatening to leave, the picking of a fight to force a response, protest behavior. The word goes back to Bowlby, who used it for something much older and much smaller, the cry of a young child when a parent walks out of the room. That cry was a call for someone to come back, the only tool a small person had, and most of the time it worked. Yours is the grown version of the same call, still checking you haven\u2019t been forgotten, still reaching for the loudest tool in the box.',
+        'Here is the whole gesture. The moment the heat rises and your hand goes looking for the match, a sharp word, a threat to walk out, a test you already know the shape of, you say one sentence to yourself, silently.',
+        'That\u2019s the spark, not the truth.',
+        'Then you do whatever you were going to do anyway. You read that right. On day one you can say the sentence and still throw the jab. Saying it is the win, because saying it means you caught the spark in the act, and a spark you can see is no longer lighting the whole room on its own. Ten seconds, and it works while you\u2019re furious, because it doesn\u2019t ask you to stop being furious first.',
+        'The spark is a threat detector wired for one danger above all others, being forgotten, and detectors like that fire early and loud, long before the thinking part of you gets a vote. Putting a name on what\u2019s happening, even under your breath, has been shown to loosen its grip on you measurably. The heat stays. What changes is who\u2019s holding the wheel while it burns.',
+        { byPalier: {
+          '0': 'At your position you catch most of these before your hand ever moves. Your version is lighter, a nod at an old habit. You feel the heat, you almost smile at it, and the match stays in the box.',
+          '1': 'You already catch a lot of these as they light. Your version gets shorter and quieter, closer to a private nod than a sentence. You feel the spark, you name it, and more often than not the match stays down.',
+          '2': 'This live version is built for exactly where you are. Say the sentence the instant the heat rises, then let yourself do whatever you were going to do anyway. The catch itself is the whole win this month, not the restraint.',
+          '3': 'There\u2019s a hitch worth naming, the spark doesn\u2019t feel like a spark yet, it feels like a fair reaction to a real slight. So skip the live catch for now and work in hindsight. Once a day, in the evening, write down one moment you provoked. Same muscle, trained on yesterday\u2019s footage. The live catch shows up on its own once hindsight gets quick enough, and it does get quick.',
+          '4': 'At your position the spark still feels like plain truth, like they earned it, so don\u2019t chase the live catch yet. Do it in hindsight, once a day, in the evening, writing down one moment you lit something. You\u2019re not judging the moment, you\u2019re locating it, so your eye learns the shape of the move. That part can\u2019t really be rushed, and doesn\u2019t need to be.',
+        } },
+      ],
+    },
+
+    {
+      id: 'planIntro', zone: 'paid', type: 'prose',
+      title: 'The 30-Day Plan',
+      lead: 'From Snagged toward Slipping. One page a day.',
+      paras: [
+        'Before anything else, choose who you\u2019re being for the next thirty days. Not the one who strikes a match to see who comes running. The one who says the true thing plainly, while it\u2019s still small, before the spark can say it louder and a good deal worse. You already own what this takes. The same intensity that lights the fires is the thing that lets you walk toward a hard conversation instead of around it, and this month you point it somewhere it can build. Week one asks nothing of you but to watch the fire start. The doing comes later, and it comes easier once you can see the spark clearly.',
+        'A word on the promise, because it\u2019s a modest one on purpose. This plan moves you one position on the scale, from Snagged, where you feel the spark and light it anyway, toward Slipping, where the heat still rises but you hold the helm more often than it holds you. No new personality, no cure, one position. People underestimate what that feels like from the inside. The arguments that used to open with a jab stop opening at all, and that alone changes the temperature of a whole house.',
+        'One rule for the month. A provocation is never punished here. A provocation you catch and write down is data, and data is the entire reason you came. A provocation you turn on yourself, scolding, shaming, replaying it as proof you\u2019re too much, becomes fuel, and the fire runs on precisely that fuel. So you starve it by staying curious about yourself instead of hard on yourself.',
+        { byPalier: {
+          '0': 'Where to begin, for you. You already hold the helm most days, so read this as maintenance. Skim to week three and use the earlier weeks only where a page names something you\u2019ve felt flare up lately.',
+          '1': 'Where to begin, for you. You catch a lot of sparks already, so the first two weeks will move fast. Skim them, then settle in at day 15, where the work turns from seeing the fire to asking for what the fire was really after.',
+          '2': 'Where to begin, for you. Start at day 1 and keep the written pace. The plan is built around exactly your position, feeling the spark and lighting it anyway, so the default rhythm is yours.',
+          '3': 'Where to begin, for you. Spend a full week on the evening review alone, day 1 repeated seven times, before you move on. Your catch has to live in hindsight before it can live in the moment, and rushing that only builds the later weeks on sand.',
+          '4': 'Where to begin, for you. Read the What You Don\u2019t See page first, because until you have, this plan will read like a list of accusations. Then take week one at half speed, one review every two days. The spark still feels like plain truth at your position, and the whole month is about it slowly starting to feel like a spark instead.',
+        } },
+      ],
     },
     {
-      id: 'protocoleExercices', zone: 'paid', type: 'exercises',
-      exercises: {
-        byPalier: {
-          '0': [
-            { label: 'Exercise 1, the map of your fragile zones.', body: 'List the situations that can still raise your fire, a sudden coolness, a silence after a period of closeness, a partner who shuts down, deep fatigue, a fog about your place. Knowing them is already protection.' },
-            { label: 'Exercise 2, the monthly check-in.', body: 'Once a month, reread your month. Was there a moment when you provoked like before? Without judging yourself, note what triggered it. You\u2019re refining your map.' },
-            { label: 'Exercise 3, maintaining the direct request.', body: 'At your level, the work is no longer to stop yourself provoking, but to maintain a balance, to keep your intensity without turning it into a test. When a doubt about your place rises, keep saying it in clear words to the person concerned, so it never turns into a spark.' },
-          ],
-          '1': [
-            { label: 'Exercise 1, naming the need in real time (every day).', body: 'Holding back the jab, you already do that a little. Now go further, say what you feel and what you need. The structure, drawn from nonviolent communication, is simple. When you do this, I feel that, and I need this. For example, when you\u2019re silent all evening, I feel forgotten, and I need you to tell me things are fine between us. Write three phrases a day, on real situations. Writing trains the mouth.' },
-            { label: 'Exercise 2, the low-stakes calm experiment (two or three times).', body: 'Your system still believes that calm means you\u2019re being forgotten. Prove the opposite, gently. Pick quiet moments, no drama, and instead of trying to liven them up with a spark, stay in the calm and observe. Most of the time, the bond is still there, intact, beneath the peaceful surface. Note each time what you feared and what actually happened.' },
-            { label: 'Exercise 3, the calm review (end of the week).', body: 'Reread your week. Count the times you asked for reassurance instead of testing for it, and the times you let a calm moment exist without lighting it. Congratulate yourself for the hardest one. Spot the next, a notch above, that you\u2019d like to dare. You\u2019re building, step by step, a version of you that loves hard without needing to set fires.' },
-          ],
-          '2': [
-            { label: 'Exercise 1, the breathing that calms the fire.', body: 'Twice a day when calm, breathe in for 4 seconds through your nose, out for 6 to 8 seconds through your mouth. The longer out-breath switches on your parasympathetic nervous system, the one that calms the alarm. You train your body to settle, so you can use it when the heat rises.' },
-            { label: 'Exercise 2, the ninety seconds before provoking.', body: 'This is your central exercise. The moment a doubt about your place rises and you feel the urge to throw a jab, to threaten, to test, don\u2019t do it right away. Hold the sentence, keep it. One hand on your belly, your long breathing, and let a minute and a half pass before saying anything. That\u2019s how long the heat takes to subside when you don\u2019t fuel it. On the other side of those ninety seconds, the urgency to force out a reaction has dropped, and you can choose a different sentence.' },
-            { label: 'Exercise 3, ask instead of testing.', body: 'Your reflex is to check love through conflict. Instead, train yourself to say the real sentence, the one hiding under the provocation. Instead of you don\u2019t care about me anyway, try I\u2019m scared I don\u2019t matter to you, can you reassure me? Write three phrases like that in your notebook. Asking directly gives you real reassurance, whereas provoking only gives you a reaction, which never calms for long and damages the bond.' },
-            { label: 'Exercise 4, the journal of fires not lit.', body: 'Each evening, note the times you managed to hold back a provocation, or to ask for reassurance directly, and the times the fire won. Don\u2019t judge the provocations, count them as data. For each fire not lit, note what you feared, and what actually happened when you asked instead of testing. You\u2019ll watch the column of fires not lit grow. That\u2019s your Anchor rising.' },
-          ],
-          '3': [
-            { label: 'Exercise 1, the slow-motion replay (every evening, 10 minutes).', body: 'Each evening, pick a moment when you know, now, that you provoked for nothing. Replay the scene in slow motion and look for the very first physical sign, before the jab even came out. For many Arsonists, it\u2019s a heat rising in the chest, a tension, a burning urgency to get a reaction. Find where, in your body, it fires, and at what exact moment. Note it.' },
-            { label: 'Exercise 2, the map of your rise (end of the week).', body: 'After seven days, reread your logs. Your body often sends you the same signal, in the same place, just before you light it. Draw it on a page, a figure with the zone circled. That\u2019s your alarm bell. Now you know what to watch for, that moment of heat, just before the spark.' },
-            { label: 'Exercise 3, the presence scan (twice a day, 3 minutes).', body: 'To feel the rise while it\u2019s arriving, your body has to learn to listen to itself at rest. Twice a day, sit down, close your eyes, move your attention from your feet to your head, thirty seconds per zone, without changing anything. This training builds your capacity to inhabit your body live, so that one day you feel the fire rise in time, and not only after the blaze.' },
-          ],
-          '4': [
-            { label: 'Exercise 1, the spark journal (every evening, 5 minutes).', body: 'Three columns. First, a moment you provoked today, a jab, a threat to leave, a fight started, a test. Second, what had just happened, a coolness, a silence, a doubt about your place. Third, what you felt in your body just before lighting it. Write fast, without judging yourself. After seven evenings, reread it. A pattern appears, you almost always provoke after sensing a distance, never without an inner reason.' },
-            { label: 'Exercise 2, the question that changes the angle (at every provocation).', body: 'When you provoke, you usually tell yourself they asked for it, they were distant. This week, add a second question, without replacing the first. Were they really indifferent, or did I light a spark to check that I matter? Most of the time you\u2019ll see there was no real danger, just your fear. Note those times, they\u2019re treasures.' },
-            { label: 'Exercise 3, the log of burned-out fires (once during the week).', body: 'Think back to your three last important relationships. For each, write how it ended, and what your part in the storms was. Put the three side by side. If you find the same script, provoking until the other person leaves, you\u2019re holding the most precious piece of information in this report. It isn\u2019t that people abandon you, it\u2019s that you test their love until it\u2019s exhausted.' },
-          ],
-        },
-        default: [{ label: 'Your exercises', body: 'Your detailed protocol for this Anchor position comes with your plan. Get a notebook and take one exercise at a time.' }],
-      },
+      id: 'planWeek1', zone: 'paid', type: 'exercises',
+      title: 'Week 1, See the Spark',
+      lead: 'You change nothing this week. You watch the fire start and learn its parts, what lights it, where it lives in your body, the story it tells while it burns. Seeing it clearly is the whole job, and everything later is built on it.',
+      exercises: [
+        { label: 'Day 1. The evening review.', body: { byPalier: {
+          '0': 'Tonight, before bed, write down one moment today where the spark rose, even if you never struck. A flash of heat when a text landed flat, an urge to needle, a their-loss thought you didn\u2019t say. Facts only, what set it off and what you did with it. At your level this is a light rep, a way to keep the eye sharp.',
+          '1': 'Tonight, before bed, write down one moment today where the spark rose. A flash of heat when a reply came late, an urge to test, a jab you either threw or swallowed. Facts only, what lit it, what you did. You\u2019re proving to yourself the spark is still visible while it happens, which is most of the skill.',
+          '2': 'Tonight, before bed, write down one moment today where you provoked, or wanted to. Threw a jab, went cold on purpose, threatened to leave, picked at something small to get a rise. Facts only, what set it off, what you did, how long the heat lasted. If judgment shows up on the page, cross it out. You\u2019re not fixing anything yet, you\u2019re turning the lights on in a room that\u2019s been burning in the dark for years.',
+          '3': 'Don\u2019t hunt for the spark live today, it\u2019s still too quick to see coming. Tonight, take one quiet minute and find a single moment where you lit something. Write down what came just before, the coolness or the silence that set it off. Finding it at night is how the eye learns the shape of the move before it can catch it in daylight.',
+          '4': 'Don\u2019t chase the spark live today, it still feels like a fair reaction rather than a move you\u2019re making. Tonight, before sleep, find one moment you provoked and write down what came just before it, a distance, a quiet, a doubt about your place. You\u2019re only locating one, so your eye starts to learn the shape. No judging the moment, just marking where it was.',
+        } } },
+        { label: 'Day 2. Find your trigger family.', body: 'Most Arsonists have one dominant family of triggers. Coolness is one, a partner who goes a little distant or flat. Silence is another, an unanswered message, a quiet evening after a close one. Doubt about your place is the third, the sense you\u2019ve slipped down someone\u2019s list. Look at yesterday\u2019s note and today\u2019s moments and ask which family owns you. A trigger you can see coming a street away is already half caught.' },
+        { label: 'Day 3. The body tell.', body: 'The spark has a physical signature, and it fires before the thought does, so it\u2019s worth learning yours. For a lot of Arsonists it\u2019s heat, a flush that climbs the chest and neck. For others it\u2019s a tightening, a clench in the jaw or the hands, a restless need to do something right now. Find yours today, the exact spot and the exact instant it lights. It becomes your early-warning system next week.' },
+        { label: 'Day 4. Time the heat.', body: 'Today, when the heat rises, glance at the clock. Glance again when the urge to strike drops off. Most people at your position have never actually measured this, and the number tends to surprise them, the raw wave is short, often a couple of minutes, sometimes less. What makes it feel endless is the feeding, because every replayed slight is another log on it. Write down what you found. One honest measurement beats a month of impressions.' },
+        { label: 'Day 5. Catch one live.', body: 'First live attempt. Once today, at the exact moment the heat rises and your hand reaches for the match, say it, that\u2019s the spark, not the truth. Then, and this matters, do whatever you were going to do anyway. Strike if you\u2019re going to strike. Today\u2019s win is the catch itself. Whether you strike or not doesn\u2019t change the score today, only whether you saw the spark light at all.' },
+        { label: 'Day 6. Map the story.', body: 'The spark never travels alone, it brings a story, and it\u2019s usually a short one it has told a thousand times. They\u2019re done with me. They never really wanted me. I\u2019m too much and they\u2019ve finally noticed. Tonight, write yours down word for word, the way it actually runs in your head. People are often a little startled to find their fire has been reciting the same two lines since they were nine. The story runs on a loop, and a loop loses its grip once you can say it along with the screen.' },
+        { label: 'Day 7. Week one review.', body: 'Read your six notes and answer three questions on paper. What is my trigger family? Where does the heat live in my body, and how long does the raw wave last unfed? What is my rerun story? Sit with the fact that you now know more about your own fire than most people ever learn about theirs. Nothing has moved yet, and that is on purpose. You can\u2019t manage a blaze you\u2019ve never once stood still and watched, and you\u2019ve spent a week watching.' },
+      ],
+    },
+    {
+      id: 'planWeek2', zone: 'paid', type: 'exercises',
+      title: 'Week 2, The 90-Second Wave',
+      lead: 'This week you build one thing, a gap between the spark and the strike. Ninety seconds of held heat, on purpose, is the hinge the whole month turns on.',
+      exercises: [
+        { label: 'Day 8. The first 90.', body: 'Once today, when the heat rises, say the sentence, then wait 90 seconds before you act on it. Set a timer, actually set it, guessing at time mid-surge never works. These don\u2019t need to be calm seconds, white-knuckle seconds count double. When the timer ends, you\u2019re free to say your piece, throw the jab, whatever you were going to do. What most people notice is that the urge at second 90 is smaller than the urge at second one. Not gone, smaller. Hold onto that gap, the whole month is built inside it.' },
+        { label: 'Day 9. The 90 with your body.', body: 'Same gesture, but give your body a job this time. Pick one and stick with it, breathe in for four and out for eight, cold water on your wrists and the back of your neck, or stand and press your feet hard into the floor until the timer ends. The long exhale is doing real work here, a direct line to the part of your nervous system that stands the body down off alarm. You\u2019re teaching your body something it doesn\u2019t know yet, that the heat can rise without the whole crew running out to light something.' },
+        { label: 'Day 10. Two catches.', body: 'Two 90-second waves today. Tonight, a short note, which was harder, the first or the second, and what story the spark told each time. You already know it\u2019ll be the same story. Watching it run twice in one day, in your own handwriting, does something that merely knowing it never quite does.' },
+        { label: 'Day 11. The don\u2019t-send rule.', body: 'A new rule for anything typed inside the heat, write whatever you want, send nothing for 90 seconds. Draft the whole furious paragraph if the evening calls for it. At second 91, reread it with one question, would I want to be the person who sent this tomorrow morning? Keep what passes, delete the rest. A week of this and you\u2019ll land where every Arsonist lands, that the spark writes fast and writes badly, urgent and certain and almost always wrong about the size of the danger.' },
+        { label: 'Day 12. The calm experiment.', body: 'Your system still believes, deep down, that a quiet evening means you\u2019re being forgotten. Test it, gently. Pick one calm, undramatic stretch today, and instead of lighting it up to feel the connection spark back, stay in the quiet and watch what\u2019s actually there. Most of the time the bond is sitting right where it was, intact, under the calm. Note what you feared and what actually happened. Your nervous system won\u2019t take the theory, it takes reps of evidence, and this is a rep.' },
+        { label: 'Day 13. The 90 on your worst trigger.', body: 'You\u2019ve known your trigger family since day 2. Today you take the gesture there on purpose. If coolness owns you, the next flat reply gets the full sequence, sentence, timer, long exhales. This is the deep end, and it\u2019s fine to go under a little. If it collapses and you strike anyway, write down where it collapsed, no commentary. One honest failure on your hardest trigger teaches more than ten easy wins, and it counts as a finished day.' },
+        { label: 'Day 14. Week two review.', body: 'Pull out day 4\u2019s measurement and compare. Shorter wave? Smaller urge at second 90? For most people the honest answer right now is somewhat, and somewhat is exactly on schedule. Notice what hasn\u2019t changed too, the spark still lights, and it was never meant to stop. The work was always the strike that follows it, and the strike is starting to lose the race to the timer.' },
+      ],
+    },
+    {
+      id: 'planWeek3', zone: 'paid', type: 'exercises',
+      title: 'Week 3, Ask Instead of Strike',
+      lead: 'Lighting a fire is a way of asking a question without the risk of asking it out loud. This week you take the risk, and trade the test for the plain request underneath it.',
+      exercises: [
+        { label: 'Day 15. Write the real sentence.', body: 'Under every fire you\u2019ve ever lit, there\u2019s one sentence you weren\u2019t saying out loud. For most Arsonists it\u2019s some version of I\u2019m scared I don\u2019t matter to you, or come back, I can\u2019t tell if you\u2019re still here. Tonight, write yours, in your own words, exactly as you\u2019d say it if saying it cost nothing. Don\u2019t send it anywhere, just look at it. There\u2019s something quietly absurd about it, years of blazes to avoid a sentence that fits in six words.' },
+        { label: 'Day 16. The translation table.', body: 'Take the rerun story from day 6 and turn it into something a person could actually receive. They\u2019re done with me becomes I\u2019ve felt some distance this week and it\u2019s scaring me. You don\u2019t care becomes I need to hear that I still matter to you. Write two or three translations down. This week\u2019s whole skill is turning a fire into a sentence, and the sentence, like everything else this month, starts on paper before it ever reaches a person.' },
+        { label: 'Day 17. The small ask.', body: 'Ask one small, direct thing today that you\u2019d normally test for instead. Dinner-sized, nothing structural, will you spend Saturday with me, said straight, rather than going cold and waiting to see if they notice. Watch yourself do it. There\u2019s usually a pull to arm the question first, to make it a challenge, to add an or don\u2019t bother so a no can\u2019t land. Ask it clean. Clean questions tend to get clean answers, and clean answers are the thing your fire has never once let you collect.' },
+        { label: 'Day 18. Say the spark out loud, once.', body: 'With your partner, or whoever\u2019s closest, name the mechanism one time. Past tense, no demand attached, when you were quiet last night, something in me wanted to pick a fight so you\u2019d turn toward me, and I didn\u2019t, I just wanted you to know it\u2019s there. Then change the subject if you like. Two things happen at once. The spark comes out of the dark, where it does its best work, and you learn by direct experiment that naming it burns nothing down.' },
+        { label: 'Day 19. The real question, asked.', body: 'Today or tomorrow, when a genuine spark rises, you skip the whole fire and ask the day 15 sentence instead. Calm moment, not mid-surge. Are we okay, I\u2019ve felt a little off since Tuesday. Then the genuinely hard part, let their answer be the answer. No testing it for cracks, no lighting a small fire afterward to check the reassurance was real. One question, one answer, and you let it land.' },
+        { label: 'Day 20. Take the reassurance.', body: 'The next time reassurance comes your way, it gets new treatment, you keep it. When the spark leans in with they only said that to keep the peace, you know that voice by now. Here\u2019s the part researchers were slow to say plainly, reassurance only works if you let it in. Forced out through a test and then doubted, it feeds the very fire it was meant to put out. Today you practice letting it reach you.' },
+        { label: 'Day 21. The repair move.', body: 'If a fire got away from you this week, a jab that landed, a cold shoulder held too long, repair it today in one sentence, that wasn\u2019t about you, that was my old spark, and it\u2019s mine to handle. No essay, no spiral of apology, both of those are the fire wearing a sorry face. Arsonists tend to fear that owning the mechanism makes them look unstable. In practice it\u2019s the steadiest sentence in this plan, because it shows the helm back in your hands right after a wave, which is the only place steadiness ever actually shows.' },
+        { label: 'Day 22. Week three review.', body: 'Three questions, on paper. Which cost you more, the 90 seconds or the plain ask? What actually happened when you asked instead of struck? Did the thing you feared come true, or did it just feel certain? Then reread your day 15 sentence. It\u2019s probably shrunk. Sentences do that once they stop living in the dark and start getting said.' },
+      ],
+    },
+    {
+      id: 'planWeek4', zone: 'paid', type: 'exercises',
+      title: 'Week 4, Hold the New Position',
+      lead: 'Slipping is a position you have to keep choosing. This week is about holding it when the calm itself starts whispering that you\u2019ve been forgotten, and the old urge to strike a spark just to watch the connection flare comes looking for you again.',
+      exercises: [
+        { label: 'Day 23. Your minimum kit.', body: 'Three weeks of notes have already told you which tools are actually yours. Pick three. For a lot of Arsonists it ends up being the sentence, the 90 with the long exhale, and the don\u2019t-send rule, but yours is yours. Write them on one card, paper or phone. From here on, this card is the plan. Everything else was scaffolding you can put down.' },
+        { label: 'Day 24. The good-day trap.', body: 'A warning that\u2019ll sound strange, calm stretches are where this work usually dies. Things feel steady, the practice feels pointless, it quietly stops, and the next spark arrives against a body that hasn\u2019t run a rep in three weeks. So today, on what\u2019s hopefully an ordinary calm day, run the full gesture once on a small invented spark. On purpose, like a fire drill. Two minutes. Drilling on a calm day builds the muscle memory, so when a real spark comes your hands already know the moves.' },
+        { label: 'Day 25. The relapse plan.', body: 'Write it now, while you\u2019re steady, because you won\u2019t write it mid-blaze. Something like, when I light a real fire again, I\u2019ll name it within a day, run the repair move, and restart the evening review for three days. That\u2019s it. A relapse with a plan costs you an evening. A relapse without one can cost you the month, and not because of the fire itself, but because of the shame that moves in afterward and starts rewriting the whole story into I always ruin it.' },
+        { label: 'Day 26. Tell someone what changed.', body: 'One person, one concrete thing, I don\u2019t pick fights to make sure you\u2019re still there anymore, mostly I catch it now. Out loud, to a partner or a friend. The notebook has done a lot for you this month, but there\u2019s one thing it can\u2019t do, make the new position part of your story out in the world. Positions hold better once somebody has watched you take them.' },
+        { label: 'Day 27. The wide-angle day.', body: 'Here\u2019s a cost you probably never added up, energy. All that intensity that went into lighting fires and managing the fallout went somewhere, and now some of it is coming back with nowhere to burn. Spend today aiming it on purpose, at the actual person in front of you, at work you care about, at something that was yours before the fires took up all the room. The intensity was always going to burn somewhere. This month you\u2019ve been giving it better places to land, and today you give it one more.' },
+        { label: 'Day 28. Stress-test honestly.', body: 'On paper, honestly, if the real thing hit tonight, a cold reply, a quiet you can\u2019t read, a sudden sense you\u2019ve been dropped, what would happen? If your answer is some version of the heat would spike, and I\u2019d catch it and hold the 90 before I struck, that\u2019s Slipping, that\u2019s the target, that\u2019s what it looks like. It was never going to look like never feeling the spark at all. If your answer is I\u2019d light it like always, go back through your week reviews, find where the notes got thin, and redo that week. The plan is a loop, not a corridor, and going around again isn\u2019t failing it.' },
+        { label: 'Day 29. Write the before-and-after.', body: 'One page. A real scene from before this month, a fire you lit and the crater it left, told straight, with the actual words that got said. Then the same scene as you\u2019d run it today. Specific, yours, names and all. Keep this page somewhere you can find it, because on some future bad night the spark is going to swear to you that nothing ever changes and you\u2019ve always been too much. The spark, as you\u2019ve established this month, is a liar with a small vocabulary. This page is the receipt that says otherwise.' },
+        { label: 'Day 30. Retake the test.', body: 'Take the assessment again, today or this week. Not for a grade, for a reading. If your Anchor moved toward Slipping, the kit works, keep the card, drop the daily pages, and rerun any single week whenever the fires start creeping back, which they sometimes will. If it didn\u2019t move, your own notes will show you which week to redo, and that\u2019s a map doing its job, not a verdict. Either way, something changed this month that doesn\u2019t change back, you\u2019re no longer guessing whether there\u2019s a version of you that can stay in the calm. There is, and you\u2019ve watched it hold.' },
+      ],
+    },
+
+    {
+      id: 'acuteKit', zone: 'paid', type: 'prose',
+      title: 'Before You Strike',
+      lead: 'The 90-second kit for the moment the spark rises. Pocket card.',
+      paras: [
+        'It\u2019s late, and something just went cold. A clipped reply, a turned back, an evening that was warm an hour ago and isn\u2019t now. The heat is already climbing your chest and your mind has the perfect sharp thing half-loaded, the line that will make them turn around and react. This card skips growth and childhood and understanding. Right now there\u2019s only the wave, cresting, and the ninety seconds you\u2019re about to put between it and the match.',
+        'One, name it, three seconds. That\u2019s the spark, not the truth. Say it out loud if you\u2019re alone. The phrase works as a location device. It tells you where you actually are, inside a wave of old heat rather than inside a fact about being left. Putting a name on what\u2019s happening turns its volume down a notch, measurably, every time.',
+        'Two, cool the body, about sixty seconds. The spark lives in your body before it reaches your words, so that\u2019s where you meet it. Pick one move and use the same one every time, so your body eventually runs it without being asked. Breathe with the exhale twice as long as the inhale, the long exhale being the body\u2019s own stand-down signal, and you\u2019re leaning on it on purpose. Or cold water on your wrists and the back of your neck. Or plant your feet and press them into the floor and count slowly to twenty.',
+        'Three, put the weapon down, the rest of the 90. Whatever you were about to fire, the text, the jab, the threat to leave, it goes in the drawer until the timer ends. If the words are boiling, write them somewhere they can\u2019t send, all of them, and hold them there. A wave you don\u2019t feed burns out on its own, a good deal faster than the heat swears it will. You\u2019ve timed this yourself by now, so trust your own stopwatch over the spark\u2019s forecast.',
+        'Four, choose with the helm in hand, after the 90. Now decide, actually decide. Say the real thing instead, are we okay, I felt you go far away just now. Or save it for morning. Or let it be nothing and go to sleep. Any of those is a fine call. The win was never which one you picked, it\u2019s that a person made the choice instead of a spark making it for them.',
+        'What not to do inside the wave. No threats to leave, they\u2019re the loudest match in the box and they burn the fastest. No tests, no going cold to see if they chase you, no scorekeeping about who reached out last. And keep the big conversation in its holster. The real talk about what you need is a daylight tool, and asked calm the next day it opens something, while fired mid-surge at midnight it lands as an attack whatever words it\u2019s wearing, and it feeds the exact distance you\u2019re afraid of.',
+        'Tomorrow, thirty seconds in your notes. What set it off, which moves you held, what story the spark told. Not to grade yourself, there are no grades here. Every wave you log makes the next one more familiar, and familiar waves burn smaller. You\u2019re becoming someone who can hold the heat without lighting anything, and that\u2019s a steadier bet than waiting for the heat to stop coming.',
+        { byPalier: {
+          '0': 'At your position the full sequence mostly holds, and you often stop the wave at move one. Keep the card for the nights the cold lands on someone who really matters, when the old heat still knows how to climb.',
+          '1': 'You\u2019ll usually get through the sequence now. The card\u2019s here for the harder nights, when the surge moves faster than you and you need the moves in order to find your feet.',
+          '2': 'This is your card, run the full sequence. Some nights you catch it at move one, other nights you\u2019re mid-draft of something cruel before you remember the card exists, and you pick it up from wherever you are.',
+          '3': 'The full sequence probably won\u2019t hold on your first few waves, and expecting it to is a setup for shame. Run moves one and two, and call that a complete rep, because it is. The rest of the card comes online as the catch speeds up.',
+          '4': 'Run moves one and two only, and count that as a complete rep. A partial kit you actually reach for beats a complete one you never open. The rest unlocks later, on its own, as the catch gets quicker.',
+        } },
+      ],
     },
 
     {
       id: 'lectures', zone: 'paid', type: 'bookcards',
-      title: '4. The reading chosen for your level',
-      lead: 'You\u2019re at level {{ancre_position}}. Here are the books that speak to this exact spot.',
+      title: 'Your Reading List',
+      lead: 'A book meets you where you are or it slides right off, and attachment books slide hard. So this list is sorted by your position on the scale, not by fame. One at a time, at your tier, and keep the plan running while you read, because reading about the fire has a long habit of quietly replacing the work of holding it. The plan does the moving, the book explains the map.',
       books: {
         byPalier: {
           '0': [
-            { title: 'Hold Me Tight', author: 'Sue Johnson', blurb: 'To deepen a bond where intensity becomes warmth rather than fire.' },
-            { title: 'The Seven Principles for Making Marriage Work', author: 'John Gottman', blurb: 'To build, with a partner, a lasting relationship on the calm security you have earned.' },
-            { title: 'Nonviolent Communication', author: 'Marshall Rosenberg', blurb: 'To keep, over time, a way of voicing a doubt that brings closeness instead of conflict.' },
+            { title: 'Hold Me Tight', author: 'Sue Johnson', blurb: 'You\u2019ve already done the hard part, so this one is about what you\u2019re building toward, a bond where intensity turns into warmth instead of heat. Johnson spent her career on how two people find their way back to each other after the disconnection, and at your position that\u2019s the useful frontier, keeping a calm love from ever reading to you as a dead one.' },
           ],
           '1': [
-            { title: 'Nonviolent Communication', author: 'Marshall Rosenberg', blurb: 'To say the real sentence under the provocation, the need to matter, in a way that connects.' },
-            { title: 'Hold Me Tight', author: 'Sue Johnson', blurb: 'To turn growing awareness into reaching for your partner instead of testing them.' },
-            { title: 'Attached', author: 'Amir Levine & Rachel Heller', blurb: 'To keep replacing protest behavior with direct, secure requests.' },
+            { title: 'Nonviolent Communication', author: 'Marshall Rosenberg', blurb: 'You\u2019re already catching the spark, so the skill that matters now is the sentence underneath it. Rosenberg\u2019s whole method is saying the real need plainly, in a way that pulls someone closer instead of putting them on the defensive, which is exactly the move week three asks of you. Read it with a pen.' },
           ],
           '2': [
-            { title: 'The Body Keeps the Score', author: 'Bessel van der Kolk', blurb: 'To understand in depth why your mechanism lives in your body, not your head. The book that explains your level.' },
-            { title: 'Attached', author: 'Amir Levine & Rachel Heller', blurb: 'To learn to ask for reassurance directly instead of testing for it. The core book for your level.' },
-            { title: 'Anxiously Attached', author: 'Jessica Baum', blurb: 'To build the inner security that lets a calm love feel safe instead of suspicious.' },
+            { title: 'Attached', author: 'Amir Levine and Rachel Heller', blurb: 'Written for your exact position. It names the thing you do, the testing and threatening and score-keeping, protest behavior, and explains why a calm partner can feel flat to you while an unstable one feels like love. Most of all it teaches the swap this whole month turns on, asking for reassurance straight instead of forcing it out through a fight. If you read one book this month, this is it.' },
           ],
           '3': [
-            { title: 'The Body Keeps the Score', author: 'Bessel van der Kolk', blurb: 'To understand why the heat fires in your body before your mind decides, and how to catch it earlier.' },
-            { title: 'Attached', author: 'Amir Levine & Rachel Heller', blurb: 'To work, step by step, on turning protest behavior into a clear request.' },
-            { title: 'Insecure in Love', author: 'Leslie Becker-Phelps', blurb: 'To soften the reactivity that turns a small doubt into a full storm.' },
+            { title: 'Insecure in Love', author: 'Leslie Becker-Phelps', blurb: 'At your position the spark fires before you can see it coming, and the shame after each fire does more damage than the fire did. Becker-Phelps\u2019s tool, compassionate self-awareness, works on both, softening the reactivity that turns a small doubt into a blaze, and quieting the self-attack that keeps the loop fed. It plugs straight into your evening review.' },
           ],
           '4': [
-            { title: 'Attached', author: 'Amir Levine & Rachel Heller', blurb: 'To recognize protest behavior, the testing and provoking, name it, and stop calling it simply passion. The book that maps your exact pattern.' },
-            { title: 'Insecure in Love', author: 'Leslie Becker-Phelps', blurb: 'To understand where the fear of not mattering, and the urge to provoke a reaction, come from.' },
-            { title: 'Anxiously Attached', author: 'Jessica Baum', blurb: 'To see how the dread of indifference runs the show, and that you are far from alone in it.' },
+            { title: 'The Body Keeps the Score', author: 'Bessel van der Kolk', blurb: 'At your position the heat feels like plain truth, and this is the book that explains why, why your body fires before your mind gets a vote, and why the body-first moves in your kit, the long exhale, the cold water, the feet on the floor, aren\u2019t decoration. One honest warning, it\u2019s a heavy read with difficult passages, and if it stirs up more than it settles, put it down and think about bringing a professional into your corner. At this depth, calling in real support is the strongest move on the board, and the plan keeps running right alongside it.' },
           ],
         },
         default: [
-          { title: 'The Body Keeps the Score', author: 'Bessel van der Kolk', blurb: 'To understand in depth why your mechanism lives in your body, not your head.' },
-          { title: 'Attached', author: 'Amir Levine & Rachel Heller', blurb: 'To learn to ask for reassurance directly instead of testing for it.' },
-          { title: 'Anxiously Attached', author: 'Jessica Baum', blurb: 'To build the inner security that lets a calm love feel safe instead of suspicious.' },
+          { title: 'Attached', author: 'Amir Levine and Rachel Heller', blurb: 'The clearest map of the anxious system for a general reader, and the one that names what you do, protest behavior, the testing and threatening that\u2019s really a call for reassurance. It teaches the swap this month turns on, asking straight instead of forcing it out through a fire.' },
         ],
       },
     },
 
     {
+      id: 'lecturesWarning', zone: 'paid', type: 'prose',
+      when: { if: { palier: 4 } },
+      callouts: [
+        { tone: 'care', text: 'A word, in honesty. That book is a heavy read with difficult passages, and it can stir up more than a book on its own is built to hold. If it does, set it down and think about bringing a professional into your corner. At this depth, calling in real support is the steadiest move you can make, and it means the work is going deep enough to need it.' },
+      ],
+    },
+
+    {
       id: 'devenir', zone: 'paid', type: 'prose',
-      title: '5. What you become when you rise',
+      title: 'What you become when you rise',
       paras: [
-        'An Arsonist who rises doesn\u2019t lose their intensity. You keep your capacity to love hard, your presence, your liveliness, that courage not to flee the real conversations. But you no longer use them to test. You can love hard without provoking, ask for reassurance instead of forcing it out, stand a moment of calm without taking it for abandonment. Your fire warms instead of burning.',
-        'Be patient, the path is neither fast nor steady. You\u2019ll provoke again, especially when someone truly matters. That won\u2019t be a failure, just the sign that you\u2019re learning. And what will lift you isn\u2019t understanding more, it\u2019s living, over time, the experience that a calm love can be a solid love, and that you can matter to someone without having to put them to the test. That happens with others, and it can be practiced. This week\u2019s protocol is where you start.',
+        'An Arsonist who rises doesn\u2019t lose their intensity. You keep your capacity to love hard, your presence, your liveliness, that courage not to flee the real conversations. But you no longer turn them into a test. You can love hard without lighting anything, and you can sit inside a calm evening without reading it as the quiet before an exit. Asking to be reassured, in plain words, stops feeling like weakness and starts feeling like the faster road to the thing you actually wanted. Your fire warms a room now instead of burning it down.',
+        'Be patient, the path is neither fast nor steady. You\u2019ll provoke again, especially when someone truly matters. That won\u2019t be a failure, just the sign that you\u2019re learning. And the thing that lifts you is something you live rather than grasp, built slowly over months as you gather real evidence that a calm love can be a solid one, and that you can matter to someone without once making them prove it. That happens with others, and it can be practiced. Your plan is where you start.',
       ],
     },
 
     {
       id: 'etApres', zone: 'paid', type: 'prose',
-      title: '6. And after this',
+      title: 'And after this',
       paras: [
         'This report is a snapshot of you today. Your Anchor isn\u2019t fixed, it moves as you integrate your mechanism. The more you learn to feel the fire rise and to ask instead of provoking, the less it decides in your place, and the more you let the right people love you calmly, without your having to push them to the edge to be sure of it.',
         'Each level has its own way of working. What you do at level {{ancre_position}} won\u2019t be what you do at the level above. So come back, in a few weeks, take this test again. It\u2019ll become your progress mirror. If your Anchor rises, you\u2019ll know you\u2019re asking where you\u2019d once have provoked. And if it lowers after a hard stretch, that\u2019s useful information, not a setback. Either way, you have a compass.',
