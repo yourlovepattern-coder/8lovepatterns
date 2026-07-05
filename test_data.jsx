@@ -531,9 +531,9 @@ const LP_OFFER = {
       { name:`Your reading list`,                      benefit:`The right next step to keep going, chosen for you.` },
     ],
     'Guetteur': {
-      catch:  `The Watcher Catch`,
+      catch:  `The Alarm Catch`,
       catchB: `one line that stops the scanning mid-conversation, before you start building the case.`,
-      kit:    `Before You Investigate`,
+      kit:    `When the Surge Hits`,
       kitB:   `the pocket kit for the moment the search for proof takes over.`,
       blindB: `the blind spot that keeps you watching and never reassured.`,
     },
