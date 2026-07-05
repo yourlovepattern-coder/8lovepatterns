@@ -420,6 +420,9 @@ function OfferLoop({ R }){
 
 /* ---- COST (indigo) ------------------------------------------------------- */
 function OfferCost({ R }){
+  /* Un profil au cran Clear tient déjà la barre : aucun coût à payer, on masque
+     entièrement le bloc (pas de bande « Clear has a price »). */
+  if((R.ancre_position|0) === 0) return null;
   const tier = lpTierName(R.ancre_position);
   const c = lpCost(R);
   return (
