@@ -51,7 +51,7 @@ function Footer({ go }) {
   const { t } = useLang();
   const cols = [
     { h:t('footer.test'), items:[[t('cta.reveal'),'intro'],[t('footer.p8'),'profils'],[t('nav.science'),'science'],[t('nav.method'),'methode']] },
-    { h:t('footer.brand'), items:[[t('footer.about'),'methode'],[t('footer.privacy'),'home'],[t('footer.contact'),'home']] },
+    { h:t('footer.brand'), items:[[t('footer.about'),'methode'],[t('footer.privacy'),'home'],['Legal','/legal.html'],[t('footer.contact'),'home']] },
   ];
   const supportEmail = 'support@8lovepatterns.com';
   return (
@@ -69,8 +69,11 @@ function Footer({ go }) {
               <div style={{ fontWeight:700, color:'#fff', marginBottom:14, fontSize:'.95rem' }}>{c.h}</div>
               <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
                 {c.items.map(([label,k])=>(
-                  <button key={label} onClick={()=>go(k)} style={{ textAlign:'left', background:'none', border:'none', cursor:'pointer',
-                    color:'rgba(255,255,255,.66)', fontFamily:'var(--font-body)', fontSize:'.92rem', padding:0 }}>{label}</button>
+                  k.charAt(0)==='/'
+                    ? <a key={label} href={k} style={{ textAlign:'left', color:'rgba(255,255,255,.66)', textDecoration:'none',
+                        fontFamily:'var(--font-body)', fontSize:'.92rem', padding:0, width:'fit-content' }}>{label}</a>
+                    : <button key={label} onClick={()=>go(k)} style={{ textAlign:'left', background:'none', border:'none', cursor:'pointer',
+                        color:'rgba(255,255,255,.66)', fontFamily:'var(--font-body)', fontSize:'.92rem', padding:0 }}>{label}</button>
                 ))}
               </div>
             </div>

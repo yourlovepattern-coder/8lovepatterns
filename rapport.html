@@ -43,12 +43,18 @@
 
   .rp-locked { background:var(--surface,#fff); border:1px solid var(--hairline); border-radius:var(--r-xl); padding:clamp(28px,4vw,44px); text-align:center; }
 
+  .rp-footer { border-top:1px solid var(--hairline); margin-top:72px; }
+  .rp-footer-in { max-width:880px; margin:0 auto; padding:22px clamp(20px,5vw,40px); font-size:.82rem; color:var(--ink-3); text-align:center; }
+  .rp-footer a { color:var(--ink-3); text-decoration:none; }
+  .rp-footer a:hover { color:var(--encre); }
+
   @media (max-width: 720px) {
     .rp-loop { grid-template-columns: 1fr !important; }
     .rp-compat { grid-template-columns: 1fr !important; }
   }
   @media print {
     .rp-topbar { display:none !important; }
+    .rp-footer { display:none !important; }
     body { background:#fff; }
     .rp-block, .rp-p, .rp-h2 { break-inside: avoid; }
   }
@@ -70,6 +76,12 @@
 <main id="report">
   <div class="rp-state"><span class="rp-spin"></span><p style="margin-top:18px;color:var(--ink-3);">Loading your report\u2026</p></div>
 </main>
+
+<footer class="rp-footer">
+  <div class="rp-footer-in">
+    <a href="/legal.html">Legal</a>
+  </div>
+</footer>
 
 <script src="report-engine/render.js"></script>
 <script>
