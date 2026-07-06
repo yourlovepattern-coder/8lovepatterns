@@ -20,6 +20,7 @@
 /* ---- Constantes de routage (faciles à régler) ---------------------------- */
 const SECURE_MAX = 1.0;   /* les deux axes <= 1.0 -> route sécure */
 const POLE_GAP   = 0.5;   /* écart mini pour trancher un pôle */
+const CONF_GAP   = 10;    /* écart % mini entre les 2 premiers pour une confiance nette */
 
 const LP_POLE_ANXIEUX    = ['Guetteur', 'Miroir', 'Sauveur', 'Incendiaire'];
 const LP_POLE_DISTANCIANT = ['Fugitif', 'Bastion'];
@@ -28,8 +29,8 @@ const LP_POLE_TOUS = ['Miroir', 'Fugitif', 'Bastion', 'Guetteur', 'Sauveur', 'Ca
 /* ---- Section 1 : PATTERN (Étage 1 Phase B) -------------------------------- */
 function lpPatternCalc(answers){
   const T = window.LP_TEST;
-  const sums = {}, counts = {}, fours = {};
-  T.patterns.forEach(p => { sums[p.key]=0; counts[p.key]=0; fours[p.key]=0; });
+  const sums = {}, counts = {}, fours = {}, threes = {};
+  T.patterns.forEach(p => { sums[p.key]=0; counts[p.key]=0; fours[p.key]=0; threes[p.key]=0; });
   let allSum = 0, allN = 0;
 
   T.c1.forEach(q => {
@@ -40,7 +41,8 @@ function lpPatternCalc(answers){
       if(v != null){
         sums[r.pattern] += v;
         allSum += v; allN += 1;
-        if(v === 4) fours[r.pattern] += 1;       /* notes « Tout à fait moi » */
+        if(v === 4) fours[r.pattern]  += 1;      /* notes « Tout à fait moi » */
+        if(v === 3) threes[r.pattern] += 1;      /* notes « Plutôt moi »       */
       }
     });
   });
@@ -56,7 +58,7 @@ function lpPatternCalc(answers){
      de « Tout à fait moi ». Si toujours égalité entre 1er et 2e : profil
      mixte assumé, les deux à parts égales (jamais par l'ordre de la liste). */
   const ranked = T.patterns.map(p => p.key)
-    .sort((a,b) => (scores[b]-scores[a]) || (fours[b]-fours[a]));
+    .sort((a,b) => (scores[b]-scores[a]) || (fours[b]-fours[a]) || (threes[b]-threes[a]));
   const dominant = ranked[0], secondaire = ranked[1];
 
   let profil_type;
@@ -70,7 +72,7 @@ function lpPatternCalc(answers){
   const moyenne = allN ? (allSum / allN) : 0;
 
   return {
-    scores, fours, dominant, secondaire, profil_type,
+    scores, fours, threes, dominant, secondaire, profil_type,
     ecart: scores[dominant] - scores[secondaire],
     profil_tres_active: moyenne >= 3,
     profil_peu_declenche: moyenne <= 1,
@@ -117,12 +119,18 @@ function lpFreeze(answers){
   const axes = lpAxesCalc(answers);
   const elig = lpEligibles(axes);
   if(elig.secure){
-    return { secure:true, axes, dominant:null, secondaire:null, eligibles:[] };
+    return { secure:true, axes, dominant:null, secondaire:null, eligibles:[], low_confidence:false };
   }
   const pat = lpPatternCalc(answers);
+  /* Tri parmi les éligibles : score %, puis « Tout à fait moi », puis « Plutôt
+     moi ». L'ordre du tableau n'est PLUS jamais un départage. S'il reste une
+     égalité parfaite après ces trois couches, c'est un vrai profil mixte : on
+     le signale (low_confidence) au lieu de trancher en silence par la liste. */
   const ranked = elig.list.slice()
-    .sort((a,b) => (pat.scores[b]-pat.scores[a]) || (pat.fours[b]-pat.fours[a]));
-  return { secure:false, axes, dominant: ranked[0], secondaire: ranked[1], eligibles: elig.list };
+    .sort((a,b) => (pat.scores[b]-pat.scores[a]) || (pat.fours[b]-pat.fours[a]) || (pat.threes[b]-pat.threes[a]));
+  const dominant = ranked[0], secondaire = ranked[1];
+  const low_confidence = ((pat.scores[dominant] - pat.scores[secondaire]) < CONF_GAP);
+  return { secure:false, axes, dominant, secondaire, eligibles: elig.list, low_confidence };
 }
 
 /* ---- Section 2 : ANCRE (Étage 2, sur la variante jouée) ------------------- */
@@ -244,6 +252,7 @@ function lpComputeResultat(answers, frozen){
     return {
       securite,
       secure: true,
+      low_confidence: fr.low_confidence,
       axes,
       axe: lpAxeFromAxes(axes),
       tous_les_scores_pattern: pat.scores,
@@ -271,6 +280,7 @@ function lpComputeResultat(answers, frozen){
   return {
     securite,
     secure: false,
+    low_confidence: fr.low_confidence,
     axes,
 
     pattern_dominant: dominant,

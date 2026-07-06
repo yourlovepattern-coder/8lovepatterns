@@ -154,6 +154,43 @@ const LP_TEST_C1 = [
   { id:'B_ALC', kind:'statement', reactions:[{ pattern:'Alchimiste' }],
     statement:{ fr:"Face à un problème de couple, je passe par l'analyse et la logique plutôt que par ce que je ressens.",
                 en:"Facing a relationship problem, I go through analysis and logic rather than what I feel." } },
+
+  /* --- Items de confirmation (fiabilisation Phase B, v3) --------------------
+     Le pôle anxieux (Guetteur, Miroir, Sauveur, Incendiaire) passe à 3 items,
+     le pôle distanciant (Fugitif, Bastion) à 2. Tirés de la banque items.jsx
+     sur leurs paires discriminatesBetween. Le moteur divise par le nombre réel
+     d'apparitions (counts x 4), donc aucun dénominateur n'est cassé.
+     Entrelacés pour éviter deux items du même mécanisme à la suite. --------- */
+  { id:'B_GUE_2', kind:'statement', reactions:[{ pattern:'Guetteur' }],
+    statement:{ fr:"Même quand tout va bien, une partie de moi reste en alerte face à tout ce qui pourrait signaler une distance.",
+                en:"Even when everything is fine, part of me stays alert to anything that might signal distance." } },
+  { id:'B_MIR_2', kind:'statement', reactions:[{ pattern:'Miroir' }],
+    statement:{ fr:"Le regard que la personne que j'aime porte sur moi influence fortement la façon dont je me sens.",
+                en:"The way the person I love sees me strongly shapes how I feel about myself." } },
+  { id:'B_SAU_2', kind:'statement', reactions:[{ pattern:'Sauveur' }],
+    statement:{ fr:"Je me sens plus important dans une relation quand je sais que l'autre a besoin de moi.",
+                en:"I feel more important in a relationship when I know the other person needs me." } },
+  { id:'B_INC_2', kind:'statement', reactions:[{ pattern:'Incendiaire' }],
+    statement:{ fr:"Je préfère parfois une dispute claire à un silence qui me laisse dans le doute.",
+                en:"I sometimes prefer a clear argument to a silence that leaves me in doubt." } },
+  { id:'B_FUG_2', kind:'statement', reactions:[{ pattern:'Fugitif' }],
+    statement:{ fr:"Je peux vivre l'engagement comme une perte de liberté, même quand la personne compte vraiment pour moi.",
+                en:"I can feel commitment as a loss of freedom, even when the person truly matters to me." } },
+  { id:'B_BAS_2', kind:'statement', reactions:[{ pattern:'Bastion' }],
+    statement:{ fr:"Même quand je tiens profondément à quelqu'un, je peux donner l'impression de n'avoir besoin de personne.",
+                en:"Even when I care deeply about someone, I can give the impression that I don't need anyone." } },
+  { id:'B_GUE_3', kind:'statement', reactions:[{ pattern:'Guetteur' }],
+    statement:{ fr:"J'ai parfois besoin de vérifier plusieurs petits indices avant de me sentir vraiment rassuré dans le lien.",
+                en:"I sometimes need to check several small clues before I feel truly reassured in the bond." } },
+  { id:'B_MIR_3', kind:'statement', reactions:[{ pattern:'Miroir' }],
+    statement:{ fr:"Quand je me sens moins choisi, je peux vite douter de ma valeur.",
+                en:"When I feel less chosen, I can quickly doubt my worth." } },
+  { id:'B_SAU_3', kind:'statement', reactions:[{ pattern:'Sauveur' }],
+    statement:{ fr:"J'ai du mal à voir une personne que j'aime souffrir sans me sentir responsable d'arranger les choses.",
+                en:"I find it hard to watch someone I love suffer without feeling responsible for making it better." } },
+  { id:'B_INC_3', kind:'statement', reactions:[{ pattern:'Incendiaire' }],
+    statement:{ fr:"Quand je me sens ignoré, je peux avoir envie de dire ou faire quelque chose qui oblige l'autre à se positionner.",
+                en:"When I feel ignored, I can want to say or do something that forces the other person to take a stance." } },
 ];
 
 /* ----------------------------------------------------------------------------
