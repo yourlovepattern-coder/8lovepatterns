@@ -542,32 +542,32 @@ function OfferFaq({ R, onCta }){
         <h2>Before you decide.</h2>
         <div className="acc">
           <details open>
-            <summary>I already know I do this.<span className="pm">+</span></summary>
-            <div className="a">Most people at {tier} do. Knowing is rarely the missing piece; you can name the pattern on a Tuesday and still run it that Friday night. The Map works on the gap between the two: a catch move for the exact second the loop starts, and a 30-day plan calibrated to how deep your anchor sits. Awareness got you here. The plan is what moves you.</div>
-          </details>
-          <details>
-            <summary>Why not just read free advice?<span className="pm">+</span></summary>
-            <div className="a">You probably have. Free advice is written for everyone who shares the label, which is why it reads true and shifts nothing. Your Map runs on your own answers: your loop, your anchor depth, the one next move that fits the {mechShort} at {tier}. If seventeen articles haven't moved it, the eighteenth won't either.</div>
-          </details>
-          <details>
-            <summary>Can 30 days really change a pattern this old?<span className="pm">+</span></summary>
-            <div className="a">Not erase it, no, and anyone promising that is selling you something else. What 30 days can do is {isClear ? <>strengthen the hold you already have on the helm</> : <>move you from {tier} to {next}</>}, because the plan never fights the whole pattern at once. It targets the split second where the loop takes the helm, one caught moment at a time. And if you read the full Map and it gives you nothing, the 7-day guarantee covers you.</div>
-          </details>
-          <details>
-            <summary>How much work is this?<span className="pm">+</span></summary>
-            <div className="a">A few minutes a day, most days. The plan is 30 short daily exercises, each built around a single moment, and the acute kit is there for the days when the pattern hits harder than any exercise. Nothing to log, no streaks to keep. It asks far less of you than the loop already costs.</div>
-          </details>
-          <details>
-            <summary>Do I get it right away?<span className="pm">+</span></summary>
-            <div className="a">Yes. The moment payment goes through, your full Map opens on screen, and a private link lands in your inbox so you can come back to it whenever you want. No account to create, nothing to download.</div>
+            <summary>What exactly am I getting?<span className="pm">+</span></summary>
+            <div className="a">A personalized report built from your answers, your {mechShort} Anchor Map. It lays out the exact loop running you, your spot on the anchor scale, and the science map with your own coordinates, then hands you a practical set to work with: the catch move, a 30-day plan, a kit for the hardest moments, your blind spot, and a reading list. It opens on screen and stays yours to reread.</div>
           </details>
           <details>
             <summary>Is it a subscription?<span className="pm">+</span></summary>
-            <div className="a">No. $29, once, and the Map is yours to keep. No trial that quietly turns into a monthly charge, and nothing that renews.</div>
+            <div className="a">No. $29, once, and the Map is yours to keep. No free trial that quietly turns into a monthly charge, nothing to cancel later, nothing that renews. You pay one time and that's the end of it.</div>
+          </details>
+          <details>
+            <summary>How do I get my Map after I pay?<span className="pm">+</span></summary>
+            <div className="a">The moment payment goes through, your full Map opens on screen. A private link also lands in your inbox, so you can come back to it any time from any device. No account to create, nothing to install.</div>
+          </details>
+          <details>
+            <summary>When will I actually see a change?<span className="pm">+</span></summary>
+            <div className="a">The Map itself shifts something on day one, most people say seeing the loop named this precisely is the first time it stops feeling like a character flaw. The movement takes longer. The 30-day plan is built to {isClear ? <>deepen the hold you already have on the helm</> : <>carry you from {tier} to {next}</>}, one caught moment at a time, because it never tries to fight the whole pattern at once. No one changes a decade-old reflex in a weekend, and anyone promising that is selling something else.</div>
+          </details>
+          <details>
+            <summary>Can I get a refund?<span className="pm">+</span></summary>
+            <div className="a">Yes. Seven days, full refund, one email to support@8lovepatterns.com. You don't have to explain why or fill out anything.</div>
           </details>
           <details>
             <summary>What happens to my answers?<span className="pm">+</span></summary>
             <div className="a">They exist to build your Map, nothing else. No account is created, we never sell your data, and your report sits behind a private link that only you receive.</div>
+          </details>
+          <details>
+            <summary>How do I reach you if something goes wrong?<span className="pm">+</span></summary>
+            <div className="a">One email to support@8lovepatterns.com and a real person answers, usually within a day. A link that won't open, a question about your Map, a refund, anything at all.</div>
           </details>
         </div>
         <div className="faq-close">
