@@ -543,19 +543,31 @@ function OfferFaq({ R, onCta }){
         <div className="acc">
           <details open>
             <summary>I already know I do this.<span className="pm">+</span></summary>
-            <div className="a">{tier} means exactly that: you know, after the fact. The Map works on the gap between knowing and changing.</div>
+            <div className="a">Most people at {tier} do. Knowing is rarely the missing piece; you can name the pattern on a Tuesday and still run it that Friday night. The Map works on the gap between the two: a catch move for the exact second the loop starts, and a 30-day plan calibrated to how deep your anchor sits. Awareness got you here. The plan is what moves you.</div>
           </details>
           <details>
             <summary>Why not just read free advice?<span className="pm">+</span></summary>
-            <div className="a">Free advice is written for everyone, which means no one. This is built for the {mechShort} at {tier}, and nothing else.</div>
+            <div className="a">You probably have. Free advice is written for everyone who shares the label, which is why it reads true and shifts nothing. Your Map runs on your own answers: your loop, your anchor depth, the one next move that fits the {mechShort} at {tier}. If seventeen articles haven't moved it, the eighteenth won't either.</div>
           </details>
           <details>
-            <summary>What if it's not me?<span className="pm">+</span></summary>
-            <div className="a">Read it, and if it doesn't show you something you couldn't see before, one email in 7 days and you're refunded. No form, no reason needed.</div>
+            <summary>Can 30 days really change a pattern this old?<span className="pm">+</span></summary>
+            <div className="a">Not erase it, no, and anyone promising that is selling you something else. What 30 days can do is {isClear ? <>strengthen the hold you already have on the helm</> : <>move you from {tier} to {next}</>}, because the plan never fights the whole pattern at once. It targets the split second where the loop takes the helm, one caught moment at a time. And if you read the full Map and it gives you nothing, the 7-day guarantee covers you.</div>
+          </details>
+          <details>
+            <summary>How much work is this?<span className="pm">+</span></summary>
+            <div className="a">A few minutes a day, most days. The plan is 30 short daily exercises, each built around a single moment, and the acute kit is there for the days when the pattern hits harder than any exercise. Nothing to log, no streaks to keep. It asks far less of you than the loop already costs.</div>
+          </details>
+          <details>
+            <summary>Do I get it right away?<span className="pm">+</span></summary>
+            <div className="a">Yes. The moment payment goes through, your full Map opens on screen, and a private link lands in your inbox so you can come back to it whenever you want. No account to create, nothing to download.</div>
           </details>
           <details>
             <summary>Is it a subscription?<span className="pm">+</span></summary>
-            <div className="a">No. $29, once. Yours forever.</div>
+            <div className="a">No. $29, once, and the Map is yours to keep. No trial that quietly turns into a monthly charge, and nothing that renews.</div>
+          </details>
+          <details>
+            <summary>What happens to my answers?<span className="pm">+</span></summary>
+            <div className="a">They exist to build your Map, nothing else. No account is created, we never sell your data, and your report sits behind a private link that only you receive.</div>
           </details>
         </div>
         <div className="faq-close">
