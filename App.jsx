@@ -1,6 +1,13 @@
 /* 8LovePatterns — App + routeur simple */
 function App() {
-  const [route, setRoute] = useState('home');
+  // /test is a real, shareable URL (ads, Reddit, blog CTAs) that drops the
+  // visitor straight onto the test intro screen — the same state the homepage
+  // hero button opens via go('intro'). Cloudflare rewrites /test to this SPA
+  // shell (see _redirects); we just read the path to pick the opening screen.
+  const [route, setRoute] = useState(()=>{
+    try { return window.location.pathname.replace(/\/+$/,'').toLowerCase()==='/test' ? 'intro' : 'home'; }
+    catch(e){ return 'home'; }
+  });
   const [code, setCode] = useState('bas');     // archétype affiché (profil/résultat)
   const [result, setResult] = useState('bas');  // résultat « obtenu » au test
   const [resultData, setResultData] = useState(null); // full engine result (internal data)

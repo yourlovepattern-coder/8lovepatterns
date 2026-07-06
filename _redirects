@@ -1,0 +1,11 @@
+# /test is a real URL that deep-links into the assessment.
+# Canonical form is /test (no trailing slash) — that is what the ads, Reddit,
+# and blog CTAs use. A trailing-slash visit is normalized to it first.
+#   301: /test/ -> /test  (permanent, no loop: different target path)
+#   200: /test  -> serve the site root (the SPA shell) WITHOUT changing the URL.
+# Target is "/" not "/index.html" on purpose: Cloudflare canonicalizes
+# /index.html to /, which would 308-redirect and wipe /test from the URL bar.
+# App.jsx reads location.pathname and opens the test intro screen (route
+# "intro"). Exact paths only — /api/* Functions and all other assets untouched.
+/test/    /test    301
+/test     /        200
