@@ -150,7 +150,8 @@ LP_STRIPE.checkoutSession = async function (result) {
     if (window.LP_PH) {
       var phProps = {};
       if (this.priceLabel) phProps.displayed_price = this.priceLabel;
-      window.LP_PH('checkout_started', phProps);
+      window.LP_PH('checkout_started', phProps);   // legacy name
+      window.LP_PH('checkout_opened', phProps);     // canonical funnel event
     }
   } catch (e) {}
 

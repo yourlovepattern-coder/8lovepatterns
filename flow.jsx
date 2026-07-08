@@ -50,7 +50,10 @@ function Intro({ go, onResult }) {
   const [leaving,setLeaving] = useState(false);
 
   // Analytics: the visitor started the test
-  useEffect(()=>{ window.LP_track && window.LP_track('quiz_start', { quiz_type:'adaptive' }); }, []);
+  useEffect(()=>{
+    window.LP_track && window.LP_track('quiz_start', { quiz_type:'adaptive' });   // legacy GA name
+    window.LP_PH && window.LP_PH('test_started', { quiz_type:'adaptive' });        // canonical funnel event
+  }, []);
 
   const answeredCount = Object.keys(answers).length;     // answered before current
   const currentId = order[idx];
@@ -58,7 +61,11 @@ function Intro({ go, onResult }) {
 
   function finish(allAnswers){
     const result = window.LP_deriveResult(allAnswers);
-    if(window.LP_track) window.LP_track('quiz_complete', {
+    if(window.LP_track) window.LP_track('quiz_complete', {      // legacy GA name
+      questions_answered: Object.keys(allAnswers).length,
+      dominant: result && result.dominant
+    });
+    if(window.LP_PH) window.LP_PH('test_completed', {           // canonical funnel event
       questions_answered: Object.keys(allAnswers).length,
       dominant: result && result.dominant
     });

@@ -441,7 +441,8 @@ function OfferOffer({ R, onCta, pattern }){
   const fired = rsUseRef(false);
   rsUseEffect(()=>{
     const fire = ()=>{ if(fired.current) return; fired.current = true;
-      window.LP_PH && window.LP_PH('paywall_viewed', pattern ? { pattern } : {}); };
+      window.LP_PH && window.LP_PH('paywall_viewed', pattern ? { pattern } : {});   // legacy name
+      window.LP_PH && window.LP_PH('offer_viewed', pattern ? { pattern } : {}); };   // canonical funnel event
     const node = ref.current;
     if(!node || typeof IntersectionObserver === 'undefined'){ fire(); return; }
     const io = new IntersectionObserver((entries)=>{

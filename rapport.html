@@ -119,7 +119,8 @@
     if (!result) { location.href = 'index.html'; return; }
     /* Analytics (cookieless, non-blocking). No invented amount: only the price
        label shown on this page. Real amount is captured on purchase_completed. */
-    if (window.LP_PH) window.LP_PH('checkout_started', { displayed_price: PRICE_LABEL });
+    if (window.LP_PH) window.LP_PH('checkout_started', { displayed_price: PRICE_LABEL });   // legacy name
+    if (window.LP_PH) window.LP_PH('checkout_opened', { displayed_price: PRICE_LABEL });    // canonical funnel event
     fetch('/api/create-checkout', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ result: result, lang: lang }) })
       .then(function (r) { return r.json(); })
       .then(function (d) { if (d && d.url) location.href = d.url; else location.href = 'index.html'; })
