@@ -725,6 +725,19 @@ function TestResult({ answers, frozen, onRestart, go }){
     }
   }, [gateDone, pending, R]);
 
+  /* Analytics : la PAGE D'OFFRE est affichée — signal net "offre montrée",
+     indépendant du scroll (contrairement à paywall_viewed/offer_viewed) et
+     EXCLUANT la route secure. Réutilise !R.secure, la condition qui gouverne
+     l'affichage du bloc d'offre / CTA (voir le `if(R.secure) return` plus bas).
+     Fire une seule fois au montage du résultat d'offre (garde useRef). */
+  const offerPageLoadedRef = rsUseRef(false);
+  rsUseEffect(()=>{
+    if(gateDone && !pending && !R.secure && !offerPageLoadedRef.current){
+      offerPageLoadedRef.current = true;
+      window.LP_PH && window.LP_PH('offer_page_loaded', { pattern: R.pattern_dominant });
+    }
+  }, [gateDone, pending, R]);
+
   function startPlanCheckout(){
     try {
       if (window.LP_STRIPE && typeof window.LP_STRIPE.checkoutSession === 'function') {
