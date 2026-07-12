@@ -207,6 +207,34 @@ function AnchorScale() {
   );
 }
 
+/* HOW IT WORKS, three numbered steps */
+function HowItWorksSection({ go }) {
+  const steps = [
+    'Answer 33 questions. No sign-up, nothing stored with your name.',
+    'See your pattern and how deep it currently runs.',
+    'Get the one move that loosens it, matched to your level.',
+  ];
+  return (
+    <Section>
+      <Container narrow style={{ textAlign:'center' }}>
+        <h2 className="lp-h1">Five minutes. Then you're holding the map.</h2>
+        <div style={{ display:'flex', flexDirection:'column', gap:22, marginTop:36, textAlign:'left' }}>
+          {steps.map((s,i)=>(
+            <div key={s} style={{ display:'flex', gap:18, alignItems:'flex-start' }}>
+              <span style={{ flexShrink:0, display:'grid', placeItems:'center', width:40, height:40, borderRadius:'50%',
+                background:'var(--corail-soft)', color:'var(--corail)', fontWeight:800, fontFamily:'var(--font-display)', fontSize:'1.1rem' }}>{i+1}</span>
+              <p style={{ margin:0, color:'var(--ink-2)', fontSize:'1.05rem', lineHeight:1.6, paddingTop:8 }}>{s}</p>
+            </div>
+          ))}
+        </div>
+        <div style={{ marginTop:32, display:'flex', justifyContent:'center' }}>
+          <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>Reveal My Pattern</Button>
+        </div>
+      </Container>
+    </Section>
+  );
+}
+
 /* LOOP, the repeating story that isn't bad luck */
 function LoopSection({ go }) {
   return (
@@ -300,6 +328,9 @@ function Home({ go }) {
           </div>
         </Container>
       </Section>
+
+      {/* HOW IT WORKS, three steps to the report */}
+      <HowItWorksSection go={go}/>
 
       {/* FINAL CTA */}
       <Section style={{ padding:'clamp(48px,7vw,90px) 0 clamp(56px,9vw,110px)' }}>
