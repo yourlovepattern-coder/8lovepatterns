@@ -9,41 +9,42 @@ function Header({ go, route }) {
     { k:'methode', label:t('nav.method') },
   ];
   return (
-    <header style={{ position:'sticky', top:0, zIndex:50, background:'rgba(251,247,241,.82)',
-      backdropFilter:'blur(12px)', WebkitBackdropFilter:'blur(12px)', borderBottom:'1px solid var(--hairline)' }}>
-      <Container style={{ display:'flex', alignItems:'center', justifyContent:'space-between', height:72 }}>
-        <Logo onClick={()=>go('home')}/>
-        <nav style={{ display:'flex', alignItems:'center', gap:'4px' }} className="lp-desktop-nav">
-          {links.map(l=>(
-            <button key={l.k} onClick={()=>go(l.k)} style={{ background:'none', border:'none', cursor:'pointer',
-              fontFamily:'var(--font-body)', fontWeight:600, fontSize:'.97rem', padding:'9px 15px', borderRadius:'var(--r-pill)',
-              color: route===l.k?'var(--encre)':'var(--ink-2)' }}>{l.label}</button>
-          ))}
-          <div style={{ width:6 }}></div>
-          <LanguageWidget/>
-          <div style={{ width:6 }}></div>
-          <Button size="sm" onClick={()=>go('intro')}>{t('cta.reveal')}</Button>
-        </nav>
-        <div style={{ display:'none', alignItems:'center', gap:'10px' }} className="lp-burger-wrap">
-          <LanguageWidget compact/>
-          <button onClick={()=>setOpen(o=>!o)} style={{ background:'none', border:'none', cursor:'pointer', color:'var(--encre)' }}>
-            <Icon name={open?'x':'menu'} size={26}/>
-          </button>
-        </div>
-      </Container>
-      {open && (
-        <div style={{ borderTop:'1px solid var(--hairline)', background:'var(--paper)' }}>
-          <Container style={{ padding:'14px 0 20px', display:'flex', flexDirection:'column', gap:'4px' }}>
+    <div className="lp-nav-wrap">
+      <header className="lp-nav-pill">
+        <Container style={{ display:'flex', alignItems:'center', justifyContent:'space-between', height:64, padding:'0 20px' }}>
+          <Logo onClick={()=>go('home')} size={19}/>
+          <nav style={{ display:'flex', alignItems:'center', gap:'4px' }} className="lp-desktop-nav">
             {links.map(l=>(
-              <button key={l.k} onClick={()=>{go(l.k);setOpen(false);}} style={{ textAlign:'left', background:'none', border:'none',
-                fontFamily:'var(--font-body)', fontWeight:600, fontSize:'1.05rem', padding:'12px 4px', color:'var(--ink-2)' }}>{l.label}</button>
+              <button key={l.k} onClick={()=>go(l.k)} style={{ background:'none', border:'none', cursor:'pointer',
+                fontFamily:'var(--font-body)', fontWeight:600, fontSize:'.94rem', padding:'9px 15px', borderRadius:'var(--r-pill)',
+                color: route===l.k?'var(--ink-1)':'var(--ink-2)' }}>{l.label}</button>
             ))}
-            <div style={{ height:8 }}></div>
-            <Button full onClick={()=>{go('intro');setOpen(false);}}>{t('cta.reveal')}</Button>
-          </Container>
-        </div>
-      )}
-    </header>
+            <div style={{ width:6 }}></div>
+            <LanguageWidget/>
+            <div style={{ width:6 }}></div>
+            <Button size="sm" onClick={()=>go('intro')}>{t('cta.reveal')}</Button>
+          </nav>
+          <div style={{ display:'none', alignItems:'center', gap:'10px' }} className="lp-burger-wrap">
+            <LanguageWidget compact/>
+            <button onClick={()=>setOpen(o=>!o)} style={{ background:'none', border:'none', cursor:'pointer', color:'var(--encre)' }}>
+              <Icon name={open?'x':'menu'} size={24}/>
+            </button>
+          </div>
+        </Container>
+        {open && (
+          <div style={{ borderTop:'1px solid var(--hairline)' }}>
+            <Container style={{ padding:'14px 20px 20px', display:'flex', flexDirection:'column', gap:'4px' }}>
+              {links.map(l=>(
+                <button key={l.k} onClick={()=>{go(l.k);setOpen(false);}} style={{ textAlign:'left', background:'none', border:'none',
+                  fontFamily:'var(--font-body)', fontWeight:600, fontSize:'1.05rem', padding:'12px 4px', color:'var(--ink-2)' }}>{l.label}</button>
+              ))}
+              <div style={{ height:8 }}></div>
+              <Button full onClick={()=>{go('intro');setOpen(false);}}>{t('cta.reveal')}</Button>
+            </Container>
+          </div>
+        )}
+      </header>
+    </div>
   );
 }
 
