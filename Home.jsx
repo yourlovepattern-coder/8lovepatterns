@@ -167,7 +167,8 @@ function PhotoQuoteCard() {
   return (
     <div className="lp-bento-cell" style={{ position:'relative', padding:0, minHeight:280, overflow:'hidden' }}>
       <img src="assets/photos/hero-late-night-phone.webp" alt="Woman lying in bed at night, checking her phone"
-        style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' }}/>
+        style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover',
+          outline:'1px solid rgba(0,0,0,.1)', outlineOffset:'-1px' }}/>
       <div style={{ position:'absolute', inset:0, background:'linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.65))' }}/>
       <div style={{ position:'relative', marginTop:'auto', padding:'22px 22px 24px', color:'#fff' }}>
         <span style={{ fontSize:'2rem', fontFamily:'Georgia,serif', opacity:.7, lineHeight:1 }}>&ldquo;</span>

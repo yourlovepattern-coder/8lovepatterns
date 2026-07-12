@@ -34,11 +34,13 @@ function Icon({ name, size=20, stroke=1.75, className='', style={} }) {
 }
 
 /* ---- Boutons ---- */
-function Button({ children, variant='primary', size='md', icon, iconLeft, onClick, href, full, style={}, type }) {
+function Button({ children, variant='primary', size='md', icon, iconLeft, onClick, href, full, style={}, type, static: isStatic }) {
   const base = {
     fontFamily:'var(--font-body)', fontWeight:700, cursor:'pointer', border:'none',
     display:'inline-flex', alignItems:'center', justifyContent:'center', gap:'.55em',
-    borderRadius:'var(--r-pill)', transition:'all .2s cubic-bezier(.22,.61,.36,1)',
+    borderRadius:'var(--r-pill)',
+    transitionProperty:'transform, background-color, box-shadow, color, opacity',
+    transitionDuration:'.2s', transitionTimingFunction:'cubic-bezier(.22,.61,.36,1)',
     textDecoration:'none', whiteSpace:'nowrap', width: full?'100%':'auto', ...style,
   };
   const sizes = {
@@ -54,6 +56,7 @@ function Button({ children, variant='primary', size='md', icon, iconLeft, onClic
     light:{ background:'#fff', color:'var(--encre)', boxShadow:'var(--sh-sm)' },
   };
   const [hover, setHover] = useState(false);
+  const [pressed, setPressed] = useState(false);
   const hoverStyle = hover ? ({
     primary:{ background:'var(--cta-600)', transform:'translateY(-1px)' },
     dark:{ transform:'translateY(-1px)' },
@@ -61,9 +64,13 @@ function Button({ children, variant='primary', size='md', icon, iconLeft, onClic
     ghost:{ opacity:.7 },
     light:{ transform:'translateY(-1px)', boxShadow:'var(--sh-md)' },
   }[variant]) : {};
+  const pressStyle = (pressed && !isStatic) ? { transform:'scale(.96)' } : {};
+  const endPress = ()=>setPressed(false);
   const props = {
-    onClick, type, style:{ ...base, ...sizes[size], ...variants[variant], ...hoverStyle },
-    onMouseEnter:()=>setHover(true), onMouseLeave:()=>setHover(false),
+    onClick, type, style:{ ...base, ...sizes[size], ...variants[variant], ...hoverStyle, ...pressStyle },
+    onMouseEnter:()=>setHover(true), onMouseLeave:()=>{ setHover(false); endPress(); },
+    onMouseDown:()=>setPressed(true), onMouseUp:endPress,
+    onTouchStart:()=>setPressed(true), onTouchEnd:endPress, onTouchCancel:endPress,
   };
   const content = [ iconLeft && React.createElement(Icon,{key:'l',name:iconLeft,size:size==='lg'?20:18}),
     React.createElement('span',{key:'t'},children),
@@ -217,7 +224,8 @@ function PhotoCard({ src, alt, caption }) {
   return (
     <div className="lp-card-photo lp-lift">
       <div style={{ aspectRatio:'4/5', overflow:'hidden' }}>
-        <img src={src} alt={alt} style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }}/>
+        <img src={src} alt={alt} style={{ width:'100%', height:'100%', objectFit:'cover', display:'block',
+          outline:'1px solid rgba(0,0,0,.1)', outlineOffset:'-1px' }}/>
       </div>
       {caption && <p style={{ margin:0, padding:'14px 16px 18px', color:'var(--ink-3)', fontSize:'.92rem', lineHeight:1.4 }}>{caption}</p>}
     </div>

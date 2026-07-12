@@ -10,13 +10,13 @@ function Header({ go, route }) {
   ];
   return (
     <div className="lp-nav-wrap">
-      <header className="lp-nav-pill">
+      <header className={`lp-nav-pill ${open?'is-open':''}`}>
         <Container style={{ display:'flex', alignItems:'center', justifyContent:'space-between', height:64, padding:'0 20px' }}>
           <Logo onClick={()=>go('home')} size={19}/>
           <nav style={{ display:'flex', alignItems:'center', gap:'4px' }} className="lp-desktop-nav">
             {links.map(l=>(
-              <button key={l.k} onClick={()=>go(l.k)} style={{ background:'none', border:'none', cursor:'pointer',
-                fontFamily:'var(--font-body)', fontWeight:600, fontSize:'.94rem', padding:'9px 15px', borderRadius:'var(--r-pill)',
+              <button key={l.k} onClick={()=>go(l.k)} className="lp-nav-link" style={{ background:'none', border:'none', cursor:'pointer',
+                fontFamily:'var(--font-body)', fontWeight:600, fontSize:'.94rem', padding:'11px 15px', borderRadius:'var(--r-pill)',
                 color: route===l.k?'var(--ink-1)':'var(--ink-2)' }}>{l.label}</button>
             ))}
             <div style={{ width:6 }}></div>
@@ -26,7 +26,8 @@ function Header({ go, route }) {
           </nav>
           <div style={{ display:'none', alignItems:'center', gap:'10px' }} className="lp-burger-wrap">
             <LanguageWidget compact/>
-            <button onClick={()=>setOpen(o=>!o)} style={{ background:'none', border:'none', cursor:'pointer', color:'var(--encre)' }}>
+            <button onClick={()=>setOpen(o=>!o)} className="lp-icon-btn" style={{ background:'none', border:'none', cursor:'pointer', color:'var(--encre)' }}
+              aria-label={open?'Close menu':'Open menu'}>
               <Icon name={open?'x':'menu'} size={24}/>
             </button>
           </div>
@@ -35,8 +36,8 @@ function Header({ go, route }) {
           <div style={{ borderTop:'1px solid var(--hairline)' }}>
             <Container style={{ padding:'14px 20px 20px', display:'flex', flexDirection:'column', gap:'4px' }}>
               {links.map(l=>(
-                <button key={l.k} onClick={()=>{go(l.k);setOpen(false);}} style={{ textAlign:'left', background:'none', border:'none',
-                  fontFamily:'var(--font-body)', fontWeight:600, fontSize:'1.05rem', padding:'12px 4px', color:'var(--ink-2)' }}>{l.label}</button>
+                <button key={l.k} onClick={()=>{go(l.k);setOpen(false);}} className="lp-nav-link" style={{ textAlign:'left', background:'none', border:'none',
+                  fontFamily:'var(--font-body)', fontWeight:600, fontSize:'1.05rem', padding:'12px 4px', color:'var(--ink-2)', borderRadius:'var(--r-sm)' }}>{l.label}</button>
               ))}
               <div style={{ height:8 }}></div>
               <Button full onClick={()=>{go('intro');setOpen(false);}}>{t('cta.reveal')}</Button>
