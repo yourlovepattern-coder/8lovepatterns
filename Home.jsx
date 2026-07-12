@@ -187,9 +187,17 @@ function PatternGlyphCard({ arch, go }) {
       className="lp-lift" style={{ cursor:'pointer', border:'none', textAlign:'left', width:'100%',
         background:'#fff', borderRadius:'var(--r-card)', boxShadow:'var(--sh-1)',
         padding:'22px', display:'flex', flexDirection:'column', gap:12 }}>
-      <span className="lp-glyph" style={{ background:arch.accent }}>
-        <Icon name={GLYPH_ICON[arch.code]||'star'} size={19} stroke={2} style={{ color:'#fff' }}/>
-      </span>
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+        <span className="lp-glyph" style={{ background:arch.accent }}>
+          <Icon name={GLYPH_ICON[arch.code]||'star'} size={19} stroke={2} style={{ color:'#fff' }}/>
+        </span>
+        <span style={{ width:100, height:100, borderRadius:'50%', flexShrink:0, position:'relative',
+          background:`radial-gradient(120% 100% at 50% 100%, ${arch.soft} 0%, transparent 70%)` }}>
+          <img src={`assets/archetypes/${arch.code}.png`} alt="" style={{ position:'absolute', bottom:0, left:'50%',
+            transform:'translateX(-50%)', height:'100%', width:'auto', objectFit:'contain', objectPosition:'bottom',
+            filter:'drop-shadow(0 6px 10px rgba(0,0,0,.14))' }}/>
+        </span>
+      </div>
       <h3 className="lp-h4" style={{ margin:0 }}>{arch.name}</h3>
       <p style={{ margin:0, color:'var(--ink-3)', fontSize:'.92rem', lineHeight:1.45 }}>{arch.tagline}</p>
       <span style={{ display:'flex', alignItems:'center', gap:6, marginTop:'auto', color: h?arch.accent:'var(--ink-3)',
