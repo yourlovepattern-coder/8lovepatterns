@@ -39,7 +39,12 @@ function targetBox(relPath) {
 }
 
 async function run() {
-  const files = walk(ASSETS_DIR).sort();
+  const only = process.argv[2]; // optional: path to a single PNG, to reconvert just one file
+  let files = walk(ASSETS_DIR).sort();
+  if (only) {
+    const wanted = path.resolve(only);
+    files = files.filter(f => path.resolve(f) === wanted);
+  }
   let totalBefore = 0;
   let totalAfter = 0;
   let converted = 0;

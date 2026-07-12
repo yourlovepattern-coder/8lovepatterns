@@ -1,7 +1,8 @@
 /* 8LovePatterns, Public pattern pages + library (English) */
 
-/* Order places the Anchor dead-center of a 3×3, the eight patterns orbiting it */
-const CAST_ORDER = ['inc','gue','fug','alc','anc','sau','bas','cam','mir'];
+/* The eight patterns only. The Anchor is not a pattern — it's the center
+   they orbit, presented separately below the grid (see AnchorBand). */
+const CAST_ORDER = ['inc','gue','fug','alc','sau','bas','cam','mir'];
 
 function ProfilsIndex({ go }) {
   const fams = ['poursuis','fuis','controle','efface','protege'];
@@ -10,9 +11,9 @@ function ProfilsIndex({ go }) {
       <Module>
         <Container style={{ textAlign:'center' }}>
           <Eyebrow color="var(--cta)">The 8 protection patterns</Eyebrow>
-          <h1 className="lp-h1" style={{ marginTop:12, color:'var(--head)' }}>The eight patterns, and the Anchor.</h1>
+          <h1 className="lp-h1" style={{ marginTop:12, color:'var(--head)' }}>The eight protection patterns.</h1>
           <p className="lp-lead" style={{ marginTop:14, maxWidth:560, marginInline:'auto', color:'var(--body-2)' }}>
-            Eight ways of protecting love, orbiting the one secure center. Tap any character to meet them.
+            Eight ways of protecting love, all orbiting one secure center. Tap any character to meet them.
           </p>
         </Container>
         <Container style={{ marginTop:32 }}>
@@ -31,6 +32,7 @@ function ProfilsIndex({ go }) {
           <div className="lp-cast">
             {CAST_ORDER.map(code=> <CastTile key={code} code={code} go={go}/>)}
           </div>
+          <AnchorBand go={go}/>
         </Container>
       </Module>
     </div>
@@ -38,16 +40,13 @@ function ProfilsIndex({ go }) {
 }
 
 function CastTile({ code, go }) {
-  const isAncre = code==='anc';
-  const a = isAncre ? window.ANCRE : window.ARCHETYPES.find(x=>x.code===code);
+  const a = window.ARCHETYPES.find(x=>x.code===code);
   const fam = window.FAMILIES[a.family];
   const c = a.accent;
-  const grad = isAncre
-    ? `radial-gradient(125% 95% at 50% 16%, color-mix(in srgb, ${c} 34%, #fff) 0%, color-mix(in srgb, ${c} 14%, #fff) 50%, #fff 100%)`
-    : `linear-gradient(180deg, color-mix(in srgb, ${c} 22%, #fff) 0%, color-mix(in srgb, ${c} 9%, #fff) 52%, #fff 100%)`;
+  const grad = `linear-gradient(180deg, color-mix(in srgb, ${c} 22%, #fff) 0%, color-mix(in srgb, ${c} 9%, #fff) 52%, #fff 100%)`;
   return (
     <button
-      className={`lp-cast-tile${isAncre?' is-anchor':''}`}
+      className="lp-cast-tile"
       onClick={()=>go('profil',a.code)}
       aria-label={`${a.name}, ${fam.label}`}
       style={{
@@ -61,13 +60,42 @@ function CastTile({ code, go }) {
         <img src={`assets/archetypes/${a.code}.webp`} alt={a.name}/>
       </span>
       <span className="lp-cast-label">
-        {isAncre
-          ? <span className="lp-cast-chip"><Icon name="star" size={12}/> The secure center</span>
-          : <span className="lp-cast-fam"><span style={{ width:8, height:8, borderRadius:'50%', background:c, display:'inline-block' }}></span>{fam.label}</span>}
+        <span className="lp-cast-fam"><span style={{ width:8, height:8, borderRadius:'50%', background:c, display:'inline-block' }}></span>{fam.label}</span>
         <span className="lp-cast-name" style={{ display:'block' }}>{a.name}</span>
         <span className="lp-cast-tag" style={{ display:'block' }}>{a.tagline}</span>
       </span>
     </button>
+  );
+}
+
+/* The Anchor isn't a ninth tile in the grid above — it's the direction all
+   eight point toward. Deliberately not a card: full-width, horizontal,
+   radial gradient instead of the tile's flat wash, and two distinct exits
+   rather than one whole-card tap — the portrait meets the Anchor itself,
+   the text CTA explains where the scale behind it lives (Method). */
+function AnchorBand({ go }) {
+  const a = window.ANCRE;
+  const c = a.accent;
+  return (
+    <div className="lp-hero-grid" style={{ marginTop:'clamp(28px,4vw,44px)', display:'grid',
+      gridTemplateColumns:'.8fr 1.2fr', gap:'clamp(20px,3vw,40px)', alignItems:'center',
+      borderRadius:'var(--r-xl)', overflow:'hidden', padding:'clamp(28px,4vw,44px)',
+      background:`radial-gradient(120% 140% at 20% 20%, color-mix(in srgb, ${c} 20%, #fff) 0%, color-mix(in srgb, ${c} 7%, #fff) 55%, #fff 100%)`,
+      border:`1px solid color-mix(in srgb, ${c} 22%, #fff)` }}>
+      <button onClick={()=>go('profil','anc')} aria-label={`Meet ${a.name}`}
+        style={{ display:'flex', justifyContent:'center', background:'none', border:'none', padding:0, cursor:'pointer' }}>
+        <img src={`assets/archetypes/${a.code}.webp`} alt={a.name} style={{ width:'100%', maxWidth:220, height:'auto',
+          filter:'drop-shadow(0 14px 18px rgba(20,16,45,.18))' }}/>
+      </button>
+      <div>
+        <Eyebrow color={c}>The secure center</Eyebrow>
+        <h2 className="lp-h2" style={{ marginTop:10, color:'var(--head)' }}>Not a pattern. The direction they all point toward.</h2>
+        <p style={{ marginTop:12, color:'var(--body-2)', lineHeight:1.6 }}>{a.hook} {a.tagline}</p>
+        <div style={{ marginTop:20 }}>
+          <Button size="md" icon="arrow-right" onClick={()=>go('methode')}>See how the Anchor works</Button>
+        </div>
+      </div>
+    </div>
   );
 }
 

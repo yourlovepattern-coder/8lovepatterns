@@ -203,23 +203,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .lp-cast-tile:hover .lp-cast-go,
   .lp-cast-tile:focus-visible .lp-cast-go { opacity: 1; transform: translateY(0) scale(1); }
-  /* Anchor — the center the others orbit */
-  .lp-cast-tile.is-anchor::after {
-    content: '';
-    position: absolute; z-index: 0;
-    left: 50%; top: 12%; width: 78%; aspect-ratio: 1; transform: translateX(-50%);
-    border-radius: 50%;
-    background: radial-gradient(circle at center, color-mix(in srgb, var(--fam) 32%, transparent) 0%, transparent 68%);
-    pointer-events: none;
-  }
-  .lp-cast-tile.is-anchor .lp-cast-fig img { height: 90%; }
-  .lp-cast-chip {
-    display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
-    padding: 4px 11px 4px 8px; border-radius: var(--r-pill);
-    background: color-mix(in srgb, var(--fam) 16%, #fff);
-    color: var(--fam); font-size: .68rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
-    margin-bottom: 7px;
-  }
 
   /* Family legend strip */
   .lp-fam-legend {
@@ -231,8 +214,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   /* Responsive */
   @media (max-width: 900px) {
     .lp-cast { grid-template-columns: 1fr 1fr; }
-    .lp-cast-tile.is-anchor { grid-column: 1 / -1; order: -1; min-height: clamp(260px,44vw,330px); }
-    .lp-cast-tile.is-anchor .lp-cast-fig { padding-bottom: 76px; }
   }
   @media (max-width: 900px) {
     .lp-desktop-nav { display:none !important; }
@@ -251,7 +232,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   @media (max-width: 560px) {
     .lp-cast { grid-template-columns: 1fr; }
-    .lp-cast-tile.is-anchor { grid-column: auto; }
     .lp-mech-grid { grid-template-columns: 1fr !important; }
     .lp-footer-grid { grid-template-columns: 1fr !important; }
   }
