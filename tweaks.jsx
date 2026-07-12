@@ -5,7 +5,7 @@
 
 const LP_TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "mood": "coral",
-  "voice": "editorial",
+  "voice": "bold",
   "softness": "rounded",
   "salesLayout": "editorial"
 }/*EDITMODE-END*/;
@@ -22,11 +22,12 @@ const LP_MOODS = {
     hero:['#4B4490','#332C6E'], glow:'150,103,190' },
 };
 
-/* ---- Voice: display typeface personality (all three families already loaded) ---- */
+/* ---- Voice: display weight (single typeface, Geist, everywhere — vary
+   weight only, the way Apple does with SF Pro). No more family switching. ---- */
 const LP_VOICES = {
-  editorial: { label:'Editorial', font:"'Bricolage Grotesque','Hanken Grotesk',system-ui,sans-serif", displayW:'800', headW:'700', tracking:'-0.02em' },
-  literary:  { label:'Literary',  font:"'Newsreader',Georgia,'Times New Roman',serif",                displayW:'600', headW:'500', tracking:'-0.005em' },
-  warm:      { label:'Warm',      font:"'Hanken Grotesk',system-ui,-apple-system,sans-serif",         displayW:'800', headW:'700', tracking:'-0.012em' },
+  bold:    { label:'Bold',    font:"'Geist',system-ui,-apple-system,sans-serif", displayW:'800', headW:'700', tracking:'-0.02em' },
+  regular: { label:'Regular', font:"'Geist',system-ui,-apple-system,sans-serif", displayW:'600', headW:'600', tracking:'-0.01em' },
+  medium:  { label:'Medium',  font:"'Geist',system-ui,-apple-system,sans-serif", displayW:'700', headW:'600', tracking:'-0.015em' },
 };
 
 /* ---- Softness: shape language — radii + shadow diffusion move together ---- */
@@ -51,7 +52,7 @@ function applyLpTweaks(t) {
   r.setProperty('--lp-hero-b', m.hero[1]);
   r.setProperty('--lp-glow', m.glow);
 
-  const v = LP_VOICES[t.voice] || LP_VOICES.editorial;
+  const v = LP_VOICES[t.voice] || LP_VOICES.bold;
   r.setProperty('--font-display', v.font);
   r.setProperty('--lp-display-weight', v.displayW);
   r.setProperty('--lp-head-weight', v.headW);

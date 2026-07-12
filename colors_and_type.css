@@ -8,7 +8,36 @@
    family accents for the archetypes. Not childish, not clinical.
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap');
+/* Geist (self-hosted, SIL OFL 1.1) — one typeface, weight does the work
+   instead of switching families. Files live in /assets/fonts. */
+@font-face {
+  font-family: 'Geist';
+  src: url('/assets/fonts/Geist-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geist';
+  src: url('/assets/fonts/Geist-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geist';
+  src: url('/assets/fonts/Geist-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geist';
+  src: url('/assets/fonts/Geist-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   /* ---- Brand core ------------------------------------------------------ */
@@ -70,10 +99,12 @@
   --positive:    #3FA06B;
   --warning:     #C7973F;
 
-  /* ---- Typography families -------------------------------------------- */
-  --font-display: 'Bricolage Grotesque', 'Hanken Grotesk', system-ui, sans-serif;
-  --font-body:    'Hanken Grotesk', system-ui, -apple-system, sans-serif;
-  --font-serif:   'Newsreader', Georgia, 'Times New Roman', serif; /* editorial accents / quotes */
+  /* ---- Typography family ------------------------------------------------
+     One typeface everywhere (Apple Health direction) — weight (400/500/
+     600/700) does the work that switching families used to do. */
+  --font-display: 'Geist', system-ui, -apple-system, sans-serif;
+  --font-body:    'Geist', system-ui, -apple-system, sans-serif;
+  --font-serif:   Georgia, 'Times New Roman', serif; /* unused fallback, kept for safety */
 
   /* ---- Type scale (fluid-ish, rem) ------------------------------------ */
   --t-display:  clamp(2.6rem, 1.6rem + 4.4vw, 4.5rem);  /* hero            */
