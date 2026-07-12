@@ -220,7 +220,7 @@ function CredibilitySection() {
       d:'Research on relationship self-sabotage shows that fear, defensiveness, trust difficulty, and protective behaviors can keep people stuck in repeating romantic cycles.' },
   ];
   return (
-    <Section band="var(--paper-2)">
+    <Section>
       <Container>
         <div style={{ textAlign:'center', maxWidth:640, margin:'0 auto 8px' }}>
           <Eyebrow color="var(--violet)">Science-backed, not clinically diagnostic</Eyebrow>
