@@ -55,7 +55,7 @@ function App() {
 
   return (
     <LangContext.Provider value={{ lang, setLang, t }}>
-      <div className="lp-root" ref={scroller} style={{ minHeight:'100vh', background:'var(--paper)' }}>
+      <div className="lp-root" ref={scroller} style={{ minHeight:'100vh', background:'var(--page-bg)' }}>
         {!chromeless && <Header go={go} route={route}/>}
         <main>{page}</main>
         {!chromeless && <Footer go={go}/>}

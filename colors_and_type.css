@@ -99,6 +99,42 @@
   --positive:    #3FA06B;
   --warning:     #C7973F;
 
+  /* ---- Global CTA accent (Apple-Health rebuild) ------------------------
+     Every button on the site pulls from this, independent of --corail
+     (which stays reserved for /profils and /profil archetype UI). */
+  --cta:         #2FBE73;
+  --cta-600:     #24A362;
+  --cta-soft:    #E4F7EC;
+  --sh-cta:      0 10px 22px -6px rgba(47,190,115,.4);
+
+  /* ---- App-shell page background (Liven-style, sits behind white cards) */
+  --page-bg:     #EEF1F4;
+  --ink-1:       #1D1D1F;   /* Apple headline ink */
+
+  /* ---- Home module hue system: wash / mid / deep per module ------------ */
+  --mod-loop-wash:  #FDF1EE;
+  --mod-loop-mid:   #E8543A;
+  --mod-loop-deep1: #E8543A;
+  --mod-loop-deep2: #C43D2A;
+
+  --mod-anchor-wash:  #EEF6FC;
+  --mod-anchor-mid:   #2E86C4;
+  --mod-anchor-deep1: #2E86C4;
+  --mod-anchor-deep2: #1F6EA8;
+
+  --mod-how-wash:  #EDF9F2;
+  --mod-how-mid:   #1FA35C;
+  --mod-how-deep1: #1FA35C;
+  --mod-how-deep2: #158A4C;
+
+  --mod-cred-wash:  #EDF7F6;
+  --mod-cred-mid:   #1E8E86;
+  --mod-cred-deep1: #1E8E86;
+  --mod-cred-deep2: #166F69;
+
+  --r-module: 32px;
+  --r-card: 28px;
+
   /* ---- Typography family ------------------------------------------------
      One typeface everywhere (Apple Health direction) — weight (400/500/
      600/700) does the work that switching families used to do. */
@@ -175,6 +211,25 @@
 .lp-small { font-size: var(--t-small); }
 .lp-caption { font-size: var(--t-caption); color: var(--ink-3); }
 .lp-quote { font-family: var(--font-serif); font-style: italic; font-size: 1.5rem; line-height: 1.4; color: var(--encre-700); }
+
+/* ---- Apple-Health module headline scale (Home rebuild only) ----------- */
+.lp-module-h {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.6rem, 1.7rem + 4.2vw, 5rem); /* ~48px -> 80px */
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink-1);
+  text-wrap: balance;
+}
+.lp-module-lead {
+  font-size: clamp(1.15rem, 1.05rem + .4vw, 1.3rem);
+  line-height: 1.45;
+  color: var(--ink-1);
+  max-width: 600px;
+  text-wrap: pretty;
+}
+.lp-module-lead b, .lp-module-lead strong, .lp-module-lead em { font-style: normal; font-weight: 600; }
 
 /* Eyebrow / kicker — small uppercase label */
 .lp-eyebrow {

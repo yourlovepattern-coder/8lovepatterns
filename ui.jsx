@@ -47,7 +47,7 @@ function Button({ children, variant='primary', size='md', icon, iconLeft, onClic
     lg:{ padding:'18px 34px', fontSize:'1.12rem' },
   };
   const variants = {
-    primary:{ background:'var(--corail)', color:'#fff', boxShadow:'var(--sh-cta)' },
+    primary:{ background:'var(--cta)', color:'#fff', boxShadow:'var(--sh-cta)' },
     dark:{ background:'var(--encre)', color:'#fff', boxShadow:'var(--sh-md)' },
     secondary:{ background:'transparent', color:'var(--encre)', boxShadow:'inset 0 0 0 1.5px var(--encre)' },
     ghost:{ background:'transparent', color:'var(--violet)', padding:'10px 8px' },
@@ -55,7 +55,7 @@ function Button({ children, variant='primary', size='md', icon, iconLeft, onClic
   };
   const [hover, setHover] = useState(false);
   const hoverStyle = hover ? ({
-    primary:{ background:'var(--corail-600)', transform:'translateY(-1px)' },
+    primary:{ background:'var(--cta-600)', transform:'translateY(-1px)' },
     dark:{ transform:'translateY(-1px)' },
     secondary:{ background:'var(--encre)', color:'#fff' },
     ghost:{ opacity:.7 },
@@ -153,4 +153,108 @@ const ProgressBar = ({ value, color='var(--corail)', height=8 }) =>
 const Section = ({ children, band, style, id }) =>
   <section id={id} style={{ padding:'clamp(56px,9vw,118px) 0', background: band||'transparent', ...style }}>{children}</section>;
 
-Object.assign(window, { Icon, Button, Container, Eyebrow, Logo, Avatar, archByCode, FamilyDot, Chip, EmpriseTag, ProgressBar, Section });
+/* ---- Module: white app-card floating on the gray-blue page shell, wash gradient inside ---- */
+function Module({ wash, children, style, id }) {
+  return (
+    <section id={id} style={{ padding:'10px var(--gutter) 0' }}>
+      <div className="lp-module-card" style={{ maxWidth:'var(--maxw)', margin:'0 auto',
+        background: wash ? `linear-gradient(180deg, #FFFFFF 0%, ${wash} 100%)` : '#fff', ...style }}>
+        <div style={{ padding:'clamp(48px,7vw,88px) clamp(24px,5vw,64px)' }}>{children}</div>
+      </div>
+    </section>
+  );
+}
+
+/* ---- Reveal-on-scroll (IntersectionObserver, fires once) ---- */
+function Reveal({ children, as='div', style, className='' }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(()=>{
+    const el = ref.current;
+    if(!el) return;
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ setVisible(true); obs.disconnect(); } });
+    }, { threshold: 0.15 });
+    obs.observe(el);
+    return ()=>obs.disconnect();
+  }, []);
+  return React.createElement(as, {
+    ref, style,
+    className: `lp-reveal-init ${visible?'is-visible':''} ${className}`.trim(),
+  }, children);
+}
+
+/* ---- Module glyph: rounded-square gradient icon (Apple/Liven app-icon row) ---- */
+function ModuleGlyph({ icon, deep1, deep2, size='' }) {
+  return (
+    <span className={`lp-glyph ${size==='lg'?'lp-glyph-lg':''}`}
+      style={{ background:`linear-gradient(155deg, ${deep1}, ${deep2})` }}>
+      <Icon name={icon} size={size==='lg'?26:20} stroke={2}/>
+    </span>
+  );
+}
+
+/* ---- Horizontal scroll-snap gallery with round nav buttons on desktop ---- */
+function Gallery({ children }) {
+  const ref = useRef(null);
+  function scrollBy(dir){
+    const el = ref.current; if(!el) return;
+    el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior:'smooth' });
+  }
+  return (
+    <div>
+      <div className="lp-gallery-nav">
+        <button aria-label="Previous" onClick={()=>scrollBy(-1)}><Icon name="arrow-left" size={18}/></button>
+        <button aria-label="Next" onClick={()=>scrollBy(1)}><Icon name="arrow-right" size={18}/></button>
+      </div>
+      <div className="lp-gallery" ref={ref}>{children}</div>
+    </div>
+  );
+}
+
+/* ---- PhotoCard: full-bleed photo, caption below ---- */
+function PhotoCard({ src, alt, caption }) {
+  return (
+    <div className="lp-card-photo lp-lift">
+      <div style={{ aspectRatio:'4/5', overflow:'hidden' }}>
+        <img src={src} alt={alt} style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }}/>
+      </div>
+      {caption && <p style={{ margin:0, padding:'14px 16px 18px', color:'var(--ink-3)', fontSize:'.92rem', lineHeight:1.4 }}>{caption}</p>}
+    </div>
+  );
+}
+
+/* ---- StatCard: deep-gradient claim card, module-tinted ---- */
+function StatCard({ icon, deep1, deep2, claim, support, footnote }) {
+  return (
+    <div className="lp-card-stat lp-lift" style={{ background:`linear-gradient(155deg, ${deep1}, ${deep2})`, padding:'26px 24px', color:'#fff',
+      display:'flex', flexDirection:'column', gap:14, minHeight:280, aspectRatio:'4/5', boxSizing:'border-box' }}>
+      <span style={{ width:40, height:40, borderRadius:12, background:'rgba(255,255,255,.18)', display:'grid', placeItems:'center' }}>
+        <Icon name={icon} size={20} stroke={2}/>
+      </span>
+      <p style={{ margin:'auto 0 0', fontWeight:650, fontSize:'clamp(1.5rem,1.3rem+1vw,1.9rem)', lineHeight:1.2, textWrap:'pretty' }}>
+        {claim}{footnote && <sup style={{ fontSize:'.55em', marginLeft:2 }}>{footnote}</sup>}
+      </p>
+      <p style={{ margin:0, fontSize:'.95rem', lineHeight:1.5, opacity:.88, textWrap:'pretty' }}>{support}</p>
+    </div>
+  );
+}
+
+/* ---- ProductCard: our own product UI on a neutral card, app-window framed ---- */
+function ProductCard({ children, windowChrome=true }) {
+  return (
+    <div className="lp-card-product lp-lift" style={{ padding: windowChrome?0:'22px' }}>
+      {windowChrome && (
+        <div style={{ display:'flex', gap:6, padding:'14px 16px 0' }}>
+          <span style={{ width:10, height:10, borderRadius:'50%', background:'#E3DCD2' }}/>
+          <span style={{ width:10, height:10, borderRadius:'50%', background:'#E3DCD2' }}/>
+          <span style={{ width:10, height:10, borderRadius:'50%', background:'#E3DCD2' }}/>
+        </div>
+      )}
+      <div style={{ padding: windowChrome?'18px 20px 22px':0 }}>{children}</div>
+    </div>
+  );
+}
+
+Object.assign(window, { Icon, Button, Container, Eyebrow, Logo, Avatar, archByCode, FamilyDot, Chip, EmpriseTag, ProgressBar, Section,
+  Module, Reveal, ModuleGlyph, Gallery, PhotoCard, StatCard, ProductCard });

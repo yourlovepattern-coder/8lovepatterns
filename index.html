@@ -79,7 +79,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <style>
   * { box-sizing: border-box; }
   html, body { margin:0; padding:0; }
-  body { background: var(--paper); font-family: var(--font-body); color: var(--ink); }
+  body { background: var(--page-bg); font-family: var(--font-body); color: var(--ink); }
   button { font-family: inherit; }
   ::selection { background: var(--corail); color:#fff; }
 
@@ -256,6 +256,155 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   @media (prefers-reduced-motion: reduce) {
     * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+
+  /* ============================================================
+     APPLE-HEALTH / LIVEN HOME REBUILD — module system
+     ============================================================ */
+
+  /* ---- Reveal-on-scroll (IntersectionObserver driven) ---- */
+  .lp-reveal-init { opacity: 0; transform: translateY(16px); }
+  .lp-reveal-init.is-visible { opacity: 1; transform: translateY(0); transition: opacity .5s ease-out, transform .5s ease-out; }
+  @media (prefers-reduced-motion: reduce) {
+    .lp-reveal-init, .lp-reveal-init.is-visible { opacity: 1 !important; transform: none !important; transition: none !important; }
+  }
+
+  /* ---- Module container: white card floating on the gray-blue page ---- */
+  .lp-module-card {
+    border-radius: var(--r-module);
+    overflow: hidden;
+    background: #fff;
+  }
+
+  /* ---- Card hover lift (used by galleries, bento, chips) ---- */
+  .lp-lift { transition: transform .2s ease, box-shadow .2s ease; }
+  .lp-lift:hover { transform: translateY(-4px); box-shadow: 0 14px 34px rgba(0,0,0,.1); }
+  @media (prefers-reduced-motion: reduce) { .lp-lift:hover { transform: none; } }
+
+  /* ---- Gallery: horizontal scroll-snap ---- */
+  .lp-gallery {
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 4px 14px;
+    margin: 0 -4px;
+    scrollbar-width: none;
+  }
+  .lp-gallery::-webkit-scrollbar { display: none; }
+  .lp-gallery > * {
+    flex: 0 0 auto;
+    width: clamp(300px, 38vw, 420px);
+    scroll-snap-align: start;
+  }
+  .lp-gallery-nav { display: flex; gap: 10px; justify-content: flex-end; margin-bottom: 14px; }
+  .lp-gallery-nav button {
+    width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--hairline);
+    background: #fff; color: var(--ink-1); cursor: pointer; display: grid; place-items: center;
+    transition: background .2s ease, transform .15s ease;
+  }
+  .lp-gallery-nav button:hover { background: var(--paper-2); transform: translateY(-1px); }
+  @media (max-width: 900px) { .lp-gallery-nav { display: none; } }
+
+  /* ---- Card primitives ---- */
+  .lp-card-photo, .lp-card-product, .lp-card-stat {
+    border-radius: var(--r-card);
+    border: none;
+    box-shadow: 0 4px 24px rgba(0,0,0,.06);
+    overflow: hidden;
+  }
+  .lp-card-photo { background: #fff; }
+  .lp-card-product { background: #F6F5F1; }
+
+  /* ---- Bento grid (Anchor stats) ---- */
+  .lp-bento {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .lp-bento-cell {
+    border-radius: var(--r-card);
+    background: #fff;
+    box-shadow: 0 4px 24px rgba(0,0,0,.06);
+    padding: clamp(22px, 2.4vw, 30px);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 220px;
+  }
+  @media (max-width: 700px) {
+    .lp-bento { grid-template-columns: 1fr; }
+  }
+
+  /* ---- Mini calendar (bento card 1) ---- */
+  .lp-calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 7px; }
+  .lp-calendar span {
+    width: 100%; aspect-ratio: 1; border-radius: 50%;
+    background: var(--hairline);
+    display: block;
+  }
+  .lp-calendar span.hit {
+    background: var(--mod-loop-mid);
+    opacity: 0;
+  }
+  .lp-calendar span.hit.is-visible { opacity: 1; transition: opacity .3s ease; }
+
+  /* ---- Pain-entry chips ---- */
+  .lp-chip-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+  .lp-pain-chip {
+    flex: 0 0 auto;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--hairline);
+    background: #fff;
+    color: var(--ink-1);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: .92rem;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .lp-pain-chip:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(0,0,0,.08); border-color: var(--mod-how-mid); }
+  @media (max-width: 700px) {
+    .lp-chip-row { display: grid; grid-template-columns: 1fr 1fr; }
+    .lp-pain-chip { width: 100%; }
+  }
+
+  /* ---- Gradient support band ---- */
+  .lp-support-band {
+    border-radius: var(--r-module);
+    background: linear-gradient(135deg, var(--mod-anchor-deep1) 0%, #7FB8E8 100%);
+    color: #fff;
+    text-align: center;
+    padding: clamp(48px, 7vw, 84px) clamp(24px, 5vw, 60px);
+  }
+
+  /* ---- Floating pill nav ---- */
+  .lp-nav-wrap { position: sticky; top: 0; z-index: 50; padding: 16px var(--gutter) 0; }
+  .lp-nav-pill {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    border-radius: var(--r-pill);
+    background: rgba(255,255,255,.86);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 6px 24px rgba(0,0,0,.08);
+    border: 1px solid rgba(255,255,255,.6);
+  }
+
+  /* ---- Hero archetype glyph row ---- */
+  .lp-glyph-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .lp-glyph {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: grid; place-items: center; color: #fff; flex-shrink: 0;
+  }
+  .lp-glyph-lg { width: 56px; height: 56px; border-radius: 16px; }
+
+  /* ---- Mobile-first checks (380px primary art direction) ---- */
+  @media (max-width: 480px) {
+    .lp-gallery > * { width: 82vw; }
+    .lp-glyph { width: 38px; height: 38px; border-radius: 10px; }
   }
 </style>
 </head>
