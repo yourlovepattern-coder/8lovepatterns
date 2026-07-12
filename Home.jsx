@@ -180,9 +180,9 @@ function Home({ go }) {
   const { t } = useLang();
   return (
     <div>
-      {/* HERO — white app-card, huge headline, inline emphasis, no photo tiles */}
-      <Module style={{ marginTop:6 }}>
-        <div style={{ textAlign:'center' }}>
+      {/* HERO — directly on the neutral page background, no card, no wash */}
+      <section style={{ padding:'clamp(48px,7vw,84px) var(--gutter) clamp(32px,5vw,56px)' }}>
+        <Container style={{ textAlign:'center' }}>
           <HeroGlyphRow/>
           <div style={{ fontSize:'.92rem', fontWeight:700, color:'var(--ink-3)', letterSpacing:'.02em' }}>8LovePatterns</div>
           <h1 className="lp-module-h" style={{ maxWidth:920, margin:'14px auto 0' }}>
@@ -195,8 +195,8 @@ function Home({ go }) {
             <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>Reveal My Pattern</Button>
           </div>
           <div style={{ marginTop:18, color:'var(--ink-3)', fontSize:'.9rem' }}>Free · Private · No sign-up</div>
-        </div>
-      </Module>
+        </Container>
+      </section>
 
       {/* LOOP MODULE — warm */}
       <Module wash="var(--mod-loop-wash)">
@@ -257,80 +257,84 @@ function Home({ go }) {
         </Reveal>
       </Module>
 
-      {/* PATTERNS MODULE — no hue, archetype glyphs only */}
-      <Module>
-        <Reveal style={{ textAlign:'center', maxWidth:640, margin:'0 auto' }}>
-          <h2 className="lp-module-h">Meet the eight things that take over.</h2>
-          <p className="lp-module-lead" style={{ margin:'16px auto 0' }}>One of them runs your loop. Five minutes to find out which.</p>
-        </Reveal>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'18px', marginTop:36 }} className="lp-mech-grid">
-          {window.ARCHETYPES.map(a=> <PatternGlyphCard key={a.code} arch={a} go={go}/>)}
-        </div>
-        <div style={{ marginTop:32, display:'flex', justifyContent:'center' }}>
-          <Button size="lg" variant="secondary" icon="arrow-right" onClick={()=>go('profils')}>{t('teaser.cta')}</Button>
-        </div>
-      </Module>
+      {/* PATTERNS — plain, directly on the page (no card), like Liven's review strip */}
+      <section style={{ padding:'clamp(48px,7vw,84px) var(--gutter)' }}>
+        <Container>
+          <Reveal style={{ textAlign:'center', maxWidth:640, margin:'0 auto' }}>
+            <h2 className="lp-module-h">Meet the eight things that take over.</h2>
+            <p className="lp-module-lead" style={{ margin:'16px auto 0' }}>One of them runs your loop. Five minutes to find out which.</p>
+          </Reveal>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'18px', marginTop:36 }} className="lp-mech-grid">
+            {window.ARCHETYPES.map(a=> <PatternGlyphCard key={a.code} arch={a} go={go}/>)}
+          </div>
+          <div style={{ marginTop:32, display:'flex', justifyContent:'center' }}>
+            <Button size="lg" variant="secondary" icon="arrow-right" onClick={()=>go('profils')}>{t('teaser.cta')}</Button>
+          </div>
+        </Container>
+      </section>
 
-      {/* HOW IT WORKS MODULE — green */}
-      <Module wash="var(--mod-how-wash)" style={{ textAlign:'center' }}>
-        <Reveal>
-          <ModuleGlyph icon="route" deep1="var(--mod-how-deep1)" deep2="var(--mod-how-deep2)" size="lg" style={{ margin:'0 auto' }}/>
-          <h2 className="lp-module-h" style={{ marginTop:20 }}>Five minutes. Then the map.</h2>
-        </Reveal>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:18, marginTop:36, maxWidth:820, marginInline:'auto' }} className="lp-mech-grid">
-          {[
-            'Answer 33 questions. No sign-up, nothing stored with your name.',
-            'See your pattern and how deep it currently runs.',
-            'Get the one move that loosens it, matched to your level.',
-          ].map((s,i)=>(
-            <div key={s} className="lp-lift" style={{ background:'#fff', borderRadius:'var(--r-card)', boxShadow:'0 4px 24px rgba(0,0,0,.06)',
-              padding:'24px 20px', textAlign:'left' }}>
-              <span style={{ display:'inline-grid', placeItems:'center', width:36, height:36, borderRadius:'50%',
-                background:'var(--mod-how-mid)', color:'#fff', fontWeight:700, fontFamily:'var(--font-display)', fontSize:'1rem' }}>{i+1}</span>
-              <p style={{ margin:'14px 0 0', color:'var(--ink-1)', fontSize:'1rem', lineHeight:1.5 }}>{s}</p>
-            </div>
-          ))}
-        </div>
-        <div style={{ maxWidth:820, marginInline:'auto' }}>
-          <PainEntryChips go={go}/>
-        </div>
-        <div style={{ marginTop:32, display:'flex', justifyContent:'center' }}>
-          <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>Reveal My Pattern</Button>
-        </div>
-      </Module>
+      {/* HOW IT WORKS — full-bleed saturated green gradient, Apple accent moment, glass step cards */}
+      <section style={{ background:`linear-gradient(160deg, var(--mod-how-deep1) 0%, var(--mod-how-deep2) 100%)`, padding:'clamp(48px,7vw,84px) var(--gutter)', textAlign:'center' }}>
+        <Container narrow>
+          <Reveal>
+            <h2 className="lp-module-h" style={{ color:'#fff' }}>Five minutes. Then the map.</h2>
+          </Reveal>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:18, marginTop:36, maxWidth:820, marginInline:'auto' }} className="lp-mech-grid">
+            {[
+              'Answer 33 questions. No sign-up, nothing stored with your name.',
+              'See your pattern and how deep it currently runs.',
+              'Get the one move that loosens it, matched to your level.',
+            ].map((s,i)=>(
+              <div key={s} className="lp-glass-card" style={{ padding:'24px 20px', textAlign:'left' }}>
+                <span style={{ display:'inline-grid', placeItems:'center', width:36, height:36, borderRadius:'50%',
+                  background:'rgba(255,255,255,.22)', color:'#fff', fontWeight:700, fontFamily:'var(--font-display)', fontSize:'1rem' }}>{i+1}</span>
+                <p style={{ margin:'14px 0 0', color:'#fff', fontSize:'1rem', lineHeight:1.5 }}>{s}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{ maxWidth:820, marginInline:'auto' }}>
+            <PainEntryChips go={go}/>
+          </div>
+          <div style={{ marginTop:32, display:'flex', justifyContent:'center' }}>
+            <Button size="lg" variant="light" icon="arrow-right" onClick={()=>go('intro')}>Reveal My Pattern</Button>
+          </div>
+        </Container>
+      </section>
 
-      {/* CREDIBILITY MODULE — teal */}
-      <Module wash="var(--mod-cred-wash)">
-        <Reveal style={{ textAlign:'center', maxWidth:660, margin:'0 auto' }}>
-          <ModuleGlyph icon="shield" deep1="var(--mod-cred-deep1)" deep2="var(--mod-cred-deep2)" size="lg" style={{ margin:'0 auto' }}/>
-          <h2 className="lp-module-h" style={{ marginTop:20 }}>Built on 50 years of attachment research.</h2>
-          <p className="lp-module-lead" style={{ margin:'16px auto 0' }}>
-            <span style={{ color:'var(--mod-cred-mid)', fontWeight:600 }}>Not a diagnosis, a mirror.</span> Educational self-reflection tool · Not a clinical diagnosis.
-          </p>
-        </Reveal>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:16, marginTop:36 }} className="lp-mech-grid">
-          {[
-            { t:'Bowlby (1969)', d:'Founding work on attachment as a survival system in close relationships.' },
-            { t:'Hazan & Shaver (1987)', d:'Extended attachment theory into adult romantic relationships.' },
-            { t:'Mikulincer & Shaver (2016)', d:'Mapped anxious and avoidant strategies for regulating closeness and fear.' },
-            { t:'Fraley & Waller (1998)', d:'Evidence for attachment styles as continuous dimensions, not fixed boxes.' },
-          ].map(c=>(
-            <div key={c.t} className="lp-lift" style={{ background:'#fff', borderRadius:'var(--r-card)', boxShadow:'0 4px 24px rgba(0,0,0,.06)', padding:'22px' }}>
-              <h3 className="lp-h4" style={{ margin:0, color:'var(--mod-cred-mid)' }}>{c.t}</h3>
-              <p style={{ margin:'10px 0 0', color:'var(--ink-3)', fontSize:'.9rem', lineHeight:1.5 }}>{c.d}</p>
-            </div>
-          ))}
-        </div>
-        <div style={{ maxWidth:680, margin:'30px auto 0', fontSize:'.82rem', color:'var(--ink-3)', lineHeight:1.7 }}>
-          <ol style={{ paddingLeft:18, margin:0 }}>
-            <li id="ref-1">Mikulincer, M. &amp; Shaver, P. R. (2016). <i>Attachment in Adulthood: Structure, Dynamics, and Change.</i></li>
-            <li id="ref-2">Bowlby, J. (1969). <i>Attachment and Loss, Vol. 1.</i></li>
-            <li id="ref-3">Hazan, C. &amp; Shaver, P. (1987). Romantic love conceptualized as an attachment process.</li>
-            <li id="ref-4">Fraley, R. C. &amp; Waller, N. G. (1998). Adult attachment patterns: A test of the typological model.</li>
-          </ol>
-          <p style={{ marginTop:14 }}>8LovePatterns is educational and is not a clinical diagnosis.</p>
-        </div>
-      </Module>
+      {/* CREDIBILITY — full-bleed teal wash, no card, Apple diagonal-section style */}
+      <section style={{ background:`linear-gradient(180deg, #FFFFFF 0%, var(--mod-cred-wash) 100%)`, padding:'clamp(48px,7vw,84px) var(--gutter)' }}>
+        <Container>
+          <Reveal style={{ textAlign:'center', maxWidth:660, margin:'0 auto' }}>
+            <ModuleGlyph icon="shield" deep1="var(--mod-cred-deep1)" deep2="var(--mod-cred-deep2)" size="lg" style={{ margin:'0 auto' }}/>
+            <h2 className="lp-module-h" style={{ marginTop:20 }}>Built on 50 years of attachment research.</h2>
+            <p className="lp-module-lead" style={{ margin:'16px auto 0' }}>
+              <span style={{ color:'var(--mod-cred-mid)', fontWeight:600 }}>Not a diagnosis, a mirror.</span> Educational self-reflection tool · Not a clinical diagnosis.
+            </p>
+          </Reveal>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:16, marginTop:36 }} className="lp-mech-grid">
+            {[
+              { t:'Bowlby (1969)', d:'Founding work on attachment as a survival system in close relationships.' },
+              { t:'Hazan & Shaver (1987)', d:'Extended attachment theory into adult romantic relationships.' },
+              { t:'Mikulincer & Shaver (2016)', d:'Mapped anxious and avoidant strategies for regulating closeness and fear.' },
+              { t:'Fraley & Waller (1998)', d:'Evidence for attachment styles as continuous dimensions, not fixed boxes.' },
+            ].map(c=>(
+              <div key={c.t} className="lp-lift" style={{ background:'#fff', borderRadius:'var(--r-card)', boxShadow:'0 4px 24px rgba(0,0,0,.06)', padding:'22px' }}>
+                <h3 className="lp-h4" style={{ margin:0, color:'var(--mod-cred-mid)' }}>{c.t}</h3>
+                <p style={{ margin:'10px 0 0', color:'var(--ink-3)', fontSize:'.9rem', lineHeight:1.5 }}>{c.d}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{ maxWidth:680, margin:'30px auto 0', fontSize:'.82rem', color:'var(--ink-3)', lineHeight:1.7 }}>
+            <ol style={{ paddingLeft:18, margin:0 }}>
+              <li id="ref-1">Mikulincer, M. &amp; Shaver, P. R. (2016). <i>Attachment in Adulthood: Structure, Dynamics, and Change.</i></li>
+              <li id="ref-2">Bowlby, J. (1969). <i>Attachment and Loss, Vol. 1.</i></li>
+              <li id="ref-3">Hazan, C. &amp; Shaver, P. (1987). Romantic love conceptualized as an attachment process.</li>
+              <li id="ref-4">Fraley, R. C. &amp; Waller, N. G. (1998). Adult attachment patterns: A test of the typological model.</li>
+            </ol>
+            <p style={{ marginTop:14 }}>8LovePatterns is educational and is not a clinical diagnosis.</p>
+          </div>
+        </Container>
+      </section>
 
       {/* FAQ — restyled to system */}
       <Module>
