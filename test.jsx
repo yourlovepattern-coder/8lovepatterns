@@ -452,39 +452,30 @@ function TestIntro({ onStart }){
    test_result.jsx. SafetyScreen reste ici et est exporté pour lui. */
 
 /* ---- safety screen (Q-C3 = alerte) -------------------------------------- */
+/* Plain style, no archetype colors or maritime metaphor, English only. */
 function SafetyScreen({ onContinue, go }){
-  const tx = useTx();
   return (
     <div style={{ maxWidth:660, margin:'clamp(10px,5vw,56px) auto 0' }}>
-      <div style={{ display:'grid', placeItems:'center', width:64, height:64, borderRadius:'50%', margin:'0 auto',
-        background:'var(--fam-ancre-soft)', color:'var(--fam-ancre)' }}>
-        <Icon name="heart" size={30}/>
-      </div>
-      <h1 className="lp-h1" style={{ textAlign:'center', marginTop:20 }}>{tx({ fr:"Avant tout, prenons soin de toi.", en:'Before anything, let’s take care of you.' })}</h1>
-      <p className="lp-lead" style={{ marginTop:14, textAlign:'center' }}>
-        {tx({ fr:"Certaines de tes réponses parlent d'avoir eu peur, de t'être sentie rabaissée ou pas libre. Ça compte plus que n'importe quel résultat de test. Tu n'as pas à porter ça seule.",
-              en:"Some of your answers speak of feeling afraid, put down, or not free. That matters more than any test result. You don't have to carry it alone." })}
+      <h1 className="lp-h1" style={{ textAlign:'center', marginTop:20, color:'#1a1a1a' }}>Before you continue</h1>
+      <p className="lp-lead" style={{ marginTop:14, textAlign:'center', color:'#333' }}>
+        Something in what you just answered suggests you might be carrying more than this test is built to hold. That matters more than any result on this page.
       </p>
 
-      <div style={{ marginTop:26, background:'var(--surface)', border:'1px solid var(--hairline)', borderRadius:'var(--r-xl)', padding:'24px 26px', boxShadow:'var(--sh-sm)' }}>
-        <div style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:'1.12rem', color:'var(--ink)' }}>
-          {tx({ fr:"Si tu te sens en danger, parle à quelqu'un de confiance.", en:'If you feel unsafe, talk to someone you trust.' })}
-        </div>
-        <p style={{ margin:'12px 0 0', color:'var(--ink-2)', lineHeight:1.6, fontSize:'1rem' }}>
-          {tx({ fr:"Un proche, un médecin, un professionnel, ou une association près de chez toi peuvent t'écouter et t'aider, sans jugement.",
-                en:'A loved one, a doctor, a professional, or a local support service can listen and help, without judgment.' })}
-        </p>
-        <div style={{ marginTop:16, border:'1px dashed var(--hairline-2)', borderRadius:'var(--r-md)', padding:'14px 16px',
-          color:'var(--ink-3)', fontSize:'.9rem', lineHeight:1.5, background:'var(--paper)' }}>
-          {tx({ fr:"Emplacement pour les ressources réelles (lignes d'écoute, associations, liens) à insérer ici par l'équipe.",
-                en:'Slot for real resources (helplines, support services, links) to be inserted here by the team.' })}
-        </div>
+      <div style={{ marginTop:26, background:'#fff', border:'1px solid #ddd', borderRadius:8, padding:'24px 26px' }}>
+        <ul style={{ margin:0, padding:'0 0 0 20px', color:'#1a1a1a', lineHeight:1.7, fontSize:'1rem' }}>
+          <li>988 Suicide &amp; Crisis Lifeline — call or text 988, free, confidential, anytime.</li>
+          <li>Crisis Text Line — text HOME to 741741.</li>
+          <li>If you're in immediate danger, call 911.</li>
+          <li>Outside the United States, findahelpline.com lists free crisis lines by country.</li>
+        </ul>
       </div>
 
+      <p style={{ marginTop:20, textAlign:'center', color:'#333' }}>You can close this now. If you'd rather keep going, that's okay too.</p>
+
       <div style={{ textAlign:'center', marginTop:28, display:'flex', flexDirection:'column', gap:'14px', alignItems:'center' }}>
-        <Button variant="dark" onClick={onContinue}>{tx({ fr:'Continuer vers mon aperçu', en:'Continue to my preview' })}</Button>
-        <button onClick={()=>go('home')} style={{ background:'none', border:'none', cursor:'pointer', color:'var(--ink-3)',
-          fontFamily:'var(--font-body)', fontWeight:600, fontSize:'.92rem' }}>{tx({ fr:"Revenir à l'accueil", en:'Back to home' })}</button>
+        <Button variant="dark" onClick={onContinue}>I'm okay, continue</Button>
+        <button onClick={()=>go('home')} style={{ background:'none', border:'none', cursor:'pointer', color:'#555',
+          fontFamily:'inherit', fontWeight:600, fontSize:'.92rem' }}>Exit</button>
       </div>
     </div>
   );
