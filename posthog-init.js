@@ -124,7 +124,7 @@ window.LP_PH = function (name, props) {
 
   var TXT = {
     fr: { msg: "Nous utilisons PostHog pour la mesure d’audience de ce site. Tu peux accepter ou refuser.", accept: "Accepter", reject: "Refuser", aria: "Consentement à la mesure d’audience" },
-    en: { msg: "We use PostHog for privacy-friendly audience measurement on this site. You can accept or decline.", accept: "Accept", reject: "Decline", aria: "Audience measurement consent" },
+    en: { msg: "Nothing here is tracked to you personally. We just want to know which pages actually help people, so we can write more of those.", accept: "Accept", reject: "Decline", aria: "Audience measurement consent" },
   };
 
   function buildBanner() {
@@ -139,13 +139,13 @@ window.LP_PH = function (name, props) {
       bar.setAttribute("role", "dialog");
       bar.setAttribute("aria-label", t.aria);
       bar.style.cssText = [
-        "position:fixed", "left:12px", "right:12px", "bottom:12px", "z-index:2147483000",
-        "max-width:760px", "margin:0 auto", "box-sizing:border-box",
+        "position:fixed", "left:0", "right:0", "top:0", "z-index:2147483000",
+        "margin:0", "box-sizing:border-box",
         "display:flex", "align-items:center", "justify-content:center", "gap:14px", "flex-wrap:wrap",
         "background:var(--paper,#FBF7F1)", "color:var(--ink,#211C46)",
-        "border:1px solid var(--hairline,#EAE3D7)", "border-radius:14px",
-        "box-shadow:0 12px 34px -12px rgba(33,28,70,.34)",
-        "padding:12px 16px",
+        "border-bottom:1px solid var(--hairline,#EAE3D7)",
+        "box-shadow:0 6px 20px -10px rgba(33,28,70,.28)",
+        "padding:10px 16px",
         "font-family:var(--font-body,system-ui,sans-serif)", "font-size:13.5px", "line-height:1.45",
       ].join(";");
 
@@ -156,15 +156,18 @@ window.LP_PH = function (name, props) {
       var btns = document.createElement("div");
       btns.style.cssText = "display:flex;gap:8px;flex-shrink:0;";
 
+      /* Equal visual weight: identical size, padding, and contrast for both buttons. */
+      var btnBase = "cursor:pointer;border:none;border-radius:999px;padding:8px 18px;font-weight:700;font-size:13px;font-family:inherit;";
+
       var reject = document.createElement("button");
       reject.type = "button";
       reject.textContent = t.reject;
-      reject.style.cssText = "cursor:pointer;border:1px solid var(--hairline-2,#D8CFC0);background:transparent;color:var(--ink-2,#5A5470);border-radius:999px;padding:8px 16px;font-weight:600;font-size:13px;font-family:inherit;";
+      reject.style.cssText = btnBase + "background:var(--ink,#211C46);color:#fff;";
 
       var accept = document.createElement("button");
       accept.type = "button";
       accept.textContent = t.accept;
-      accept.style.cssText = "cursor:pointer;border:none;background:var(--corail,#EE6352);color:#fff;border-radius:999px;padding:8px 18px;font-weight:700;font-size:13px;font-family:inherit;box-shadow:0 4px 12px -4px rgba(238,99,82,.6);";
+      accept.style.cssText = btnBase + "background:var(--corail,#EE6352);color:#fff;";
 
       function close() { try { bar.remove(); } catch (e) {} }
       accept.addEventListener("click", function () { setConsent("accepted"); optInFull(); close(); });
