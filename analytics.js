@@ -18,8 +18,8 @@
   /* Price of the premium report. Keep in sync with stripe-config.jsx priceLabel.
      Used as the "value" of add_to_cart / begin_checkout / purchase so Google can
      compute revenue and the return on your ad spend (ROAS). */
-  LP.reportPrice = 9;
-  LP.currency = 'EUR';
+  LP.reportPrice = 29;
+  LP.currency = 'USD';
 
   /* True only when a real GA4 id has been pasted in the page. */
   function gaConfigured() {

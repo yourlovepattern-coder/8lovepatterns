@@ -33,7 +33,7 @@ const LP_SALES = {
       ctaTitle:'Meet yourself, fully.', titlePrefix:'The full', titleSuffix:'the full report.',
       howH:'How it works', howSub:'No account. No subscription. Your report is ready right after payment.',
       how1t:'You took the test', how1d:'Your answers are saved privately, on your device only.',
-      how2t:'Secure 9 \u20AC payment', how2d:'A one-time payment on Stripe\u2019s hosted, secure page.',
+      how2t:'Secure $29 payment', how2d:'A one-time payment on Stripe\u2019s hosted, secure page.',
       how3t:'Instant access', how3d:'You land straight on your personalized premium report.',
     },
     fr: {
@@ -47,7 +47,7 @@ const LP_SALES = {
       ctaTitle:'Rencontrez-vous, vraiment.', titlePrefix:'Le rapport complet', titleSuffix:'',
       howH:'Comment \u00e7a marche', howSub:'Sans compte. Sans abonnement. Votre rapport est pr\u00eat juste apr\u00e8s le paiement.',
       how1t:'Vous avez pass\u00e9 le test', how1d:'Vos r\u00e9ponses sont enregistr\u00e9es en priv\u00e9, sur votre appareil uniquement.',
-      how2t:'Paiement s\u00e9curis\u00e9 9 \u20AC', how2d:'Un paiement unique sur la page s\u00e9curis\u00e9e de Stripe.',
+      how2t:'Paiement s\u00e9curis\u00e9 de 29 $', how2d:'Un paiement unique sur la page s\u00e9curis\u00e9e de Stripe.',
       how3t:'Acc\u00e8s imm\u00e9diat', how3d:'Vous arrivez directement sur votre rapport premium personnalis\u00e9.',
     },
   },
@@ -132,7 +132,7 @@ function SalesPage({ go, code='bas' }) {
   // Analytics: visitor is looking at a premium report offer
   useEffect(()=>{
     if(window.LP_track) window.LP_track('view_item', {
-      currency: 'EUR', value: 9, items: [ window.LP_reportItem(code) ]
+      currency: 'USD', value: 29, items: [ window.LP_reportItem(code) ]
     });
   }, [code]);
   const fam = window.FAMILIES[arch.family];
