@@ -61,11 +61,11 @@ export async function onRequest(context) {
   if (!email) { console.warn('[webhook] no email on session'); return new Response('no email', { status: 200 }); }
 
   // Load the order to personalize the email (profile name + language).
-  let lang = 'fr', profileName = '';
+  let lang = 'en', profileName = '';
   try {
     const order = token ? await getStore(env, 'orders').get(token, { type: 'json', consistency: 'strong' }) : null;
     if (order) {
-      lang = order.lang === 'en' ? 'en' : 'fr';
+      lang = order.lang === 'fr' ? 'fr' : 'en';
       const profil = order.result && order.result.pattern_dominant;
       profileName = (profil && LP_PROFILE_NAMES[profil]) || '';
     }
