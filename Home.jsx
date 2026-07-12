@@ -40,12 +40,13 @@ function HeroFloatTiles() {
     { code:'alc', top:'10%', right:'4%', rot:7 },
     { code:'bas', top:'52%', right:'2%', rot:-6 },
   ];
-  /* 3 slots for real human photos, supplied later by Adrien. Neutral placeholder
-     block with a descriptive aria-label standing in for alt text until then. */
   const photos = [
-    { top:'30%', left:'10%', rot:5,  label:'Placeholder — real member photo 1' },
-    { top:'76%', left:'8%',  rot:-7, label:'Placeholder — real member photo 2' },
-    { top:'32%', right:'11%', rot:-5, label:'Placeholder — real member photo 3' },
+    { top:'30%', left:'10%', rot:5,  src:'assets/photos/hero-quiet-coffee.webp',
+      alt:"Close-up of two people's hands holding warm mugs while sitting together on a wood floor" },
+    { top:'76%', left:'8%',  rot:-7, src:'assets/photos/hero-late-night-phone.webp',
+      alt:'Woman lying in bed at night with her sleep mask pushed up, checking her phone' },
+    { top:'32%', right:'11%', rot:-5, src:'assets/photos/hero-quiet-distance.webp',
+      alt:'Woman sitting alone on a bed, knees pulled in, looking down quietly' },
   ];
   return (
     <>
@@ -55,11 +56,8 @@ function HeroFloatTiles() {
         </HeroFloatTile>
       ))}
       {photos.map(p=>(
-        <HeroFloatTile key={p.label} style={{ top:p.top, left:p.left, right:p.right, transform:`rotate(${p.rot}deg)` }}>
-          <div role="img" aria-label={p.label} style={{ width:'100%', height:'100%', display:'grid', placeItems:'center',
-            background:'linear-gradient(150deg,#cfd8dc,#eceff1)', color:'#78909c' }}>
-            <Icon name="users" size={22}/>
-          </div>
+        <HeroFloatTile key={p.src} style={{ top:p.top, left:p.left, right:p.right, transform:`rotate(${p.rot}deg)` }}>
+          <img src={p.src} alt={p.alt} style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }}/>
         </HeroFloatTile>
       ))}
     </>
@@ -117,11 +115,16 @@ function PatternChip({ arch, go }) {
 /* Auto-advancing, swipeable image carousel with dot indicators (Liven-style) */
 function LoopCarousel() {
   const slides = [
-    'The message you typed and deleted four times',
-    "Checking if they're online. Again.",
-    'Going cold at dinner and not knowing why',
-    "Apologizing to end it, not because you're sorry",
-    'Promising yourself next time will be different',
+    { cap:'The message you typed and deleted four times', src:'assets/photos/loop-message-deleted.webp',
+      alt:'Hands holding a phone showing an unanswered text message that reads "Hi, hope it will be over soon"' },
+    { cap:"Checking if they're online. Again.", src:'assets/photos/loop-checking-online.webp',
+      alt:'Woman lying in bed checking her phone late at night while her partner sleeps turned away beside her' },
+    { cap:'Going cold at dinner and not knowing why', src:'assets/photos/loop-going-cold.webp',
+      alt:'Woman lying in bed with arms crossed, looking away, a wall of pillows between her and her partner' },
+    { cap:"Apologizing to end it, not because you're sorry", src:'assets/photos/loop-apologizing.webp',
+      alt:'Woman looking down and away while a man sits turned away from her in the background' },
+    { cap:'Promising yourself next time will be different', src:'assets/photos/loop-promising-different.webp',
+      alt:'Close-up of a woman lying down at night, looking at her phone, lit by a warm bedside lamp' },
   ];
   const [i, setI] = useState(0);
   const touchX = useRef(null);
@@ -140,17 +143,13 @@ function LoopCarousel() {
     <div>
       <div onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} style={{ position:'relative', borderRadius:'var(--r-xl)',
         overflow:'hidden', aspectRatio:'4/5', background:'linear-gradient(150deg,#cfd8dc,#eceff1)', boxShadow:'var(--sh-md)' }}>
-        {slides.map((cap,idx)=>(
-          <div key={cap} style={{ position:'absolute', inset:0, opacity: idx===i?1:0,
+        {slides.map((s,idx)=>(
+          <div key={s.src} style={{ position:'absolute', inset:0, opacity: idx===i?1:0,
             transition:'opacity .5s ease', pointerEvents: idx===i?'auto':'none' }}>
-            {/* Placeholder photo slot — real member photos to be supplied by Adrien */}
-            <div role="img" aria-label={`Placeholder photo — ${cap}`} style={{ position:'absolute', inset:0,
-              display:'grid', placeItems:'center', color:'#78909c' }}>
-              <Icon name="users" size={34}/>
-            </div>
+            <img src={s.src} alt={s.alt} style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' }}/>
             <div style={{ position:'absolute', left:0, right:0, bottom:0, padding:'22px 22px 26px',
               background:'linear-gradient(0deg, rgba(0,0,0,.62), transparent)' }}>
-              <p style={{ color:'#fff', fontWeight:600, fontSize:'1.02rem', lineHeight:1.4, margin:0, textWrap:'pretty' }}>{cap}</p>
+              <p style={{ color:'#fff', fontWeight:600, fontSize:'1.02rem', lineHeight:1.4, margin:0, textWrap:'pretty' }}>{s.cap}</p>
             </div>
           </div>
         ))}
