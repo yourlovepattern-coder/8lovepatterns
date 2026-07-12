@@ -135,6 +135,80 @@ function PatternChip({ arch, go }) {
   );
 }
 
+/* Auto-advancing, swipeable image carousel with dot indicators (Liven-style) */
+function LoopCarousel() {
+  const slides = [
+    'The message you typed and deleted four times',
+    "Checking if they're online. Again.",
+    'Going cold at dinner and not knowing why',
+    "Apologizing to end it, not because you're sorry",
+    'Promising yourself next time will be different',
+  ];
+  const [i, setI] = useState(0);
+  const touchX = useRef(null);
+  useEffect(()=>{
+    const id = setInterval(()=> setI(v=>(v+1)%slides.length), 5000);
+    return ()=>clearInterval(id);
+  }, [slides.length]);
+  function onTouchStart(e){ touchX.current = e.touches[0].clientX; }
+  function onTouchEnd(e){
+    if(touchX.current==null) return;
+    const dx = e.changedTouches[0].clientX - touchX.current;
+    if(Math.abs(dx)>40){ setI(v => (v + (dx<0?1:-1) + slides.length) % slides.length); }
+    touchX.current = null;
+  }
+  return (
+    <div>
+      <div onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} style={{ position:'relative', borderRadius:'var(--r-xl)',
+        overflow:'hidden', aspectRatio:'4/5', background:'linear-gradient(150deg,#cfd8dc,#eceff1)', boxShadow:'var(--sh-md)' }}>
+        {slides.map((cap,idx)=>(
+          <div key={cap} style={{ position:'absolute', inset:0, opacity: idx===i?1:0,
+            transition:'opacity .5s ease', pointerEvents: idx===i?'auto':'none' }}>
+            {/* Placeholder photo slot — real member photos to be supplied by Adrien */}
+            <div role="img" aria-label={`Placeholder photo — ${cap}`} style={{ position:'absolute', inset:0,
+              display:'grid', placeItems:'center', color:'#78909c' }}>
+              <Icon name="users" size={34}/>
+            </div>
+            <div style={{ position:'absolute', left:0, right:0, bottom:0, padding:'22px 22px 26px',
+              background:'linear-gradient(0deg, rgba(0,0,0,.62), transparent)' }}>
+              <p style={{ color:'#fff', fontWeight:600, fontSize:'1.02rem', lineHeight:1.4, margin:0, textWrap:'pretty' }}>{cap}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ display:'flex', justifyContent:'center', gap:'8px', marginTop:16 }}>
+        {slides.map((_,idx)=>(
+          <button key={idx} onClick={()=>setI(idx)} aria-label={`Go to slide ${idx+1}`}
+            style={{ width: idx===i?22:8, height:8, borderRadius:'4px', border:'none', cursor:'pointer',
+              background: idx===i?'var(--corail)':'var(--hairline-2)', transition:'all .25s ease', padding:0 }}/>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* LOOP, the repeating story that isn't bad luck */
+function LoopSection({ go }) {
+  return (
+    <Section band="var(--paper-2)">
+      <Container>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'clamp(32px,5vw,64px)', alignItems:'center' }} className="lp-2col">
+          <div>
+            <h2 className="lp-h1">Different person.<br/><span style={{ color:'var(--corail)' }}>Same ending.</span></h2>
+            <p className="lp-lead" style={{ marginTop:16 }}>
+              The 2am reread. The fight you started to feel something. The silence you couldn't break. It's not bad luck. It's a loop, and loops can be mapped.
+            </p>
+            <div style={{ marginTop:26 }}>
+              <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>Reveal My Pattern</Button>
+            </div>
+          </div>
+          <LoopCarousel/>
+        </div>
+      </Container>
+    </Section>
+  );
+}
+
 function Home({ go }) {
   const { t } = useLang();
   const promises = [
@@ -172,6 +246,9 @@ function Home({ go }) {
 
       {/* SCIENCE / SOCIAL-PROOF TRUST BANNER */}
       <TrustBanner/>
+
+      {/* LOOP, different person same ending */}
+      <LoopSection go={go}/>
 
       {/* PROMISE, brand weapon + what you'll learn */}
       <Section style={{ padding:'clamp(44px,6vw,84px) 0' }}>
