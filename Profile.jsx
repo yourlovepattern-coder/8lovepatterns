@@ -7,24 +7,22 @@ function ProfilsIndex({ go }) {
   const fams = ['poursuis','fuis','controle','efface','protege'];
   return (
     <div>
-      <Section style={{ padding:'clamp(40px,6vw,72px) 0 30px' }}>
+      <Module>
         <Container style={{ textAlign:'center' }}>
-          <Eyebrow color="var(--violet)">The 8 protection patterns</Eyebrow>
-          <h1 className="lp-h1" style={{ marginTop:12 }}>The eight patterns, and the Anchor.</h1>
-          <p className="lp-lead" style={{ marginTop:14, maxWidth:560, marginInline:'auto' }}>
+          <Eyebrow color="var(--cta)">The 8 protection patterns</Eyebrow>
+          <h1 className="lp-h1" style={{ marginTop:12, color:'var(--head)' }}>The eight patterns, and the Anchor.</h1>
+          <p className="lp-lead" style={{ marginTop:14, maxWidth:560, marginInline:'auto', color:'var(--body-2)' }}>
             Eight ways of protecting love, orbiting the one secure center. Tap any character to meet them.
           </p>
         </Container>
-      </Section>
-      <Section style={{ padding:'0 0 clamp(50px,8vw,96px)' }}>
-        <Container>
+        <Container style={{ marginTop:32 }}>
           <div className="lp-fam-legend">
             {fams.map(fk=>{
               const fam = window.FAMILIES[fk];
               return (
                 <div key={fk}>
                   <span style={{ width:11, height:11, borderRadius:'50%', background:fam.color, flexShrink:0 }}></span>
-                  <span style={{ fontWeight:700, color:'var(--ink)', fontSize:'.92rem' }}>{fam.label}</span>
+                  <span style={{ fontWeight:700, color:'var(--head)', fontSize:'.92rem' }}>{fam.label}</span>
                   <span style={{ color:'var(--ink-3)', fontSize:'.86rem' }}>· {fam.fear}</span>
                 </div>
               );
@@ -34,7 +32,7 @@ function ProfilsIndex({ go }) {
             {CAST_ORDER.map(code=> <CastTile key={code} code={code} go={go}/>)}
           </div>
         </Container>
-      </Section>
+      </Module>
     </div>
   );
 }
@@ -78,8 +76,8 @@ function Profile({ go, code='bas' }) {
   const fam = window.FAMILIES[arch.family];
   return (
     <div>
-      <div style={{ position:'relative', overflow:'hidden', color:'#fff',
-        background:`linear-gradient(105deg, color-mix(in srgb, ${arch.accent} 62%, #20183a) 0%, ${arch.accent} 80%)` }}>
+      <div style={{ position:'relative', overflow:'hidden', color:'#fff', borderRadius:'0 0 var(--r-module) var(--r-module)',
+        background:`linear-gradient(105deg, color-mix(in srgb, ${arch.accent} 62%, #14142B) 0%, ${arch.accent} 80%)` }}>
         <Container style={{ position:'relative', zIndex:2, paddingTop:'28px', paddingBottom:'0' }}>
           <button onClick={()=>go('profils')} style={{ display:'inline-flex', alignItems:'center', gap:'6px', background:'none', border:'none',
             cursor:'pointer', color:'rgba(255,255,255,.82)', fontFamily:'var(--font-body)', fontWeight:600, fontSize:'.92rem', padding:0, marginBottom:'18px' }}>
@@ -105,13 +103,13 @@ function Profile({ go, code='bas' }) {
         </Container>
       </div>
 
-      <Section style={{ padding:'40px 0 clamp(56px,8vw,100px)' }}>
+      <Module>
         <Container style={{ maxWidth:740 }}>
           <ProfileBody code={arch.code}/>
 
           <div style={{ marginTop:'40px', textAlign:'center', paddingTop:'clamp(24px,4vw,36px)', borderTop:'1px solid var(--hairline)' }}>
-            <h2 className="lp-h2" style={{ marginTop:0 }}>Want to discover your own pattern?</h2>
-            <p className="lp-lead" style={{ marginTop:12, maxWidth:440, marginInline:'auto' }}>
+            <h2 className="lp-h2" style={{ marginTop:0, color:'var(--head)' }}>Want to discover your own pattern?</h2>
+            <p className="lp-lead" style={{ marginTop:12, maxWidth:440, marginInline:'auto', color:'var(--body-2)' }}>
               Take the test for free and find out which mechanism takes over when love gets uncertain.
             </p>
             <div style={{ marginTop:24, display:'flex', justifyContent:'center' }}>
@@ -119,7 +117,7 @@ function Profile({ go, code='bas' }) {
             </div>
           </div>
         </Container>
-      </Section>
+      </Module>
     </div>
   );
 }

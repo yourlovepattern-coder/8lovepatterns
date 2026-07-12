@@ -20,17 +20,19 @@
 html{ scroll-behavior:smooth; }
 html,body{ margin:0; padding:0; }
 body{
-  background:var(--paper);
+  background:var(--page-bg);
   font-family:var(--font-body);
-  color:var(--ink);
+  color:var(--head);
   -webkit-font-smoothing:antialiased;
   line-height:var(--lh-body);
 }
-::selection{ background:var(--corail); color:#fff; }
+::selection{ background:var(--cta); color:#fff; }
 
 /* ---- containers --------------------------------------------------------- */
 .bl-wrap{ max-width:1120px; margin:0 auto; padding:0 24px; }
 .bl-readable{ max-width:720px; margin:0 auto; }
+.bl-card{ background:#fff; border-radius:var(--r-module); box-shadow:var(--sh-1);
+  max-width:800px; margin:clamp(16px,3vw,32px) auto 40px; padding:8px clamp(24px,5vw,48px) 40px; }
 
 /* ---- top bar (shared with static pages) --------------------------------- */
 .bl-top{ padding:26px 0 0; }
