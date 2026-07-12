@@ -207,6 +207,45 @@ function AnchorScale() {
   );
 }
 
+/* CREDIBILITY, merged strip + science cards under one heading */
+function CredibilitySection() {
+  const cards = [
+    { ic:'anchor',  c:'#2C7E91', soft:'#E4F0F2', t:'Adult attachment',
+      d:'Attachment research studies how people respond to closeness, distance, trust, dependence, conflict, and fear of rejection. Many models describe two major dimensions: attachment anxiety and attachment avoidance.' },
+    { ic:'heart',   c:'var(--corail)', soft:'var(--corail-soft)', t:'Emotional regulation',
+      d:'When connection feels threatened, people regulate emotions differently. Some seek reassurance and intensify. Others withdraw, suppress, rationalize, or disconnect.' },
+    { ic:'compass', c:'var(--violet)', soft:'var(--violet-soft)', t:'Schema patterns',
+      d:'Schema therapy describes how early unmet emotional needs can become recurring patterns in adult relationships. These patterns can shape who feels familiar, what feels safe, and what triggers protection.' },
+    { ic:'route',   c:'#9A7321', soft:'var(--or-soft)', t:'Relationship self-sabotage',
+      d:'Research on relationship self-sabotage shows that fear, defensiveness, trust difficulty, and protective behaviors can keep people stuck in repeating romantic cycles.' },
+  ];
+  return (
+    <Section band="var(--paper-2)">
+      <Container>
+        <div style={{ textAlign:'center', maxWidth:640, margin:'0 auto 8px' }}>
+          <Eyebrow color="var(--violet)">Science-backed, not clinically diagnostic</Eyebrow>
+          <h2 className="lp-h1" style={{ marginTop:12 }}>Built on 50 years of attachment research.<br/>Not a diagnosis, a mirror.</h2>
+          <div style={{ marginTop:10, fontSize:'.82rem', color:'var(--ink-3)', fontWeight:500 }}>
+            Educational self-reflection tool · Not a clinical diagnosis
+          </div>
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'16px', marginTop:26 }} className="lp-mech-grid">
+          {cards.map(c=>(
+            <div key={c.t} style={{ background:'var(--surface)', border:'1px solid var(--hairline)', borderRadius:'var(--r-lg)',
+              padding:'22px', boxShadow:'var(--sh-xs)', display:'flex', flexDirection:'column', gap:'12px' }}>
+              <span style={{ display:'grid', placeItems:'center', width:44, height:44, borderRadius:'13px', background:c.soft, color:c.c }}>
+                <Icon name={c.ic} size={21}/>
+              </span>
+              <h3 className="lp-h4" style={{ margin:0 }}>{c.t}</h3>
+              <p style={{ margin:0, color:'var(--ink-2)', lineHeight:1.55, fontSize:'.93rem' }}>{c.d}</p>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </Section>
+  );
+}
+
 /* HOW IT WORKS, three numbered steps */
 function HowItWorksSection({ go }) {
   const steps = [
@@ -331,6 +370,9 @@ function Home({ go }) {
 
       {/* HOW IT WORKS, three steps to the report */}
       <HowItWorksSection go={go}/>
+
+      {/* CREDIBILITY, merged strip + science cards */}
+      <CredibilitySection/>
 
       {/* FINAL CTA */}
       <Section style={{ padding:'clamp(48px,7vw,90px) 0 clamp(56px,9vw,110px)' }}>
