@@ -4,6 +4,7 @@ User-agent: *
 Allow: /
 Disallow: /rapport
 Disallow: /blog/_article-template
+Disallow: /email-preview.html
 
 # ---------------------------------------------------------------------------
 # AI / answer-engine crawlers, explicitly allowed so the blog can be read and
@@ -14,35 +15,42 @@ User-agent: GPTBot
 Allow: /
 Disallow: /rapport
 Disallow: /blog/_article-template
+Disallow: /email-preview.html
 
 User-agent: OAI-SearchBot
 Allow: /
 Disallow: /rapport
 Disallow: /blog/_article-template
+Disallow: /email-preview.html
 
 User-agent: ChatGPT-User
 Allow: /
 Disallow: /rapport
 Disallow: /blog/_article-template
+Disallow: /email-preview.html
 
 User-agent: PerplexityBot
 Allow: /
 Disallow: /rapport
 Disallow: /blog/_article-template
+Disallow: /email-preview.html
 
 User-agent: ClaudeBot
 Allow: /
 Disallow: /rapport
 Disallow: /blog/_article-template
+Disallow: /email-preview.html
 
 User-agent: Claude-Web
 Allow: /
 Disallow: /rapport
 Disallow: /blog/_article-template
+Disallow: /email-preview.html
 
 User-agent: Google-Extended
 Allow: /
 Disallow: /rapport
 Disallow: /blog/_article-template
+Disallow: /email-preview.html
 
 Sitemap: https://8lovepatterns.com/sitemap.xml
