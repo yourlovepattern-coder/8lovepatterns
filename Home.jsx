@@ -385,14 +385,13 @@ function Home({ go }) {
             <div style={{ position:'absolute', top:'-40%', right:'-10%', width:'50%', aspectRatio:'1', borderRadius:'50%',
               background:'radial-gradient(circle, rgba(var(--lp-glow, 238,99,82),.32), transparent 70%)' }}></div>
             <div style={{ position:'relative' }}>
-              <h2 className="lp-h1" style={{ color:'#fff' }}>{t('final.h2')}</h2>
-              <p style={{ color:'rgba(255,255,255,.74)', fontSize:'1.12rem', marginTop:14, maxWidth:500, marginInline:'auto' }}>
-                {t('final.sub')}
-              </p>
+              <h2 className="lp-h1" style={{ color:'#fff' }}>The pattern repeats until someone looks at it.<br/>Be the one who looks.</h2>
               <div style={{ marginTop:28, display:'flex', justifyContent:'center' }}>
-                <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>{t('cta.reveal')}</Button>
+                <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>Reveal My Pattern</Button>
               </div>
-              <TrustLine light/>
+              <div style={{ marginTop:20, color:'rgba(255,255,255,.72)', fontSize:'.9rem', display:'flex', gap:'8px', justifyContent:'center', alignItems:'center', flexWrap:'wrap' }}>
+                <Icon name="lock" size={15}/> Free · 5 minutes · Private
+              </div>
             </div>
           </div>
         </Container>
