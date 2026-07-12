@@ -374,6 +374,9 @@ function Home({ go }) {
       {/* CREDIBILITY, merged strip + science cards */}
       <CredibilitySection/>
 
+      {/* FAQ, unchanged */}
+      <FAQ/>
+
       {/* FINAL CTA */}
       <Section style={{ padding:'clamp(48px,7vw,90px) 0 clamp(56px,9vw,110px)' }}>
         <Container>
