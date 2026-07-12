@@ -5,6 +5,54 @@
 
 const GLYPH_ICON = { inc:'flame', gue:'eye', fug:'feather', alc:'compass', sau:'heart', mir:'star', cam:'route', bas:'shield' };
 
+/* ---- Hero floating photo tile (Liven layout). Accepts img OR a muted
+   looping video source so tiles can be swapped for footage later without
+   touching markup — pass either `src` (image) or `video` (mp4/webm). ---- */
+function HeroTile({ src, video, alt, size, style, className='' }) {
+  const box = { lg:180, md:130, sm:90 }[size] || 130;
+  return (
+    <div className={`lp-hero-tile ${className}`.trim()} style={{ width:box, height:box, ...style }}>
+      {video
+        ? <video src={video} autoPlay muted loop playsInline aria-hidden="true"/>
+        : <img src={src} alt={alt}/>}
+    </div>
+  );
+}
+
+/* Seven tiles scattered around the hero headline, sized/positioned like
+   theliven.com/fr: 2 large, 3 medium, 2 small, asymmetric left/right. */
+const HERO_TILES = [
+  { size:'lg', top:'4%',  left:'2%',  src:'assets/photos/hero-tile-father-child-river.webp',
+    alt:'Father holding his young child by a river at golden hour' },
+  { size:'lg', top:'62%', right:'3%', src:'assets/photos/hero-tile-mother-daughter-laughing.webp',
+    alt:'Mother and daughter laughing together outdoors' },
+  { size:'md', top:'8%',  right:'16%', src:'assets/photos/hero-tile-forest-canopy.webp',
+    alt:'Looking up through a green forest canopy at the sky' },
+  { size:'md', top:'40%', left:'13%', src:'assets/photos/hero-tile-couple-coffee.webp',
+    alt:'Couple sitting together on the floor holding mugs of coffee' },
+  { size:'md', top:'80%', left:'20%', src:'assets/photos/hero-tile-hand-wildflowers.webp',
+    alt:'A hand gently touching wildflowers in golden light' },
+  { size:'sm', top:'26%', right:'1%', src:'assets/photos/hero-tile-man-therapy-couch.webp',
+    alt:'Man lying back on a couch, reflective' },
+  { size:'sm', top:'44%', right:'2%', src:'assets/photos/hero-tile-man-phone-bed.webp',
+    alt:'Man lying in bed at night checking his phone' },
+];
+const HERO_TILES_MOBILE = [HERO_TILES[0], HERO_TILES[2], HERO_TILES[1]];
+
+function HeroPhotoTiles() {
+  return (
+    <>
+      {HERO_TILES.map(t=>(
+        <HeroTile key={t.src} className="lp-hero-tile-desktop" size={t.size} src={t.src} alt={t.alt}
+          style={{ top:t.top, left:t.left, right:t.right }}/>
+      ))}
+      <div className="lp-hero-tile-mobile-row">
+        {HERO_TILES_MOBILE.map(t=> <HeroTile key={t.src} size="sm" src={t.src} alt={t.alt}/>)}
+      </div>
+    </>
+  );
+}
+
 /* ---- Hero: row of 8 archetype glyphs, Apple's app-icon-row transposed ---- */
 function HeroGlyphRow() {
   return (
@@ -181,8 +229,9 @@ function Home({ go }) {
   return (
     <div>
       {/* HERO — directly on the neutral page background, no card, no wash */}
-      <section style={{ padding:'clamp(48px,7vw,84px) var(--gutter) clamp(32px,5vw,56px)' }}>
-        <Container style={{ textAlign:'center' }}>
+      <section className="lp-hero-wrap" style={{ padding:'clamp(48px,7vw,84px) var(--gutter) clamp(32px,5vw,56px)' }}>
+        <HeroPhotoTiles/>
+        <Container style={{ textAlign:'center', position:'relative', zIndex:2 }}>
           <HeroGlyphRow/>
           <div style={{ fontSize:'.92rem', fontWeight:700, color:'var(--ink-3)', letterSpacing:'.02em' }}>8LovePatterns</div>
           <h1 className="lp-module-h" style={{ maxWidth:920, margin:'14px auto 0' }}>
