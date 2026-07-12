@@ -41,14 +41,18 @@
 
 :root {
   /* ---- Brand core ------------------------------------------------------ */
-  --encre:        #211C46;   /* deep indigo — primary ink / trust / depth   */
-  --encre-700:    #2E2960;   /* indigo for surfaces & deep panels           */
-  --encre-500:    #4B4490;   /* lifted indigo                               */
+  /* Legacy indigo/coral retired sitewide (2026 Apple-Health purge). --encre
+     and --corail keep their names for backward compatibility but now point
+     at the neutral-ink / green system below — nothing new should reference
+     them; use --head, --body-2, --cta, --accent-sky directly instead. */
+  --encre:        #14142B;   /* neutral near-black ink, no purple cast */
+  --encre-700:    #0E0E22;   /* darker neutral, for surfaces & deep panels  */
+  --encre-500:    #3A3A4A;   /* lifted neutral                              */
   --violet:       #6B5CCB;   /* muted violet — interactive / links          */
   --violet-soft:  #ECE9FB;   /* violet wash                                 */
-  --corail:       #EE6352;   /* warm coral — emotional intensity / primary CTA */
-  --corail-600:   #DE4F3E;   /* coral pressed                               */
-  --corail-soft:  #FCEAE6;   /* coral wash                                  */
+  --corail:       #2FBE73;   /* retired coral now = green CTA */
+  --corail-600:   #24A362;   /* retired coral-pressed now = green pressed   */
+  --corail-soft:  #E4F7EC;   /* retired coral-wash now = green wash         */
   --or:           #C7973F;   /* gold — the Ancre / integration / premium     */
   --or-soft:      #F6EDD8;
 
@@ -56,9 +60,12 @@
   --paper:        #FBF7F1;   /* page background — warm cream                */
   --paper-2:      #F4EEE4;   /* alt section band                            */
   --surface:      #FFFFFF;   /* cards                                       */
-  --ink:          #211C46;   /* primary text = encre                        */
+  --ink:          #14142B;   /* primary text = encre                        */
   --ink-2:        #57527A;   /* secondary text                              */
   --ink-3:        #8A86A3;   /* muted / captions                           */
+  --head:         #14142B;   /* headline ink (Apple-Health rebuild)         */
+  --body-2:       #5B5D72;   /* body text on the new light system           */
+  --accent-sky:   #3AA7E0;   /* secondary accent (non-CTA highlights)       */
   --hairline:     #EAE3D7;   /* borders on paper                           */
   --hairline-2:   #E3DCF0;   /* borders on violet washes                   */
 
@@ -178,12 +185,12 @@
   --r-xs: 8px; --r-sm: 12px; --r-md: 16px; --r-lg: 22px; --r-xl: 30px;
   --r-pill: 999px;
 
-  /* ---- Shadows (soft, warm-tinted) ------------------------------------ */
-  --sh-xs: 0 1px 2px rgba(33,28,70,.06);
-  --sh-sm: 0 2px 8px rgba(33,28,70,.07);
-  --sh-md: 0 10px 28px -8px rgba(33,28,70,.14);
-  --sh-lg: 0 24px 56px -16px rgba(33,28,70,.22);
-  --sh-cta: 0 10px 22px -6px rgba(238,99,82,.45);
+  /* ---- Shadows (soft, neutral-tinted) ---------------------------------- */
+  --sh-xs: 0 1px 2px rgba(20,20,43,.06);
+  --sh-sm: 0 2px 8px rgba(20,20,43,.07);
+  --sh-md: 0 10px 28px -8px rgba(20,20,43,.14);
+  --sh-lg: 0 24px 56px -16px rgba(20,20,43,.22);
+  /* --sh-cta is defined once, above, as the green CTA glow — do not redeclare here */
 
   /* ---- Layout ---------------------------------------------------------- */
   --maxw: 1160px;

@@ -142,9 +142,9 @@ window.LP_PH = function (name, props) {
         "position:fixed", "left:12px", "right:12px", "bottom:12px", "z-index:2147483000",
         "max-width:760px", "margin:0 auto", "box-sizing:border-box",
         "display:flex", "align-items:center", "justify-content:center", "gap:14px", "flex-wrap:wrap",
-        "background:var(--paper,#FBF7F1)", "color:var(--ink,#211C46)",
+        "background:var(--paper,#FBF7F1)", "color:var(--ink,#14142B)",
         "border:1px solid var(--hairline,#EAE3D7)", "border-radius:14px",
-        "box-shadow:0 12px 34px -12px rgba(33,28,70,.34)",
+        "box-shadow:0 12px 34px -12px rgba(20,20,43,.34)",
         "padding:12px 16px",
         "font-family:var(--font-body,system-ui,sans-serif)", "font-size:13.5px", "line-height:1.45",
       ].join(";");
@@ -162,7 +162,7 @@ window.LP_PH = function (name, props) {
       var reject = document.createElement("button");
       reject.type = "button";
       reject.textContent = t.reject;
-      reject.style.cssText = btnBase + "background:var(--ink,#211C46);color:#fff;";
+      reject.style.cssText = btnBase + "background:var(--ink,#14142B);color:#fff;";
 
       var accept = document.createElement("button");
       accept.type = "button";

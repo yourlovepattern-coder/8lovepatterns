@@ -13,10 +13,10 @@
 const BRAND = {
   paper:   '#FBF7F1',
   card:    '#FFFFFF',
-  ink:     '#211C46',
+  ink:     '#14142B',
   ink2:    '#57527A',
   ink3:    '#8A86A3',
-  corail:  '#EE6352',
+  corail:  '#2FBE73',
   or:      '#C7973F',
   hair:    '#EAE3D7',
   font:    "'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",

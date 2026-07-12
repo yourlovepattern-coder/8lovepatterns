@@ -125,7 +125,7 @@ body{
   display:inline-flex; align-items:center; gap:12px; font-family:var(--font-display); font-weight:800;
   font-size:1.3rem; color:#fff; background:var(--corail); padding:20px 40px; border-radius:100px;
   text-decoration:none; transition:background .18s,transform .18s;
-  box-shadow:0 14px 34px -10px rgba(238,99,82,.55);
+  box-shadow:0 14px 34px -10px rgba(47,190,115,.45);
 }
 .cta:hover{ background:var(--corail-600); transform:translateY(-2px); }
 .cta svg{ width:24px; height:24px; }

@@ -4,7 +4,7 @@
    component across the site re-skins at once. */
 
 const LP_TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "mood": "coral",
+  "mood": "green",
   "voice": "bold",
   "softness": "rounded",
   "salesLayout": "editorial"
@@ -12,8 +12,8 @@ const LP_TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 
 /* ---- Mood: the "emotional intensity" accent that runs through CTAs, chips, highlights ---- */
 const LP_MOODS = {
-  coral: { label:'Warm coral', accent:'#EE6352', pressed:'#DE4F3E', soft:'#FCEAE6',
-    hero:['#2E8294','#236B7C'], glow:'238,99,82' },
+  green: { label:'Apple-Health green', accent:'#2FBE73', pressed:'#24A362', soft:'#E4F7EC',
+    hero:['#2E8294','#236B7C'], glow:'47,190,115' },
   rose:  { label:'Tender rose', accent:'#E0627F', pressed:'#CC5070', soft:'#FBE6EC',
     hero:['#7C6BB0','#5E5193'], glow:'224,98,127' },
   sage:  { label:'Calm sage', accent:'#549A7E', pressed:'#43886C', soft:'#E2EFE8',
@@ -33,11 +33,11 @@ const LP_VOICES = {
 /* ---- Softness: shape language — radii + shadow diffusion move together ---- */
 const LP_SOFTNESS = {
   crisp:   { label:'Crisp',   xs:'4px',  sm:'6px',  md:'10px', lg:'13px', xl:'18px',
-    shMd:'0 6px 18px -8px rgba(33,28,70,.16)', shLg:'0 16px 40px -16px rgba(33,28,70,.2)', shCardMul:1 },
+    shMd:'0 6px 18px -8px rgba(20,20,43,.16)', shLg:'0 16px 40px -16px rgba(20,20,43,.2)', shCardMul:1 },
   rounded: { label:'Rounded', xs:'8px',  sm:'12px', md:'16px', lg:'22px', xl:'30px',
-    shMd:'0 10px 28px -8px rgba(33,28,70,.14)', shLg:'0 24px 56px -16px rgba(33,28,70,.22)', shCardMul:1 },
+    shMd:'0 10px 28px -8px rgba(20,20,43,.14)', shLg:'0 24px 56px -16px rgba(20,20,43,.22)', shCardMul:1 },
   pillowy: { label:'Pillowy', xs:'14px', sm:'20px', md:'26px', lg:'34px', xl:'46px',
-    shMd:'0 16px 40px -10px rgba(33,28,70,.16)', shLg:'0 34px 70px -18px rgba(33,28,70,.24)', shCardMul:1 },
+    shMd:'0 16px 40px -10px rgba(20,20,43,.16)', shLg:'0 34px 70px -18px rgba(20,20,43,.24)', shCardMul:1 },
 };
 
 function applyLpTweaks(t) {

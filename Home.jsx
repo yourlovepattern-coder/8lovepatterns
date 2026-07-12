@@ -407,7 +407,7 @@ function Home({ go }) {
       {/* FINAL CTA */}
       <section style={{ padding:'0 var(--gutter) clamp(56px,9vw,110px)' }}>
         <div style={{ maxWidth:'var(--maxw)', margin:'0 auto', borderRadius:'var(--r-module)', padding:'clamp(40px,6vw,72px)',
-          background:'var(--encre)', textAlign:'center' }}>
+          background:'linear-gradient(160deg, var(--mod-how-bold1) 0%, var(--mod-how-bold2) 100%)', boxShadow:'var(--sh-band-highlight)', textAlign:'center' }}>
           <h2 className="lp-module-h" style={{ color:'#fff', fontSize:'clamp(2rem,1.6rem+2vw,2.8rem)' }}>The pattern repeats until someone looks at it. Be the one who looks.</h2>
           <div style={{ marginTop:28, display:'flex', justifyContent:'center' }}>
             <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>Reveal My Pattern</Button>

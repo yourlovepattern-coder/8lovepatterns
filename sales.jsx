@@ -264,7 +264,7 @@ function SalesImmersive({ go, arch, fam, st, accent, title, code }) {
 
       {/* sticky purchase bar */}
       <div style={{ position:'fixed', left:0, right:0, bottom:0, zIndex:40, background:'rgba(255,255,255,.92)',
-        backdropFilter:'blur(12px)', WebkitBackdropFilter:'blur(12px)', borderTop:'1px solid var(--hairline)', boxShadow:'0 -8px 30px -12px rgba(33,28,70,.18)' }}>
+        backdropFilter:'blur(12px)', WebkitBackdropFilter:'blur(12px)', borderTop:'1px solid var(--hairline)', boxShadow:'0 -8px 30px -12px rgba(20,20,43,.18)' }}>
         <Container style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:'16px', height:74 }}>
           <div style={{ display:'flex', alignItems:'baseline', gap:'10px', minWidth:0 }}>
             <span className="lp-display" style={{ fontSize:'1.7rem', color:'var(--encre)', lineHeight:1 }}>{window.LP_STRIPE.priceLabel}</span>

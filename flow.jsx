@@ -149,7 +149,7 @@ function Intro({ go, onResult }) {
               </button>
               <span style={{ fontSize:'.85rem', fontWeight:700, color:'var(--ink-2)' }}>{t('q.word')} {n+1} <span style={{ color:'var(--ink-3)' }}>· {t('q.range')}</span></span>
             </div>
-            <ProgressBar value={pct} color="var(--corail)"/>
+            <ProgressBar value={pct} color="var(--cta)"/>
 
             {/* Statement + scale form a constant-height block (the statement has a
                 reserved min-height), centred in the stage. Because the block height
@@ -205,7 +205,7 @@ function Quiz({ go, onFinish }) {
             </button>
             <span style={{ fontSize:'.85rem', fontWeight:700, color:'var(--ink-2)' }}>Question {i+1} <span style={{ color:'var(--ink-3)' }}>/ {total}</span></span>
           </div>
-          <ProgressBar value={progress} color="var(--corail)"/>
+          <ProgressBar value={progress} color="var(--cta)"/>
         </Container>
       </div>
 
@@ -241,8 +241,8 @@ function ScaleOption({ s, active, onClick }) {
     <button onClick={onClick} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)}
       style={{ display:'flex', alignItems:'center', gap:'14px', textAlign:'left', cursor:'pointer',
         padding:'16px 20px', borderRadius:'var(--r-pill)', fontFamily:'var(--font-body)', fontSize:'1.02rem', fontWeight:600,
-        color: active?'#fff':'var(--ink)', background: active?'var(--encre)':'var(--surface)',
-        border:`1.5px solid ${active?'var(--encre)':(h?'var(--violet)':'var(--hairline)')}`,
+        color: active?'#fff':'var(--ink)', background: active?'var(--cta)':'var(--surface)',
+        border:`1.5px solid ${active?'var(--cta)':(h?'var(--violet)':'var(--hairline)')}`,
         boxShadow: h&&!active?'var(--sh-sm)':'var(--sh-xs)', transition:'all .16s ease', transform:h&&!active?'translateX(2px)':'none' }}>
       <span style={{ width:22, height:22, borderRadius:'50%', flexShrink:0, display:'grid', placeItems:'center',
         border:`2px solid ${active?'#fff':'var(--hairline-2)'}`, background:active?'rgba(255,255,255,.15)':'transparent' }}>
@@ -262,11 +262,12 @@ function Analyse({ go }) {
     return ()=>{ clearInterval(t1); clearTimeout(t2); };
   },[]);
   return (
-    <div style={{ minHeight:'calc(100vh - 72px)', display:'grid', placeItems:'center', background:'var(--encre)', color:'#fff' }}>
+    <div style={{ minHeight:'calc(100vh - 72px)', display:'grid', placeItems:'center',
+      background:'linear-gradient(160deg, var(--mod-how-bold1) 0%, var(--mod-how-bold2) 100%)', color:'#fff' }}>
       <div style={{ textAlign:'center', padding:'0 24px' }}>
         <div style={{ width:130, height:130, margin:'0 auto', borderRadius:'50%', position:'relative', display:'grid', placeItems:'center' }}>
           <div style={{ position:'absolute', inset:0, borderRadius:'50%', border:'3px solid rgba(255,255,255,.14)',
-            borderTopColor:'var(--corail)', animation:'lp-spin 1s linear infinite' }}></div>
+            borderTopColor:'#fff', animation:'lp-spin 1s linear infinite' }}></div>
           <Icon name="anchor" size={48} style={{ color:'var(--or)' }}/>
         </div>
         <h2 className="lp-h2" style={{ color:'#fff', marginTop:34 }}>We're reading between your lines.</h2>

@@ -174,7 +174,7 @@
     ]);
   }
   function renderBooks(b) {
-    const spines = ['#211C46', '#4A7AA8', '#46934A', '#8A5AA8', '#C9433B', '#CE9A2E'];
+    const spines = ['#14142B', '#4A7AA8', '#46934A', '#8A5AA8', '#C9433B', '#CE9A2E'];
     const cards = (b.books || []).map((bk, i) => {
       const spine = spines[i % spines.length];
       const cover = bk.cover

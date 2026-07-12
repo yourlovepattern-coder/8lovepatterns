@@ -41,7 +41,7 @@ function InlineRich({ text }){
 }
 
 /* 5-level intensity ramp: neutral (not me) → coral (completely me). */
-const LP_RAMP = ['#A7A2BC','#C49A93','#DC8870','#EA7058','#EE6352'];
+const LP_RAMP = ['#A7A2BC','#8CA9AE','#6FB08C','#4AB87D','#2FBE73'];
 
 /* ---- One scale dot (used by the statement scale) ------------------------ */
 function ScaleDot({ v, size=30, active, onPick, label }){
@@ -84,8 +84,8 @@ function ChoiceButton({ label, active, onClick }){
     <button onClick={onClick} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)}
       style={{ display:'flex', alignItems:'center', gap:'15px', textAlign:'left', cursor:'pointer', width:'100%',
         padding:'17px 22px', borderRadius:'var(--r-lg)', fontFamily:'var(--font-body)', fontSize:'1.06rem', fontWeight:600,
-        lineHeight:1.4, color: active?'#fff':'var(--ink)', background: active?'var(--encre)':'var(--surface)',
-        border:`1.5px solid ${active?'var(--encre)':(h?'var(--violet)':'var(--hairline)')}`,
+        lineHeight:1.4, color: active?'#fff':'var(--ink)', background: active?'var(--cta)':'var(--surface)',
+        border:`1.5px solid ${active?'var(--cta)':(h?'var(--violet)':'var(--hairline)')}`,
         boxShadow: h&&!active?'var(--sh-sm)':'var(--sh-xs)', transition:'all .16s ease', transform:h&&!active?'translateX(3px)':'none' }}>
       <span style={{ width:23, height:23, borderRadius:'50%', flexShrink:0, display:'grid', placeItems:'center',
         border:`2px solid ${active?'#fff':'var(--hairline-2)'}`, background:active?'rgba(255,255,255,.16)':'transparent' }}>
@@ -119,8 +119,8 @@ function StatementScreen({ q, value, onPick }){
             <button key={s.v} onClick={()=>onPick(s.v)}
               style={{ display:'flex', alignItems:'center', gap:'14px', textAlign:'left', cursor:'pointer', width:'100%',
                 padding:'15px 19px', borderRadius:'var(--r-lg)', fontFamily:'var(--font-body)', fontSize:'1.04rem', fontWeight:600,
-                color: value===s.v?'#fff':'var(--ink)', background: value===s.v?'var(--encre)':'var(--surface)',
-                border:`1.5px solid ${value===s.v?'var(--encre)':'var(--hairline)'}`, boxShadow:'var(--sh-xs)', transition:'all .16s ease' }}>
+                color: value===s.v?'#fff':'var(--ink)', background: value===s.v?'var(--cta)':'var(--surface)',
+                border:`1.5px solid ${value===s.v?'var(--cta)':'var(--hairline)'}`, boxShadow:'var(--sh-xs)', transition:'all .16s ease' }}>
               <span style={{ width:18, height:18, borderRadius:'50%', flexShrink:0, border:`3px solid ${LP_RAMP[s.v]}`,
                 background: value===s.v?LP_RAMP[s.v]:'transparent' }}></span>
               {tx(s)}
@@ -151,7 +151,7 @@ function TopProgress({ fill }){
     <div style={{ height:6, borderRadius:'4px', background:'var(--hairline)', overflow:'hidden',
       margin:'0 0 clamp(24px,3.6vw,40px)' }}>
       <div style={{ width:`${Math.round(Math.max(0,Math.min(1,fill))*100)}%`, height:'100%', borderRadius:'4px',
-        background:'var(--corail)', transition:'width .45s cubic-bezier(.22,.61,.36,1)' }}/>
+        background:'var(--cta)', transition:'width .45s cubic-bezier(.22,.61,.36,1)' }}/>
     </div>
   );
 }
