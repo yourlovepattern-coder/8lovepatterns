@@ -1,26 +1,5 @@
 /* 8LovePatterns, Homepage (short, 16P-inspired: promise · proof · patterns · CTA) */
 
-/* Torn top edge */
-function ZigTop() {
-  const w=1440, h=34, teeth=26; let d=`M0,${h} L0,14`;
-  for(let i=0;i<=teeth;i++){ const x=Math.round((w/teeth)*i); const y=i%2===0?2:22; d+=` L${x},${y}`; }
-  d+=` L${w},14 L${w},${h} Z`;
-  return (
-    <svg viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" aria-hidden="true"
-      style={{ position:'absolute', top:-1, left:0, width:'100%', height:h, display:'block', zIndex:1 }}>
-      <path d={d} fill="var(--paper)"/>
-    </svg>
-  );
-}
-function WaveBottom() {
-  return (
-    <svg viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true"
-      style={{ position:'absolute', bottom:-1, left:0, width:'100%', height:90, display:'block', zIndex:1 }}>
-      <path d="M0,90 L0,52 C220,16 460,16 720,42 C980,68 1220,70 1440,40 L1440,90 Z" fill="var(--paper)"/>
-    </svg>
-  );
-}
-
 /* The scene: every pattern gathered around the anchor-heart */
 function HeroScene() {
   const cast = [
@@ -50,7 +29,7 @@ function HeroFloatTile({ style, children }) {
     <div className="lp-hero-float" style={{
       position:'absolute', width:'clamp(64px,6vw,88px)', height:'clamp(64px,6vw,88px)',
       borderRadius:'20px', overflow:'hidden', zIndex:2,
-      boxShadow:'0 14px 26px -10px rgba(15,45,55,.4)', border:'3px solid rgba(255,255,255,.92)',
+      boxShadow:'0 10px 22px -10px rgba(33,28,70,.22)', border:'1px solid var(--hairline)',
       ...style }}>{children}</div>
   );
 }
@@ -197,7 +176,7 @@ function AnchorScale() {
       </div>
       <div style={{ display:'flex', height:10, borderRadius:6, overflow:'hidden' }}>
         {levels.map((l,i)=>(
-          <div key={l} style={{ flex:1, background:`color-mix(in srgb, var(--corail) ${20+i*20}%, var(--hairline-2))` }}/>
+          <div key={l} style={{ flex:1, background:`color-mix(in srgb, var(--encre) ${20+i*20}%, var(--hairline-2))` }}/>
         ))}
       </div>
       <div style={{ display:'flex', justifyContent:'space-between', marginTop:10 }}>
@@ -209,10 +188,13 @@ function AnchorScale() {
 
 /* CREDIBILITY, merged strip + science cards under one heading */
 function CredibilitySection() {
+  /* Teal appears exactly once on the page: this band's tint + the "Adult
+     attachment" icon. Corail is reserved for the primary CTA button only,
+     so it never appears among these category icons. */
   const cards = [
-    { ic:'anchor',  c:'#2C7E91', soft:'#E4F0F2', t:'Adult attachment',
+    { ic:'anchor',  c:'var(--fam-ancre)', soft:'var(--fam-ancre-soft)', t:'Adult attachment',
       d:'Attachment research studies how people respond to closeness, distance, trust, dependence, conflict, and fear of rejection. Many models describe two major dimensions: attachment anxiety and attachment avoidance.' },
-    { ic:'heart',   c:'var(--corail)', soft:'var(--corail-soft)', t:'Emotional regulation',
+    { ic:'heart',   c:'var(--encre-500)', soft:'var(--violet-soft)', t:'Emotional regulation',
       d:'When connection feels threatened, people regulate emotions differently. Some seek reassurance and intensify. Others withdraw, suppress, rationalize, or disconnect.' },
     { ic:'compass', c:'var(--violet)', soft:'var(--violet-soft)', t:'Schema patterns',
       d:'Schema therapy describes how early unmet emotional needs can become recurring patterns in adult relationships. These patterns can shape who feels familiar, what feels safe, and what triggers protection.' },
@@ -220,10 +202,10 @@ function CredibilitySection() {
       d:'Research on relationship self-sabotage shows that fear, defensiveness, trust difficulty, and protective behaviors can keep people stuck in repeating romantic cycles.' },
   ];
   return (
-    <Section>
+    <Section style={{ background:'color-mix(in srgb, var(--fam-ancre) 5%, var(--paper))' }}>
       <Container>
         <div style={{ textAlign:'center', maxWidth:640, margin:'0 auto 8px' }}>
-          <Eyebrow color="var(--violet)">Science-backed, not clinically diagnostic</Eyebrow>
+          <Eyebrow color="var(--fam-ancre)">Science-backed, not clinically diagnostic</Eyebrow>
           <h2 className="lp-h1" style={{ marginTop:12 }}>Built on 50 years of attachment research.<br/>Not a diagnosis, a mirror.</h2>
           <div style={{ marginTop:10, fontSize:'.82rem', color:'var(--ink-3)', fontWeight:500 }}>
             Educational self-reflection tool · Not a clinical diagnosis
@@ -281,7 +263,7 @@ function LoopSection({ go }) {
       <Container>
         <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'clamp(32px,5vw,64px)', alignItems:'center' }} className="lp-2col">
           <div>
-            <h2 className="lp-h1">Different person.<br/><span style={{ color:'var(--corail)' }}>Same ending.</span></h2>
+            <h2 className="lp-h1">Different person.<br/>Same ending.</h2>
             <p className="lp-lead" style={{ marginTop:16 }}>
               The 2am reread. The fight you started to feel something. The silence you couldn't break. It's not bad luck. It's a loop, and loops can be mapped.
             </p>
@@ -300,29 +282,26 @@ function Home({ go }) {
   const { t } = useLang();
   return (
     <div>
-      {/* HERO, promise + CTA */}
-      <section style={{ position:'relative', overflow:'hidden', color:'#fff',
-        background:'linear-gradient(180deg, var(--lp-hero-a, #2E8294) 0%, var(--lp-hero-b, #236B7C) 100%)' }}>
-        <ZigTop/>
+      {/* HERO, promise + CTA — white base, no full-bleed saturated color */}
+      <section style={{ position:'relative', overflow:'hidden', background:'var(--paper)' }}>
         <HeroFloatTiles/>
         <Container style={{ position:'relative', zIndex:2, textAlign:'center', paddingTop:'clamp(40px,6vw,72px)' }}>
           <div style={{ display:'inline-flex' }}>
-            <Chip soft="rgba(255,255,255,.16)" color="#fff"><Icon name="sparkle" size={14}/> {t('hero.badge')}</Chip>
+            <Chip><Icon name="sparkle" size={14}/> {t('hero.badge')}</Chip>
           </div>
-          <h1 className="lp-display" style={{ color:'#fff', maxWidth:900, margin:'18px auto 0' }}>
+          <h1 className="lp-display" style={{ maxWidth:900, margin:'18px auto 0' }}>
             {t('hero.h1a')}<br/>{t('hero.h1b')}
           </h1>
-          <p style={{ color:'rgba(255,255,255,.86)', fontSize:'1.18rem', lineHeight:1.55, maxWidth:580, margin:'18px auto 0', textWrap:'pretty' }}>
+          <p style={{ color:'var(--ink-2)', fontSize:'1.18rem', lineHeight:1.55, maxWidth:580, margin:'18px auto 0', textWrap:'pretty' }}>
             When love feels unsafe, something in you takes over. Find out what, before it decides for you again.
           </p>
           <div style={{ display:'flex', gap:'14px', justifyContent:'center', marginTop:28, flexWrap:'wrap' }}>
             <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>{t('cta.reveal')}</Button>
-            <Button size="lg" variant="light" onClick={()=>go('profils')}>{t('hero.cta2')}</Button>
+            <Button size="lg" variant="secondary" onClick={()=>go('profils')}>{t('hero.cta2')}</Button>
           </div>
-          <TrustLine light/>
+          <TrustLine/>
         </Container>
         <HeroScene/>
-        <WaveBottom/>
       </section>
 
       {/* SCIENCE / SOCIAL-PROOF TRUST BANNER */}
@@ -336,7 +315,7 @@ function Home({ go }) {
         <Container>
           <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'clamp(32px,5vw,64px)', alignItems:'center' }} className="lp-2col">
             <div>
-              <h2 className="lp-h1">You already know what you do.<br/><span style={{ color:'var(--corail)' }}>Knowing it hasn't stopped you.</span></h2>
+              <h2 className="lp-h1">You already know what you do.<br/>Knowing it hasn't stopped you.</h2>
               <p className="lp-lead" style={{ marginTop:16 }}>
                 That gap is the Anchor: how deep the pattern runs in you right now. Shallow, you catch it in time. Deep, you watch yourself do it anyway. Every other test skips the one measure that decides what actually helps.
               </p>
@@ -377,21 +356,17 @@ function Home({ go }) {
       {/* FAQ, unchanged */}
       <FAQ/>
 
-      {/* FINAL CTA */}
+      {/* FINAL CTA — flat solid card, no gradient/glow; corail button is the only pop of color */}
       <Section style={{ padding:'clamp(48px,7vw,90px) 0 clamp(56px,9vw,110px)' }}>
         <Container>
-          <div style={{ position:'relative', overflow:'hidden', borderRadius:'var(--r-xl)', padding:'clamp(40px,6vw,72px)',
-            background:'linear-gradient(135deg, var(--encre) 0%, var(--encre-700) 60%, #3A2F77 100%)', textAlign:'center' }}>
-            <div style={{ position:'absolute', top:'-40%', right:'-10%', width:'50%', aspectRatio:'1', borderRadius:'50%',
-              background:'radial-gradient(circle, rgba(var(--lp-glow, 238,99,82),.32), transparent 70%)' }}></div>
-            <div style={{ position:'relative' }}>
-              <h2 className="lp-h1" style={{ color:'#fff' }}>The pattern repeats until someone looks at it.<br/>Be the one who looks.</h2>
-              <div style={{ marginTop:28, display:'flex', justifyContent:'center' }}>
-                <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>Reveal My Pattern</Button>
-              </div>
-              <div style={{ marginTop:20, color:'rgba(255,255,255,.72)', fontSize:'.9rem', display:'flex', gap:'8px', justifyContent:'center', alignItems:'center', flexWrap:'wrap' }}>
-                <Icon name="lock" size={15}/> Free · 5 minutes · Private
-              </div>
+          <div style={{ borderRadius:'var(--r-xl)', padding:'clamp(40px,6vw,72px)',
+            background:'var(--encre)', textAlign:'center' }}>
+            <h2 className="lp-h1" style={{ color:'#fff' }}>The pattern repeats until someone looks at it.<br/>Be the one who looks.</h2>
+            <div style={{ marginTop:28, display:'flex', justifyContent:'center' }}>
+              <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>Reveal My Pattern</Button>
+            </div>
+            <div style={{ marginTop:20, color:'rgba(255,255,255,.72)', fontSize:'.9rem', display:'flex', gap:'8px', justifyContent:'center', alignItems:'center', flexWrap:'wrap' }}>
+              <Icon name="lock" size={15}/> Free · 5 minutes · Private
             </div>
           </div>
         </Container>

@@ -221,21 +221,16 @@ function TrustBanner() {
   return (
     <Section style={{ padding:'clamp(28px,4vw,52px) 0' }}>
       <Container>
-        <div style={{ position:'relative', overflow:'hidden', borderRadius:'var(--r-xl)',
-          background:'linear-gradient(135deg, var(--encre) 0%, var(--encre-700) 70%, #3A2F77 100%)',
+        <div style={{ background:'var(--surface)', border:'1px solid var(--hairline)', borderRadius:'var(--r-xl)',
           padding:'clamp(28px,4vw,44px)', maxWidth:820, margin:'0 auto', textAlign:'center',
-          boxShadow:'var(--sh-lg)' }}>
-          <div style={{ position:'absolute', top:'-50%', left:'-10%', width:'45%', aspectRatio:'1', borderRadius:'50%',
-            background:'radial-gradient(circle, rgba(199,151,63,.18), transparent 70%)' }}></div>
-          <div style={{ position:'relative' }}>
-            <Eyebrow color="var(--or)">{t('tb.eyebrow')}</Eyebrow>
-            <p className="lp-h3" style={{ marginTop:14, color:'#fff', maxWidth:600, marginInline:'auto', textWrap:'pretty', fontWeight:600 }}>
-              {t('tb.h')}
-            </p>
-            <p style={{ marginTop:16, color:'rgba(255,255,255,.5)', lineHeight:1.55, fontSize:'.8rem', maxWidth:560, marginInline:'auto', textWrap:'pretty' }}>
-              {t('tb.disclaimer')}
-            </p>
-          </div>
+          boxShadow:'var(--sh-xs)' }}>
+          <Eyebrow>{t('tb.eyebrow')}</Eyebrow>
+          <p className="lp-h3" style={{ marginTop:14, color:'var(--ink)', maxWidth:600, marginInline:'auto', textWrap:'pretty', fontWeight:600 }}>
+            {t('tb.h')}
+          </p>
+          <p style={{ marginTop:16, color:'var(--ink-3)', lineHeight:1.55, fontSize:'.8rem', maxWidth:560, marginInline:'auto', textWrap:'pretty' }}>
+            {t('tb.disclaimer')}
+          </p>
         </div>
       </Container>
     </Section>
