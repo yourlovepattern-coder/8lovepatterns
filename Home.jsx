@@ -186,7 +186,7 @@ function Home({ go }) {
           <HeroGlyphRow/>
           <div style={{ fontSize:'.92rem', fontWeight:700, color:'var(--ink-3)', letterSpacing:'.02em' }}>8LovePatterns</div>
           <h1 className="lp-module-h" style={{ maxWidth:920, margin:'14px auto 0' }}>
-            You're not bad at love. You're stuck in a protection pattern.
+            Stop reliving the same heartbreak.
           </h1>
           <p className="lp-module-lead" style={{ margin:'20px auto 0' }}>
             When love feels unsafe, <span style={{ color:'var(--mod-loop-mid)', fontWeight:600 }}>something in you takes over</span>. Find out what, before it decides for you again.
