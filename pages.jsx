@@ -6,6 +6,7 @@ function Method({ go }) {
     ['shield','No judgment','A protection pattern is never a flaw. It made sense once. We treat it that way.'],
     ['eye','One dominant result','No numeric scores, no anxious ranking. The pattern that weighs most today, told clearly.'],
     ['route','Built for change','Every result ends with a concrete next step. Recognition only matters if it opens a path.'],
+    ['anchor','The Anchor: how deep, not just what',"Your answers place you on five levels, Clear to Buried. Shallow needs a reminder in the moment. Deep needs a plan that works before the moment, because in it, you're not reachable. Your report is written for your level, and it aims at the next one up, never a leap to Clear."],
   ];
   return (
     <div>
