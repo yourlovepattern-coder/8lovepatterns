@@ -289,7 +289,8 @@ function Home({ go }) {
       <Section band="var(--paper-2)">
         <Container>
           <div style={{ textAlign:'center', maxWidth:620, margin:'0 auto 40px' }}>
-            <h2 className="lp-h1">{t('teaser.h2')}</h2>
+            <h2 className="lp-h1">Meet the eight things that take over.</h2>
+            <p className="lp-lead" style={{ marginTop:14 }}>One of them runs your loop. Five minutes to find out which.</p>
           </div>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'22px', alignItems:'stretch' }} className="lp-mech-grid">
             {window.ARCHETYPES.map(a=> <PatternChip key={a.code} arch={a} go={go}/>)}
