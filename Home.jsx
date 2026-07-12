@@ -163,6 +163,16 @@ function Home({ go }) {
         </Container>
       </Section>
 
+      {/* ANCHOR, the depth gap between knowing and doing */}
+      <Section style={{ padding:'clamp(44px,6vw,84px) 0' }}>
+        <Container narrow style={{ textAlign:'center' }}>
+          <h2 className="lp-h1">You already know what you do.<br/><span style={{ color:'var(--corail)' }}>Knowing it hasn't stopped you.</span></h2>
+          <p className="lp-lead" style={{ marginTop:16 }}>
+            That gap is the Anchor: how deep the pattern runs in you right now. Shallow, you catch it in time. Deep, you watch yourself do it anyway. Every other test skips the one measure that decides what actually helps.
+          </p>
+        </Container>
+      </Section>
+
       {/* FINAL CTA */}
       <Section style={{ padding:'clamp(48px,7vw,90px) 0 clamp(56px,9vw,110px)' }}>
         <Container>
