@@ -44,6 +44,49 @@ function HeroScene() {
   );
 }
 
+/* Liven-style floating tiles around the hero, desktop only (hidden <=900px via .lp-hero-float in index.html) */
+function HeroFloatTile({ style, children }) {
+  return (
+    <div className="lp-hero-float" style={{
+      position:'absolute', width:'clamp(64px,6vw,88px)', height:'clamp(64px,6vw,88px)',
+      borderRadius:'20px', overflow:'hidden', zIndex:2,
+      boxShadow:'0 14px 26px -10px rgba(15,45,55,.4)', border:'3px solid rgba(255,255,255,.92)',
+      ...style }}>{children}</div>
+  );
+}
+function HeroFloatTiles() {
+  const mech = [
+    { code:'inc', top:'6%',  left:'3%' , rot:-8 },
+    { code:'fug', top:'50%', left:'1.5%', rot:6 },
+    { code:'alc', top:'10%', right:'4%', rot:7 },
+    { code:'bas', top:'52%', right:'2%', rot:-6 },
+  ];
+  /* 3 slots for real human photos, supplied later by Adrien. Neutral placeholder
+     block with a descriptive aria-label standing in for alt text until then. */
+  const photos = [
+    { top:'30%', left:'10%', rot:5,  label:'Placeholder — real member photo 1' },
+    { top:'76%', left:'8%',  rot:-7, label:'Placeholder — real member photo 2' },
+    { top:'32%', right:'11%', rot:-5, label:'Placeholder — real member photo 3' },
+  ];
+  return (
+    <>
+      {mech.map(m=>(
+        <HeroFloatTile key={m.code} style={{ top:m.top, left:m.left, right:m.right, transform:`rotate(${m.rot}deg)`, background:'linear-gradient(165deg,#ffffff,#eef6f7)' }}>
+          <img src={`assets/archetypes/${m.code}_avatar.png`} alt="" style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }}/>
+        </HeroFloatTile>
+      ))}
+      {photos.map(p=>(
+        <HeroFloatTile key={p.label} style={{ top:p.top, left:p.left, right:p.right, transform:`rotate(${p.rot}deg)` }}>
+          <div role="img" aria-label={p.label} style={{ width:'100%', height:'100%', display:'grid', placeItems:'center',
+            background:'linear-gradient(150deg,#cfd8dc,#eceff1)', color:'#78909c' }}>
+            <Icon name="users" size={22}/>
+          </div>
+        </HeroFloatTile>
+      ))}
+    </>
+  );
+}
+
 function TrustLine({ light }) {
   const c = light ? 'rgba(255,255,255,.72)' : 'var(--ink-3)';
   const { t } = useLang();
@@ -106,6 +149,7 @@ function Home({ go }) {
       <section style={{ position:'relative', overflow:'hidden', color:'#fff',
         background:'linear-gradient(180deg, var(--lp-hero-a, #2E8294) 0%, var(--lp-hero-b, #236B7C) 100%)' }}>
         <ZigTop/>
+        <HeroFloatTiles/>
         <Container style={{ position:'relative', zIndex:2, textAlign:'center', paddingTop:'clamp(40px,6vw,72px)' }}>
           <div style={{ display:'inline-flex' }}>
             <Chip soft="rgba(255,255,255,.16)" color="#fff"><Icon name="sparkle" size={14}/> {t('hero.badge')}</Chip>
@@ -114,7 +158,7 @@ function Home({ go }) {
             {t('hero.h1a')}<br/>{t('hero.h1b')}
           </h1>
           <p style={{ color:'rgba(255,255,255,.86)', fontSize:'1.18rem', lineHeight:1.55, maxWidth:580, margin:'18px auto 0', textWrap:'pretty' }}>
-            {t('hero.sub')}
+            When love feels unsafe, something in you takes over. Find out what, before it decides for you again.
           </p>
           <div style={{ display:'flex', gap:'14px', justifyContent:'center', marginTop:28, flexWrap:'wrap' }}>
             <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>{t('cta.reveal')}</Button>
