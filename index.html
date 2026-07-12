@@ -278,7 +278,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   /* ---- Card hover lift (used by galleries, bento, chips) ---- */
   .lp-lift { transition: transform .2s ease, box-shadow .2s ease; }
-  .lp-lift:hover { transform: translateY(-4px); box-shadow: 0 14px 34px rgba(0,0,0,.1); }
+  .lp-lift:hover { transform: translateY(-2px); box-shadow: var(--sh-2); }
   @media (prefers-reduced-motion: reduce) { .lp-lift:hover { transform: none; } }
 
   /* ---- Gallery: horizontal scroll-snap ---- */
@@ -311,7 +311,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .lp-card-photo, .lp-card-product, .lp-card-stat {
     border-radius: var(--r-card);
     border: none;
-    box-shadow: 0 4px 24px rgba(0,0,0,.06);
+    box-shadow: var(--sh-1);
     overflow: hidden;
   }
   .lp-card-photo { background: #fff; }
@@ -326,7 +326,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .lp-bento-cell {
     border-radius: var(--r-card);
     background: #fff;
-    box-shadow: 0 4px 24px rgba(0,0,0,.06);
+    box-shadow: var(--sh-1);
     padding: clamp(22px, 2.4vw, 30px);
     display: flex;
     flex-direction: column;
@@ -365,7 +365,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     cursor: pointer;
     transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
   }
-  .lp-pain-chip:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(0,0,0,.08); border-color: var(--mod-how-mid); }
+  .lp-pain-chip:hover { transform: translateY(-2px); box-shadow: var(--sh-2); border-color: var(--mod-how-mid); }
   @media (max-width: 700px) {
     .lp-chip-row { display: grid; grid-template-columns: 1fr 1fr; }
     .lp-pain-chip { width: 100%; }
@@ -374,16 +374,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   /* ---- Glass card: frosted step card over a saturated gradient band ---- */
   .lp-glass-card {
     border-radius: var(--r-card);
-    background: rgba(255,255,255,.14);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border: 1px solid rgba(255,255,255,.25);
+    background: rgba(255,255,255,.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,.3);
   }
 
   /* ---- Gradient support band ---- */
   .lp-support-band {
     border-radius: var(--r-module);
-    background: linear-gradient(135deg, var(--mod-anchor-deep1) 0%, #7FB8E8 100%);
+    background: linear-gradient(135deg, var(--mod-anchor-bold1) 0%, var(--mod-anchor-bold2) 100%);
+    box-shadow: var(--sh-band-highlight);
     color: #fff;
     text-align: center;
     padding: clamp(48px, 7vw, 84px) clamp(24px, 5vw, 60px);
@@ -407,6 +408,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .lp-glyph {
     width: 44px; height: 44px; border-radius: 12px;
     display: grid; place-items: center; color: #fff; flex-shrink: 0;
+    box-shadow: var(--sh-glyph);
   }
   .lp-glyph-lg { width: 56px; height: 56px; border-radius: 16px; }
 

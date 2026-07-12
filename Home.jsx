@@ -137,7 +137,7 @@ function PatternGlyphCard({ arch, go }) {
   return (
     <button onClick={()=>go('profil',arch.code)} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)}
       className="lp-lift" style={{ cursor:'pointer', border:'none', textAlign:'left', width:'100%',
-        background:'#fff', borderRadius:'var(--r-card)', boxShadow:'0 4px 24px rgba(0,0,0,.06)',
+        background:'#fff', borderRadius:'var(--r-card)', boxShadow:'var(--sh-1)',
         padding:'22px', display:'flex', flexDirection:'column', gap:12 }}>
       <span className="lp-glyph" style={{ background:arch.accent }}>
         <Icon name={GLYPH_ICON[arch.code]||'star'} size={19} stroke={2} style={{ color:'#fff' }}/>
@@ -274,7 +274,8 @@ function Home({ go }) {
       </section>
 
       {/* HOW IT WORKS — full-bleed saturated green gradient, Apple accent moment, glass step cards */}
-      <section style={{ background:`linear-gradient(160deg, var(--mod-how-deep1) 0%, var(--mod-how-deep2) 100%)`, padding:'clamp(48px,7vw,84px) var(--gutter)', textAlign:'center' }}>
+      <section style={{ background:`linear-gradient(160deg, var(--mod-how-bold1) 0%, var(--mod-how-bold2) 100%)`,
+        boxShadow:'var(--sh-band-highlight)', padding:'clamp(48px,7vw,84px) var(--gutter)', textAlign:'center' }}>
         <Container narrow>
           <Reveal>
             <h2 className="lp-module-h" style={{ color:'#fff' }}>Five minutes. Then the map.</h2>
@@ -318,7 +319,7 @@ function Home({ go }) {
               { t:'Mikulincer & Shaver (2016)', d:'Mapped anxious and avoidant strategies for regulating closeness and fear.' },
               { t:'Fraley & Waller (1998)', d:'Evidence for attachment styles as continuous dimensions, not fixed boxes.' },
             ].map(c=>(
-              <div key={c.t} className="lp-lift" style={{ background:'#fff', borderRadius:'var(--r-card)', boxShadow:'0 4px 24px rgba(0,0,0,.06)', padding:'22px' }}>
+              <div key={c.t} className="lp-lift" style={{ background:'#fff', borderRadius:'var(--r-card)', boxShadow:'var(--sh-1)', padding:'22px' }}>
                 <h3 className="lp-h4" style={{ margin:0, color:'var(--mod-cred-mid)' }}>{c.t}</h3>
                 <p style={{ margin:'10px 0 0', color:'var(--ink-3)', fontSize:'.9rem', lineHeight:1.5 }}>{c.d}</p>
               </div>

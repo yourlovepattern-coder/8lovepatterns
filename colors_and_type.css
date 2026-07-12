@@ -135,6 +135,18 @@
   --r-module: 32px;
   --r-card: 28px;
 
+  /* ---- Elevation system (3 depth levels) -------------------------------- */
+  --sh-1: 0 2px 8px rgba(20,20,43,.06);              /* resting card */
+  --sh-2: 0 8px 24px rgba(20,20,43,.12);             /* hover / interactive */
+  --sh-band-highlight: inset 0 1px 0 rgba(255,255,255,.3); /* gradient band top edge */
+  --sh-glyph: 0 4px 10px rgba(0,0,0,.15);            /* icon badges lift */
+
+  /* ---- Bolder gradient stops for the two saturated bands ---------------- */
+  --mod-how-bold1:    #1FA35C;
+  --mod-how-bold2:    #0B5C34;
+  --mod-anchor-bold1: #163F63;
+  --mod-anchor-bold2: #8FC6EE;
+
   /* ---- Typography family ------------------------------------------------
      One typeface everywhere (Apple Health direction) — weight (400/500/
      600/700) does the work that switching families used to do. */
