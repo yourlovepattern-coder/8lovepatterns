@@ -179,7 +179,7 @@ function HalteProse({ data, code }){
       ))}
       {code && imgOk && (
         <div style={{ textAlign:'center', margin: narrow ? '8px 0' : 'clamp(22px,3.4vw,34px) 0' }}>
-          <img src={`assets/archetypes/${code}.png`} alt="" onError={()=>setImgOk(false)}
+          <img src={`assets/archetypes/${code}.webp`} alt="" onError={()=>setImgOk(false)}
             style={{ width:'auto', height: narrow ? '60px' : 'clamp(200px,34vw,300px)', maxWidth:'100%', display:'inline-block',
               filter: narrow ? 'drop-shadow(0 8px 12px rgba(15,20,45,.2))' : 'drop-shadow(0 22px 26px rgba(15,20,45,.26))' }}/>
         </div>

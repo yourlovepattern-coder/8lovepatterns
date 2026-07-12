@@ -194,7 +194,7 @@ function PatternGlyphCard({ arch, go }) {
         </span>
         <span style={{ width:100, height:100, borderRadius:'50%', flexShrink:0, position:'relative',
           background:`radial-gradient(120% 100% at 50% 100%, ${arch.soft} 0%, transparent 70%)` }}>
-          <img src={`assets/archetypes/${arch.code}.png`} alt="" style={{ position:'absolute', bottom:0, left:'50%',
+          <img src={`assets/archetypes/${arch.code}.webp`} alt="" style={{ position:'absolute', bottom:0, left:'50%',
             transform:'translateX(-50%)', height:'100%', width:'auto', objectFit:'contain', objectPosition:'bottom',
             filter:'drop-shadow(0 6px 10px rgba(0,0,0,.14))' }}/>
         </span>

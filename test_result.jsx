@@ -355,7 +355,7 @@ function OfferHero({ R }){
               <svg className="heart" viewBox="0 0 100 92" xmlns="http://www.w3.org/2000/svg">
                 <path d="M50 88 C10 60 4 34 22 20 C36 9 48 20 50 32 C52 20 64 9 78 20 C96 34 90 60 50 88 Z" fill="#fff"/>
               </svg>
-              {ok && <img className="heart-fig" src={`assets/archetypes/${code}.png`} alt={mech} onError={()=>setOk(false)}/>}
+              {ok && <img className="heart-fig" src={`assets/archetypes/${code}.webp`} alt={mech} onError={()=>setOk(false)}/>}
             </div>
             <div className="caption">Your result based on 70 years of research</div>
           </div>
@@ -574,7 +574,7 @@ function OfferFaq({ R, onCta }){
         <div className="faq-close">
           <div className="illus">
             {ok
-              ? <img src={`assets/archetypes/${code}.png`} alt={mechShort} onError={()=>setOk(false)}/>
+              ? <img src={`assets/archetypes/${code}.webp`} alt={mechShort} onError={()=>setOk(false)}/>
               : '[ illustration ]'}
           </div>
           <h3>Your {mechShort} Anchor Map</h3>
@@ -615,7 +615,7 @@ function ScienceCard({ s }){
       padding:'clamp(22px,3vw,30px)', boxShadow:'var(--sh-xs)', textAlign:'center', height:'100%' }}>
       <div style={{ height:'clamp(160px,42vw,200px)', margin:'0 auto 14px', display:'flex', alignItems:'flex-end', justifyContent:'center' }}>
         {imgOk
-          ? <img className="lp-sci-portrait" src={`assets/science/${s.img}.png`} alt={s.name} onError={()=>setImgOk(false)}
+          ? <img className="lp-sci-portrait" src={`assets/science/${s.img}.webp`} alt={s.name} onError={()=>setImgOk(false)}
               style={{ maxHeight:'100%', maxWidth:'94%', width:'auto', height:'auto', objectFit:'contain',
                 filter:'drop-shadow(0 12px 16px rgba(15,20,45,.18))' }}/>
           : <div style={{ alignSelf:'center', width:96, height:96, borderRadius:'50%', display:'grid', placeItems:'center',

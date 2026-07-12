@@ -58,7 +58,7 @@ function CastTile({ code, go }) {
       }}>
       <span className="lp-cast-go"><Icon name="arrow-right" size={18}/></span>
       <span className="lp-cast-fig">
-        <img src={`assets/archetypes/${a.code}.png`} alt={a.name}/>
+        <img src={`assets/archetypes/${a.code}.webp`} alt={a.name}/>
       </span>
       <span className="lp-cast-label">
         {isAncre
@@ -95,7 +95,7 @@ function Profile({ go, code='bas' }) {
               <p style={{ marginTop:14, maxWidth:520, color:'rgba(255,255,255,.88)', fontSize:'1.2rem', lineHeight:1.5, textWrap:'pretty' }}>{arch.tagline}</p>
             </div>
             <div style={{ position:'relative', alignSelf:'end', minHeight:'1px' }}>
-              <img src={`assets/archetypes/${arch.code}.png`} alt={arch.name} style={{
+              <img src={`assets/archetypes/${arch.code}.webp`} alt={arch.name} style={{
                 display:'block', width:'100%', maxWidth:'320px', marginLeft:'auto', height:'auto',
                 filter:'drop-shadow(0 18px 22px rgba(15,20,45,.35))' }}/>
             </div>

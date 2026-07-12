@@ -179,7 +179,7 @@ function SalesEditorial({ go, arch, fam, st, accent, title, code }) {
               <div style={{ position:'relative', borderRadius:'var(--r-xl)', overflow:'hidden', aspectRatio:'4/5',
                 background:`radial-gradient(120% 90% at 50% 12%, color-mix(in srgb, ${accent} 30%, #fff) 0%, color-mix(in srgb, ${accent} 12%, #fff) 52%, #fff 100%)`,
                 border:`1px solid color-mix(in srgb, ${accent} 22%, #fff)`, boxShadow:'var(--sh-lg)' }}>
-                <img src={`assets/archetypes/${code}.png`} alt={arch.name} style={{ position:'absolute', bottom:0, left:'50%', transform:'translateX(-50%)',
+                <img src={`assets/archetypes/${code}.webp`} alt={arch.name} style={{ position:'absolute', bottom:0, left:'50%', transform:'translateX(-50%)',
                   height:'92%', width:'auto', maxWidth:'94%', objectFit:'contain', filter:'drop-shadow(0 18px 22px rgba(20,16,45,.22))' }}/>
               </div>
             </div>
@@ -230,7 +230,7 @@ function SalesImmersive({ go, arch, fam, st, accent, title, code }) {
               <SalesTrust st={st} light/>
             </div>
             <div style={{ position:'relative', alignSelf:'end', minHeight:'1px' }}>
-              <img src={`assets/archetypes/${code}.png`} alt={arch.name} style={{ display:'block', width:'100%', maxWidth:'360px',
+              <img src={`assets/archetypes/${code}.webp`} alt={arch.name} style={{ display:'block', width:'100%', maxWidth:'360px',
                 marginLeft:'auto', height:'auto', filter:'drop-shadow(0 20px 26px rgba(15,20,45,.4))' }}/>
             </div>
           </div>
@@ -310,7 +310,7 @@ function SalesReport({ go, arch, fam, st, accent, title, code }) {
                 boxShadow:'var(--sh-lg)' }}>
                 <div style={{ position:'relative', height:'clamp(180px,24vw,240px)',
                   background:`radial-gradient(120% 100% at 70% 0%, color-mix(in srgb, ${accent} 32%, #fff), color-mix(in srgb, ${accent} 12%, #fff))` }}>
-                  <img src={`assets/archetypes/${code}.png`} alt={arch.name} style={{ position:'absolute', bottom:0, right:'8%',
+                  <img src={`assets/archetypes/${code}.webp`} alt={arch.name} style={{ position:'absolute', bottom:0, right:'8%',
                     height:'94%', width:'auto', filter:'drop-shadow(0 14px 16px rgba(20,16,45,.25))' }}/>
                   <div style={{ position:'absolute', top:16, left:18, fontSize:'.7rem', fontWeight:800, letterSpacing:'.14em',
                     textTransform:'uppercase', color:accent }}>8LovePatterns</div>

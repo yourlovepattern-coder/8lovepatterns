@@ -110,7 +110,7 @@ function Avatar({ code, size=120, ring=true }) {
       background: a.soft||'var(--paper-2)', boxShadow: ring?'var(--sh-sm)':'none',
       outline: ring?`2px solid ${accent}`:'none', outlineOffset:'3px',
       overflow:'hidden', flexShrink:0 }}>
-      <img src={`assets/archetypes/${code}_avatar.png`} alt="" style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }}/>
+      <img src={`assets/archetypes/${code}_avatar.webp`} alt="" style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }}/>
     </div>
   );
 }
