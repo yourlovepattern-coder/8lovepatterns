@@ -184,7 +184,7 @@ function SearchedThis({ go }) {
 }
 
 /* ---- FAQ (SEO) ---- */
-function FAQ() {
+function FAQ({ embedded }) {
   const faqs = [
     ['What is a relationship protection pattern?','A relationship protection pattern is the automatic strategy you may use when intimacy, conflict, uncertainty, or fear of rejection makes you feel emotionally exposed. You may chase, withdraw, scan, fix, adapt, control, rescue, or shut down.'],
     ['Is 8LovePatterns an attachment style quiz?','8LovePatterns is attachment-inspired, but it is not limited to classic labels like anxious, avoidant, secure, or disorganized. It focuses on the specific role you fall into when love feels unsafe.'],
@@ -198,19 +198,23 @@ function FAQ() {
     ['Is 8LovePatterns scientifically proven?','8LovePatterns is science-backed and research-informed. It is grounded in established psychological research on adult attachment, emotion regulation, schema patterns, and defensive responses. The 8LovePatterns test itself is not a clinical diagnosis and does not replace therapy.'],
   ];
   const [open,setOpen] = useState(0);
+  const body = (
+    <div style={{ maxWidth: embedded?680:'none', margin: embedded?'0 auto':0 }}>
+      <div style={{ textAlign:'center', maxWidth:640, margin:'0 auto 26px' }}>
+        <h2 className={embedded?'lp-module-h':'lp-h1'} style={embedded?{ fontSize:'clamp(2rem,1.6rem+2vw,2.8rem)' }:undefined}>Relationship Pattern FAQ.</h2>
+      </div>
+      <div style={{ background:'#fff', border: embedded?'none':'1px solid var(--hairline)', borderRadius:'var(--r-card)',
+        padding:'8px 28px', boxShadow: embedded?'none':'var(--sh-xs)' }}>
+        {faqs.map(([q,a],i)=>(
+          <AccordionItem key={q} q={q} a={a} open={open===i} onToggle={()=>setOpen(open===i?null:i)}/>
+        ))}
+      </div>
+    </div>
+  );
+  if (embedded) return body;
   return (
     <Section band="var(--paper-2)">
-      <Container narrow>
-        <div style={{ textAlign:'center', marginBottom:26 }}>
-          <Eyebrow color="var(--violet)">Questions, answered gently</Eyebrow>
-          <h2 className="lp-h1" style={{ marginTop:12 }}>Relationship Pattern FAQ</h2>
-        </div>
-        <div style={{ background:'var(--surface)', border:'1px solid var(--hairline)', borderRadius:'var(--r-xl)', padding:'8px 28px', boxShadow:'var(--sh-xs)' }}>
-          {faqs.map(([q,a],i)=>(
-            <AccordionItem key={q} q={q} a={a} open={open===i} onToggle={()=>setOpen(open===i?null:i)}/>
-          ))}
-        </div>
-      </Container>
+      <Container narrow>{body}</Container>
     </Section>
   );
 }

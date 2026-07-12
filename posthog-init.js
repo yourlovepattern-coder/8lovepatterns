@@ -167,7 +167,7 @@ window.LP_PH = function (name, props) {
       var accept = document.createElement("button");
       accept.type = "button";
       accept.textContent = t.accept;
-      accept.style.cssText = btnBase + "background:var(--corail,#EE6352);color:#fff;";
+      accept.style.cssText = btnBase + "background:var(--cta,#2FBE73);color:#fff;";
 
       function close() { try { bar.remove(); } catch (e) {} }
       accept.addEventListener("click", function () { setConsent("accepted"); optInFull(); close(); });
