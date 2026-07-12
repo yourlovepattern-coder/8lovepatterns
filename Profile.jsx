@@ -99,9 +99,35 @@ function AnchorBand({ go }) {
   );
 }
 
+/* The five-tier grip scale (source of truth: window.LP_ANCHOR_TIERS, set in
+   data.jsx). Anchor-only: replaces the fear/mechanism fields the eight
+   pattern pages show, since none of those fields apply to the Anchor. */
+function AnchorTierScale({ accent }) {
+  const tiers = window.LP_ANCHOR_TIERS;
+  return (
+    <div style={{ marginTop:'32px', background:'var(--surface)', border:'1px solid var(--hairline)',
+      borderRadius:'var(--r-lg)', padding:'22px 24px', boxShadow:'var(--sh-xs)' }}>
+      <p style={{ color:'var(--ink)', lineHeight:1.62, fontSize:'1.02rem', margin:'0 0 18px' }}>
+        Everyone sits somewhere on this scale, and the position moves. It tells you how much room your pattern currently has to decide for you.
+      </p>
+      <div style={{ display:'flex', alignItems:'center', flexWrap:'wrap', gap:'8px' }}>
+        {tiers.map((t,i)=>(
+          <React.Fragment key={t}>
+            <span style={{ padding:'7px 15px', borderRadius:'var(--r-pill)', fontSize:'.84rem', fontWeight:700,
+              color: i<2 ? accent : '#fff',
+              background: i<2 ? `color-mix(in srgb, ${accent} ${14+i*12}%, #fff)` : `color-mix(in srgb, ${accent} ${55+i*12}%, #14142B)` }}>{t}</span>
+            {i<tiers.length-1 && <Icon name="arrow-right" size={14} style={{ color:'var(--ink-3)', flexShrink:0 }}/>}
+          </React.Fragment>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function Profile({ go, code='bas' }) {
   const arch = code==='anc' ? window.ANCRE : (window.ARCHETYPES.find(a=>a.code===code)||window.ARCHETYPES[7]);
-  const fam = window.FAMILIES[arch.family];
+  const isAnchor = arch.code === 'anc';
+  const fam = isAnchor ? null : window.FAMILIES[arch.family];
   return (
     <div>
       <div style={{ position:'relative', overflow:'hidden', color:'#fff', borderRadius:'0 0 var(--r-module) var(--r-module)',
@@ -116,10 +142,10 @@ function Profile({ go, code='bas' }) {
               <div style={{ display:'inline-flex', alignItems:'center', gap:'9px', padding:'7px 15px', borderRadius:'var(--r-pill)',
                 background:'rgba(255,255,255,.16)', marginBottom:'18px' }}>
                 <span style={{ width:9, height:9, borderRadius:'50%', background:'#fff' }}></span>
-                <span style={{ fontWeight:700, fontSize:'.82rem', letterSpacing:'.12em', textTransform:'uppercase', color:'#fff' }}>fears {fam.fear.toLowerCase()}</span>
+                <span style={{ fontWeight:700, fontSize:'.82rem', letterSpacing:'.12em', textTransform:'uppercase', color:'#fff' }}>{isAnchor ? 'the secure center' : `fears ${fam.fear.toLowerCase()}`}</span>
               </div>
               <h1 className="lp-display" style={{ fontSize:'clamp(2.8rem,1.9rem+3.4vw,4.6rem)', color:'#fff', margin:0 }}>{arch.name}</h1>
-              <div className="lp-h2" style={{ color:'#fff', fontWeight:700, marginTop:'6px', opacity:.96 }}>{fam.label}</div>
+              <div className="lp-h2" style={{ color:'#fff', fontWeight:700, marginTop:'6px', opacity:.96 }}>{isAnchor ? 'What the eight patterns move toward.' : fam.label}</div>
               <p style={{ marginTop:14, maxWidth:520, color:'rgba(255,255,255,.88)', fontSize:'1.2rem', lineHeight:1.5, textWrap:'pretty' }}>{arch.tagline}</p>
             </div>
             <div style={{ position:'relative', alignSelf:'end', minHeight:'1px' }}>
@@ -134,6 +160,7 @@ function Profile({ go, code='bas' }) {
       <Module>
         <Container style={{ maxWidth:740 }}>
           <ProfileBody code={arch.code}/>
+          {isAnchor && <AnchorTierScale accent={arch.accent}/>}
 
           <div style={{ marginTop:'40px', textAlign:'center', paddingTop:'clamp(24px,4vw,36px)', borderTop:'1px solid var(--hairline)' }}>
             <h2 className="lp-h2" style={{ marginTop:0, color:'var(--head)' }}>Want to discover your own pattern?</h2>

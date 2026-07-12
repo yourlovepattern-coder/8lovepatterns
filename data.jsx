@@ -11,8 +11,6 @@ const FAMILIES = {
     desc:'You make yourself essential to the other person, even if you disappear a little in the process.' },
   protege: { key:'protege', label:'I protect myself', fear:'Being hurt', color:'#4A7AA8', soft:'#D8E3ED',
     desc:'You filter access to your heart. Distance reassures; the armor protects.' },
-  ancre: { key:'ancre', label:'The secure pattern', fear:'\u2014', color:'#2C7E91', soft:'#E4F0F2',
-    desc:'The pattern is still there \u2014 it just no longer runs most of your decisions.' },
 };
 
 const ARCHETYPES = [
@@ -91,14 +89,13 @@ const ARCHETYPES = [
 ];
 
 const ANCRE = { code:'anc', name:'The Anchor', family:'ancre', accent:'#2C7E91', soft:'#E4F0F2',
-  emprise:'Integrated', tagline:'You can protect yourself without closing your heart.',
+  tagline:'You can protect yourself without closing your heart.',
   motto:'\u201cI feel the wave, and I stay.\u201d',
-  hook:'The Anchor isn\u2019t \u201cfixed.\u201d You still have a pattern \u2014 it just no longer runs the show.',
-  summary:'You feel fear, need and anger like everyone \u2014 but you notice the reflex before it takes over, and you choose your response instead of being driven by it. You can be close without losing yourself, and independent without fleeing.',
-  triggers:'Like everyone, loss. But the fear no longer takes the wheel.',
-  protects:'Nothing it has to flee in a hurry \u2014 your security is built from the inside.',
-  shows:'You bring a steady, contagious safety: conflict doesn\u2019t destroy, and vulnerability has room to exist.',
-  reset:'Keep naming what rises, even when things are good. The Anchor isn\u2019t a status you reach \u2014 it\u2019s a practice you keep.' };
+  hook:'The Anchor isn\u2019t a cure. You still have a pattern. It just no longer runs the show.',
+  summary:'You feel fear, need and anger like everyone else. What changes is that you notice the reflex before it takes over, and you get to choose what happens next. Close without losing yourself, independent without fleeing.',
+  reset:'Keep naming what rises, even when things are good. The Anchor is a practice, not a status you reach.' };
+
+const ANCHOR_TIERS = ['Clear', 'Slipping', 'Snagged', 'Hooked', 'Buried'];
 
 const SCALE = [
   { v:1, label:'Strongly disagree' },
@@ -124,4 +121,4 @@ const QUESTIONS = [
   { id:12, text:'Sometimes I no longer quite know what I want.', fam:'efface' },
 ];
 
-Object.assign(window, { FAMILIES, ARCHETYPES, ANCRE, SCALE, QUESTIONS });
+Object.assign(window, { FAMILIES, ARCHETYPES, ANCRE, SCALE, QUESTIONS, LP_ANCHOR_TIERS: ANCHOR_TIERS });
