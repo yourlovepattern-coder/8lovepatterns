@@ -187,6 +187,26 @@ function LoopCarousel() {
   );
 }
 
+/* Depth scale sketch, Clear -> Buried. Labeled placeholder until a real asset exists. */
+function AnchorScale() {
+  const levels = ['Clear','Light','Felt','Deep','Buried'];
+  return (
+    <div style={{ background:'var(--surface)', border:'1px solid var(--hairline)', borderRadius:'var(--r-lg)', padding:'20px 22px', width:'100%', boxSizing:'border-box' }}>
+      <div style={{ fontSize:'.72rem', fontWeight:700, letterSpacing:'.1em', textTransform:'uppercase', color:'var(--ink-3)', marginBottom:14 }}>
+        Depth scale — placeholder sketch
+      </div>
+      <div style={{ display:'flex', height:10, borderRadius:6, overflow:'hidden' }}>
+        {levels.map((l,i)=>(
+          <div key={l} style={{ flex:1, background:`color-mix(in srgb, var(--corail) ${20+i*20}%, var(--hairline-2))` }}/>
+        ))}
+      </div>
+      <div style={{ display:'flex', justifyContent:'space-between', marginTop:10 }}>
+        {levels.map(l=> <span key={l} style={{ fontSize:'.72rem', fontWeight:600, color:'var(--ink-3)' }}>{l}</span>)}
+      </div>
+    </div>
+  );
+}
+
 /* LOOP, the repeating story that isn't bad luck */
 function LoopSection({ go }) {
   return (
@@ -211,12 +231,6 @@ function LoopSection({ go }) {
 
 function Home({ go }) {
   const { t } = useLang();
-  const promises = [
-    ['compass', t('promise.b1')],
-    ['flame', t('promise.b2')],
-    ['shield', t('promise.b3')],
-    ['route', t('promise.b4')],
-  ];
   return (
     <div>
       {/* HERO, promise + CTA */}
@@ -250,21 +264,23 @@ function Home({ go }) {
       {/* LOOP, different person same ending */}
       <LoopSection go={go}/>
 
-      {/* PROMISE, brand weapon + what you'll learn */}
+      {/* ANCHOR, the depth gap between knowing and doing */}
       <Section style={{ padding:'clamp(44px,6vw,84px) 0' }}>
-        <Container narrow style={{ textAlign:'center' }}>
-          <h2 className="lp-h1">{t('promise.h2a')}<br/><span style={{ color:'var(--corail)' }}>{t('promise.h2b')}</span></h2>
-          <div style={{ display:'flex', flexWrap:'wrap', justifyContent:'center', gap:'12px', marginTop:30 }}>
-            {promises.map(([ic,label])=>(
-              <span key={label} style={{ display:'inline-flex', alignItems:'center', gap:'9px', padding:'10px 18px',
-                borderRadius:'var(--r-pill)', background:'var(--surface)', border:'1px solid var(--hairline)',
-                boxShadow:'var(--sh-xs)', fontWeight:600, color:'var(--ink)', fontSize:'.96rem' }}>
-                <Icon name={ic} size={17} style={{ color:'var(--corail)' }}/> {label}
-              </span>
-            ))}
-          </div>
-          <div style={{ marginTop:30, display:'flex', justifyContent:'center' }}>
-            <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>{t('promise.cta')}</Button>
+        <Container>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'clamp(32px,5vw,64px)', alignItems:'center' }} className="lp-2col">
+            <div>
+              <h2 className="lp-h1">You already know what you do.<br/><span style={{ color:'var(--corail)' }}>Knowing it hasn't stopped you.</span></h2>
+              <p className="lp-lead" style={{ marginTop:16 }}>
+                That gap is the Anchor: how deep the pattern runs in you right now. Shallow, you catch it in time. Deep, you watch yourself do it anyway. Every other test skips the one measure that decides what actually helps.
+              </p>
+              <div style={{ marginTop:26 }}>
+                <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>Reveal My Pattern</Button>
+              </div>
+            </div>
+            <div style={{ display:'flex', flexDirection:'column', gap:24, alignItems:'center' }}>
+              <img src="assets/archetypes/anc.png" alt="The Anchor" style={{ width:'56%', maxWidth:220, height:'auto', filter:'drop-shadow(0 16px 20px rgba(15,45,55,.2))' }}/>
+              <AnchorScale/>
+            </div>
           </div>
         </Container>
       </Section>
@@ -281,16 +297,6 @@ function Home({ go }) {
           <div style={{ marginTop:36, display:'flex', justifyContent:'center', gap:'14px', flexWrap:'wrap' }}>
             <Button size="lg" variant="secondary" icon="arrow-right" onClick={()=>go('profils')}>{t('teaser.cta')}</Button>
           </div>
-        </Container>
-      </Section>
-
-      {/* ANCHOR, the depth gap between knowing and doing */}
-      <Section style={{ padding:'clamp(44px,6vw,84px) 0' }}>
-        <Container narrow style={{ textAlign:'center' }}>
-          <h2 className="lp-h1">You already know what you do.<br/><span style={{ color:'var(--corail)' }}>Knowing it hasn't stopped you.</span></h2>
-          <p className="lp-lead" style={{ marginTop:16 }}>
-            That gap is the Anchor: how deep the pattern runs in you right now. Shallow, you catch it in time. Deep, you watch yourself do it anyway. Every other test skips the one measure that decides what actually helps.
-          </p>
         </Container>
       </Section>
 
