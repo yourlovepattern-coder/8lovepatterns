@@ -1,0 +1,173 @@
+/* ============================================================================
+   8LovePatterns — Blog styles
+   Layout only. All colors, fonts, spacing, radii and shadows come from the
+   site-wide token file (/colors_and_type.css), so the blog inherits the exact
+   same design language as the rest of 8lovepatterns.com and the offre-miroir
+   reference. Load order in every blog page:
+       <link rel="stylesheet" href="/colors_and_type.css">
+       <link rel="stylesheet" href="/blog/blog.css">
+   ========================================================================== */
+
+/* Teal aliases: the reference calls this "--teal"; the token file stores the
+   same value under the Ancre family. Alias here so the hero reads naturally. */
+:root{
+  --teal: var(--fam-ancre);          /* #2C7E91 */
+  --teal-700: #236575;
+  --teal-soft: var(--fam-ancre-soft);/* #E4F0F2 */
+}
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+html,body{ margin:0; padding:0; }
+body{
+  background:var(--paper);
+  font-family:var(--font-body);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  line-height:var(--lh-body);
+}
+::selection{ background:var(--corail); color:#fff; }
+
+/* ---- containers --------------------------------------------------------- */
+.bl-wrap{ max-width:1120px; margin:0 auto; padding:0 24px; }
+.bl-readable{ max-width:720px; margin:0 auto; }
+
+/* ---- top bar (shared with static pages) --------------------------------- */
+.bl-top{ padding:26px 0 0; }
+.bl-home{ display:inline-flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); }
+.bl-home img{ width:34px; height:34px; }
+.bl-home span{ font-family:var(--font-display); font-weight:800; font-size:1.15rem; letter-spacing:-.01em; }
+
+/* ---- breadcrumb --------------------------------------------------------- */
+.bl-crumb{ font-size:.9rem; color:var(--ink-3); margin:22px 0 0; }
+.bl-crumb a{ color:var(--ink-3); text-decoration:none; }
+.bl-crumb a:hover{ color:var(--violet); }
+
+/* =========================== INDEX PAGE ================================== */
+.bl-index-head{ padding:52px 0 8px; }
+.bl-index-head h1{
+  font-family:var(--font-display); font-weight:800; letter-spacing:-.02em;
+  font-size:clamp(2.1rem,1.5rem + 2.6vw,3.1rem); line-height:1.06; margin:0 0 12px; color:var(--ink);
+}
+.bl-index-head p{ color:var(--ink-2); font-size:1.15rem; line-height:1.6; margin:0; max-width:60ch; }
+
+.bl-list{ list-style:none; margin:40px 0 0; padding:0; }
+.bl-post{ padding:28px 0; border-top:1px solid var(--hairline); }
+.bl-post:last-child{ border-bottom:1px solid var(--hairline); }
+.bl-post a.bl-post-link{ text-decoration:none; color:inherit; display:block; }
+.bl-post-date{
+  font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3);
+}
+.bl-post h2{
+  font-family:var(--font-display); font-weight:800; letter-spacing:-.015em;
+  font-size:clamp(1.4rem,1.1rem + 1.4vw,1.9rem); line-height:1.12; margin:8px 0 8px; color:var(--ink);
+  transition:color .15s ease;
+}
+.bl-post a.bl-post-link:hover h2{ color:var(--violet); }
+.bl-post-desc{ font-size:1.08rem; color:var(--ink-2); line-height:1.55; margin:0; max-width:64ch; }
+.bl-readmore{
+  display:inline-block; margin-top:12px; font-family:var(--font-display); font-weight:800;
+  font-size:.98rem; color:var(--corail);
+}
+
+/* =========================== ARTICLE PAGE =============================== */
+.bl-article-head{ padding:36px 0 8px; }
+.bl-article-head h1{
+  font-family:var(--font-display); font-weight:800; letter-spacing:-.02em; text-wrap:balance;
+  font-size:clamp(2.2rem,1.6rem + 3vw,3.4rem); line-height:1.05; margin:0 0 20px; color:var(--ink);
+}
+/* the answer block — first content under h1, deliberately prominent */
+.bl-answer{
+  font-family:var(--font-body); font-size:clamp(1.2rem,1.05rem + .5vw,1.4rem);
+  line-height:1.5; color:var(--ink); font-weight:500; margin:0; text-wrap:pretty;
+  border-left:3px solid var(--teal); padding-left:20px;
+}
+
+/* byline / dates */
+.bl-byline{
+  display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px;
+  margin:24px 0 0; font-size:.92rem; color:var(--ink-3);
+}
+.bl-byline .bl-author{ font-weight:700; color:var(--ink-2); }
+.bl-byline .bl-dot{ color:var(--hairline); }
+
+/* ---- figures / image slots --------------------------------------------- */
+.bl-fig{ margin:36px 0; }
+.bl-fig img{ width:100%; height:auto; display:block; border-radius:var(--r-lg); }
+.bl-fig figcaption{ margin-top:10px; font-size:.88rem; color:var(--ink-3); text-align:center; }
+/* placeholder shown until the real WebP diagram is dropped in */
+.bl-fig-ph{
+  border:2px dashed var(--hairline); border-radius:var(--r-lg); background:var(--paper-2);
+  padding:40px 28px; text-align:center;
+}
+.bl-fig-ph .bl-ph-tag{
+  font-family:var(--font-body); font-weight:800; font-size:.72rem; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--teal-700); background:var(--teal-soft);
+  display:inline-block; padding:5px 12px; border-radius:999px; margin-bottom:14px;
+}
+.bl-fig-ph .bl-ph-alt{ color:var(--ink-2); font-size:1rem; line-height:1.5; margin:0 auto; max-width:52ch; }
+.bl-fig-ph .bl-ph-file{ margin-top:12px; font-size:.82rem; color:var(--ink-3); font-family:var(--font-body); }
+
+/* ---- article prose ------------------------------------------------------ */
+.bl-prose{ padding:8px 0 0; }
+.bl-prose h2{
+  font-family:var(--font-display); font-weight:800; letter-spacing:-.015em;
+  font-size:clamp(1.5rem,1.2rem + 1.4vw,2rem); line-height:1.15; color:var(--ink);
+  margin:2em 0 .5em;
+}
+.bl-prose p{ font-size:1.12rem; line-height:1.72; color:var(--ink-2); margin:0 0 1.1em; text-wrap:pretty; }
+.bl-prose strong{ font-weight:800; color:var(--ink); }
+.bl-prose a{ color:var(--violet); text-underline-offset:3px; }
+
+/* ---- CTA (reused from offre-miroir reference) --------------------------- */
+.bl-cta-block{ margin:40px 0; text-align:center; }
+.cta{
+  display:inline-flex; align-items:center; gap:12px; font-family:var(--font-display); font-weight:800;
+  font-size:1.3rem; color:#fff; background:var(--corail); padding:20px 40px; border-radius:100px;
+  text-decoration:none; transition:background .18s,transform .18s;
+  box-shadow:0 14px 34px -10px rgba(238,99,82,.55);
+}
+.cta:hover{ background:var(--corail-600); transform:translateY(-2px); }
+.cta svg{ width:24px; height:24px; }
+/* Keep the label white on the coral fill even inside .bl-prose, whose link rule
+   (.bl-prose a -> violet) would otherwise win on source order. a.cta matches
+   that specificity and comes later, so it takes precedence, site-wide. */
+a.cta{ color:#fff; }
+a.cta svg{ color:#fff; }
+
+/* ---- FAQ accordion (reused from offre-miroir reference) ----------------- */
+.bl-faq{ margin:48px 0 0; }
+.bl-faq h2{
+  font-family:var(--font-display); font-weight:800; letter-spacing:-.015em;
+  font-size:clamp(1.5rem,1.2rem + 1.4vw,2rem); color:var(--ink); margin:0 0 20px;
+}
+.bl-faq details{
+  background:var(--surface); border:2px solid var(--hairline); border-radius:16px;
+  margin-bottom:14px; overflow:hidden;
+}
+.bl-faq summary{
+  list-style:none; cursor:pointer; padding:20px 24px; font-family:var(--font-display);
+  font-weight:800; font-size:1.15rem; color:var(--ink); display:flex; justify-content:space-between;
+  align-items:center; gap:16px;
+}
+.bl-faq summary::-webkit-details-marker{ display:none; }
+.bl-faq summary .pm{ color:var(--teal); font-size:1.7rem; font-weight:400; line-height:1; transition:transform .2s; }
+.bl-faq details[open] summary .pm{ transform:rotate(45deg); }
+.bl-faq details .a{ padding:0 24px 20px; font-size:1.08rem; color:var(--ink-2); line-height:1.6; }
+
+/* ---- references + disclaimer -------------------------------------------- */
+.bl-aside{ margin:44px 0 0; padding:22px 24px; background:var(--paper-2); border-radius:var(--r-md); }
+.bl-aside .bl-disclaimer{ font-size:.98rem; color:var(--ink-2); font-style:italic; line-height:1.6; margin:0 0 16px; }
+.bl-refs h2{ font-family:var(--font-display); font-weight:800; font-size:1.1rem; color:var(--ink); margin:0 0 8px; }
+.bl-refs ol{ margin:0; padding-left:20px; }
+.bl-refs li{ font-size:.9rem; color:var(--ink-3); line-height:1.55; margin-bottom:6px; }
+
+/* ---- footer (shared with static pages) --------------------------------- */
+.bl-footer{ margin-top:64px; padding:30px 0 48px; border-top:1px solid var(--hairline); }
+.bl-footer p{ font-size:.88rem; color:var(--ink-3); margin:0 0 4px; }
+.bl-footer a{ color:var(--ink-3); }
+
+@media(max-width:520px){
+  .cta{ font-size:1.12rem; padding:18px 30px; }
+  .bl-prose p{ font-size:1.06rem; }
+}

@@ -1,7 +1,48 @@
+# 8LovePatterns — robots policy
+# Default: allow every crawler, except a few private/non-content pages.
 User-agent: *
 Allow: /
+Disallow: /rapport
+Disallow: /blog/_article-template
 
-# Private pages we do not want indexed
-Disallow: /rapport.html
+# ---------------------------------------------------------------------------
+# AI / answer-engine crawlers, explicitly allowed so the blog can be read and
+# cited. A named user-agent group ignores the wildcard (*) group entirely, so
+# each one repeats the private-page disallows.
+# ---------------------------------------------------------------------------
+User-agent: GPTBot
+Allow: /
+Disallow: /rapport
+Disallow: /blog/_article-template
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /rapport
+Disallow: /blog/_article-template
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /rapport
+Disallow: /blog/_article-template
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /rapport
+Disallow: /blog/_article-template
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /rapport
+Disallow: /blog/_article-template
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /rapport
+Disallow: /blog/_article-template
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /rapport
+Disallow: /blog/_article-template
 
 Sitemap: https://8lovepatterns.com/sitemap.xml

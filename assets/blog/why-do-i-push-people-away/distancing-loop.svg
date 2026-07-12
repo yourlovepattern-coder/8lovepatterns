@@ -1,0 +1,40 @@
+<svg viewBox="0 0 860 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram of the distancing loop that activates when a relationship deepens">
+  <defs>
+    <marker id="arrow" viewBox="0 0 12 12" refX="7" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M1 1 L11 6 L1 11 z" fill="#EE6352"/>
+    </marker>
+  </defs>
+
+  <!-- faint loop guide -->
+  <circle cx="430" cy="280" r="250" fill="none" stroke="#EAE3D7" stroke-width="1.5" stroke-dasharray="2 8"/>
+
+  <!-- clockwise arrows -->
+  <path d="M494.7 38.5 A250 250 0 0 1 671.5 215.3" fill="none" stroke="#EE6352" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M671.5 344.7 A250 250 0 0 1 494.7 521.5" fill="none" stroke="#EE6352" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M365.3 521.5 A250 250 0 0 1 188.5 344.7" fill="none" stroke="#EE6352" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M188.5 215.3 A250 250 0 0 1 365.3 38.5" fill="none" stroke="#EE6352" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- node: top -->
+  <rect x="310" y="33" width="240" height="74" rx="14" fill="#FBF7F1" stroke="#2C7E91" stroke-width="2"/>
+  <text x="430" y="66" text-anchor="middle" font-family="'Bricolage Grotesque','Hanken Grotesk',sans-serif" font-weight="700" font-size="18" fill="#211C46">Closeness deepens</text>
+  <text x="430" y="88" text-anchor="middle" font-family="'Hanken Grotesk',system-ui,sans-serif" font-size="12.5" fill="#57527A">things start to feel real</text>
+
+  <!-- node: right -->
+  <rect x="520" y="243" width="240" height="74" rx="14" fill="#FBF7F1" stroke="#2C7E91" stroke-width="2"/>
+  <text x="640" y="276" text-anchor="middle" font-family="'Bricolage Grotesque','Hanken Grotesk',sans-serif" font-weight="700" font-size="18" fill="#211C46">It registers as a threat</text>
+  <text x="640" y="298" text-anchor="middle" font-family="'Hanken Grotesk',system-ui,sans-serif" font-size="12.5" fill="#57527A">the alarm fires</text>
+
+  <!-- node: bottom -->
+  <rect x="310" y="453" width="240" height="74" rx="14" fill="#FBF7F1" stroke="#2C7E91" stroke-width="2"/>
+  <text x="430" y="486" text-anchor="middle" font-family="'Bricolage Grotesque','Hanken Grotesk',sans-serif" font-weight="700" font-size="18" fill="#211C46">You create distance</text>
+  <text x="430" y="508" text-anchor="middle" font-family="'Hanken Grotesk',system-ui,sans-serif" font-size="12.5" fill="#57527A">go quiet, find fault, pull back</text>
+
+  <!-- node: left -->
+  <rect x="100" y="243" width="240" height="74" rx="14" fill="#FBF7F1" stroke="#2C7E91" stroke-width="2"/>
+  <text x="220" y="276" text-anchor="middle" font-family="'Bricolage Grotesque','Hanken Grotesk',sans-serif" font-weight="700" font-size="18" fill="#211C46">The distance brings relief</text>
+  <text x="220" y="298" text-anchor="middle" font-family="'Hanken Grotesk',system-ui,sans-serif" font-size="12.5" fill="#57527A">but the connection fades</text>
+
+  <!-- center caption -->
+  <text x="430" y="275" text-anchor="middle" font-family="'Hanken Grotesk',system-ui,sans-serif" font-size="13" fill="#8A86A3">the loop runs</text>
+  <text x="430" y="293" text-anchor="middle" font-family="'Hanken Grotesk',system-ui,sans-serif" font-size="13" fill="#8A86A3">each time closeness returns</text>
+</svg>

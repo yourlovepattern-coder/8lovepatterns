@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+============================================================================
+  8LovePatterns — REUSABLE ARTICLE TEMPLATE
+============================================================================
+  This is NOT a published page. It is the drop-in template for new articles.
+  It is marked noindex and disallowed in /robots.txt so it never gets indexed.
+
+  TO PUBLISH A NEW ARTICLE:
+  1. Copy this file to:  /blog/<slug>/index.html   (folder name = the slug)
+  2. Replace every {{PLACEHOLDER}} below. They map 1:1 to the markdown
+     front-matter:
+
+       {{SLUG}}             -> slug            (also the folder name)
+       {{TITLE_TAG}}        -> title_tag       (the <title>, includes brand)
+       {{H1}}               -> h1              (the on-page headline)
+       {{META_DESCRIPTION}} -> meta_description
+       {{OG_TITLE}}         -> usually the h1 (title without the brand suffix)
+       {{AUTHOR}}           -> author          (e.g. 8LovePatterns Research)
+       {{DATE_PUBLISHED}}   -> date_published  (YYYY-MM-DD)
+       {{DATE_UPDATED}}     -> date_updated    (YYYY-MM-DD)
+       {{DATE_PUBLISHED_HUMAN}} / {{DATE_UPDATED_HUMAN}} -> e.g. July 7, 2026
+       {{PRIMARY_IMAGE_URL}}  -> absolute URL of the primary image
+                                 (use .svg for line-art diagrams; a raster
+                                 .webp/.png is better for the social og:image)
+       {{PRIMARY_IMAGE_ALT}}  -> primary_image_alt
+       {{PRIMARY_IMAGE_PATH}} -> root-relative path where the image will live
+       {{MID_IMAGE_ALT}}      -> descriptive alt for the mid-article image
+       {{MID_IMAGE_PATH}}     -> root-relative path for the mid-article image
+       {{CTA_URL}}          -> cta_url   (confirmed route: /test)
+       {{CTA_LABEL}}        -> cta_label (e.g. Take the free test)
+
+  3. Body: one <h1>, then the 40-60 word ANSWER BLOCK as the first content,
+     then byline, primary image, then <h2> per section in order. Put the
+     CTA block right AFTER the "Seeing your specific version" section, before
+     the FAQ. Keep exactly one FAQ <details> per question AND mirror each
+     question/answer into the FAQPage JSON-LD so they stay in sync.
+  4. Add the new URL to /sitemap.xml and link it from /blog/index.html.
+============================================================================
+-->
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>{{TITLE_TAG}}</title>
+<meta name="description" content="{{META_DESCRIPTION}}"/>
+<link rel="canonical" href="https://8lovepatterns.com/blog/{{SLUG}}/"/>
+<meta name="robots" content="index, follow"/>
+
+<!-- Open Graph -->
+<meta property="og:type" content="article"/>
+<meta property="og:title" content="{{OG_TITLE}}"/>
+<meta property="og:description" content="{{META_DESCRIPTION}}"/>
+<meta property="og:url" content="https://8lovepatterns.com/blog/{{SLUG}}/"/>
+<meta property="og:site_name" content="8LovePatterns"/>
+<meta property="og:image" content="{{PRIMARY_IMAGE_URL}}"/>
+<meta property="article:published_time" content="{{DATE_PUBLISHED}}"/>
+<meta property="article:modified_time" content="{{DATE_UPDATED}}"/>
+<meta property="article:author" content="{{AUTHOR}}"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="{{OG_TITLE}}"/>
+<meta name="twitter:description" content="{{META_DESCRIPTION}}"/>
+<meta name="twitter:image" content="{{PRIMARY_IMAGE_URL}}"/>
+
+<link rel="icon" href="/assets/logo_mascot.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="stylesheet" href="/colors_and_type.css"/>
+<link rel="stylesheet" href="/blog/blog.css"/>
+
+<!-- JSON-LD: Article -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{OG_TITLE}}",
+  "description": "{{META_DESCRIPTION}}",
+  "image": "{{PRIMARY_IMAGE_URL}}",
+  "author": { "@type": "Organization", "name": "{{AUTHOR}}" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "8LovePatterns",
+    "logo": { "@type": "ImageObject", "url": "https://8lovepatterns.com/assets/logo_mascot.png" }
+  },
+  "datePublished": "{{DATE_PUBLISHED}}",
+  "dateModified": "{{DATE_UPDATED}}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://8lovepatterns.com/blog/{{SLUG}}/"
+  }
+}
+</script>
+
+<!-- JSON-LD: FAQPage  (one entry per FAQ <details> in the body; keep in sync) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "{{FAQ_1_Q}}",
+      "acceptedAnswer": { "@type": "Answer", "text": "{{FAQ_1_A}}" }
+    }
+    /* , add more { "@type":"Question", ... } entries as needed */
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="bl-wrap bl-readable">
+
+  <div class="bl-top">
+    <a class="bl-home" href="/">
+      <img src="/assets/logo_mascot.png" alt=""/>
+      <span>8LovePatterns</span>
+    </a>
+  </div>
+
+  <nav class="bl-crumb" aria-label="Breadcrumb">
+    <a href="/">Home</a> · <a href="/blog/">Blog</a>
+  </nav>
+
+  <main>
+    <article>
+
+      <header class="bl-article-head">
+        <h1>{{H1}}</h1>
+
+        <!-- ANSWER BLOCK: 40-60 words, first content under the h1. Do not bury it. -->
+        <p class="bl-answer">{{ANSWER_BLOCK_PARAGRAPH}}</p>
+
+        <div class="bl-byline">
+          <span class="bl-author">{{AUTHOR}}</span>
+          <span class="bl-dot">·</span>
+          <span>Published <time datetime="{{DATE_PUBLISHED}}">{{DATE_PUBLISHED_HUMAN}}</time></span>
+          <span class="bl-dot">·</span>
+          <span>Updated <time datetime="{{DATE_UPDATED}}">{{DATE_UPDATED_HUMAN}}</time></span>
+        </div>
+      </header>
+
+      <!-- PRIMARY IMAGE (near top). Replace the placeholder div with the <img> once the WebP exists. -->
+      <figure class="bl-fig">
+        <div class="bl-fig-ph">
+          <span class="bl-ph-tag">Primary image</span>
+          <p class="bl-ph-alt">{{PRIMARY_IMAGE_ALT}}</p>
+          <p class="bl-ph-file">Drop file at: {{PRIMARY_IMAGE_PATH}}</p>
+        </div>
+        <!--
+        <img src="{{PRIMARY_IMAGE_PATH}}" width="1200" height="675" loading="eager" decoding="async"
+             alt="{{PRIMARY_IMAGE_ALT}}"/>
+        -->
+      </figure>
+
+      <div class="bl-prose">
+
+        <!-- Intro paragraph (paragraph 2 of the source), then sections -->
+        <p>{{INTRO_PARAGRAPH}}</p>
+
+        <h2>{{SECTION_HEADING}}</h2>
+        <p>{{SECTION_BODY}}</p>
+
+        <!-- ...repeat <h2> + <p> for each section, in source order... -->
+
+        <!-- MID-ARTICLE IMAGE (place around the middle). -->
+        <figure class="bl-fig">
+          <div class="bl-fig-ph">
+            <span class="bl-ph-tag">Mid-article image</span>
+            <p class="bl-ph-alt">{{MID_IMAGE_ALT}}</p>
+            <p class="bl-ph-file">Drop file at: {{MID_IMAGE_PATH}}</p>
+          </div>
+          <!--
+          <img src="{{MID_IMAGE_PATH}}" width="1200" height="675" loading="lazy" decoding="async"
+               alt="{{MID_IMAGE_ALT}}"/>
+          -->
+        </figure>
+
+        <!-- ...remaining sections, ending with "Seeing your specific version"... -->
+
+        <!-- CTA: placed AFTER the "Seeing your specific version" section, before the FAQ. -->
+        <div class="bl-cta-block">
+          <a class="cta" href="{{CTA_URL}}">{{CTA_LABEL}}
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 12h16m0 0l-7-7m7 7l-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+
+      </div>
+
+      <section class="bl-faq" aria-label="Frequently asked questions">
+        <h2>Frequently asked questions</h2>
+
+        <details>
+          <summary>{{FAQ_1_Q}}<span class="pm">+</span></summary>
+          <div class="a">{{FAQ_1_A}}</div>
+        </details>
+
+        <!-- ...one <details> per question, mirrored into the FAQPage JSON-LD above... -->
+      </section>
+
+      <aside class="bl-aside">
+        <p class="bl-disclaimer">{{DISCLAIMER}}</p>
+        <div class="bl-refs">
+          <h2>References</h2>
+          <ol>
+            <li>{{REFERENCE_1}}</li>
+            <!-- ...one <li> per reference... -->
+          </ol>
+        </div>
+      </aside>
+
+    </article>
+  </main>
+
+  <footer class="bl-footer">
+    <p><a href="/blog/">← All articles</a> · <a href="/">Back to 8lovepatterns.com</a></p>
+    <p>© 2026 8LovePatterns · ROWV AND CO</p>
+  </footer>
+
+</div>
+
+</body>
+</html>
