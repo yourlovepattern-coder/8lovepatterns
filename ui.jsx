@@ -89,10 +89,8 @@ const Eyebrow = ({ children, color }) =>
 function Logo({ light, size=22, onClick }) {
   return (
     <div onClick={onClick} style={{ display:'flex', alignItems:'center', gap:'9px', cursor:'pointer', userSelect:'none' }}>
-      <span style={{ display:'grid', placeItems:'center', width:size+10, height:size+10, borderRadius:'50%',
-        background: light?'rgba(255,255,255,.14)':'var(--encre)', color: light?'#fff':'#fff' }}>
-        <Icon name="anchor" size={size*0.62} stroke={2}/>
-      </span>
+      <img src="assets/8lovepatterns-logo.png" alt="" width={size+10} height={size+10}
+        style={{ borderRadius:'50%', objectFit:'contain', flexShrink:0 }}/>
       <span style={{ fontFamily:'var(--font-display)', fontWeight:800, fontSize:size*0.92, letterSpacing:'-.02em',
         color: light?'#fff':'var(--encre)' }}>
         8Love<span style={{ color:'var(--corail)' }}>Patterns</span>

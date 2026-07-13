@@ -376,7 +376,7 @@ function OfferHero({ R }){
               <div className="tiers">
                 {LP_ANCHOR_TIERS.map((t,i)=> i===here ? (
                   <div key={t} className="htier here">
-                    <span className="pill-illus"></span>
+                    <span className="pill-illus"><img src="assets/8lovepatterns-logo.png" alt=""/></span>
                     <div className="hbox"><div className="nm2">{t}</div><div className="yah">YOU ARE HERE</div></div>
                     <span className="ds">{LP_TIER_DESC[i]}</span>
                   </div>
