@@ -19,9 +19,11 @@ function Header({ go, route }) {
                 fontFamily:'var(--font-body)', fontWeight:600, fontSize:'.94rem', padding:'11px 15px', borderRadius:'var(--r-pill)',
                 color: route===l.k?'var(--ink-1)':'var(--ink-2)' }}>{l.label}</button>
             ))}
-            <div style={{ width:6 }}></div>
-            <LanguageWidget/>
-            <div style={{ width:6 }}></div>
+            {SHOW_LANGUAGE_SWITCHER && (<>
+              <div style={{ width:6 }}></div>
+              <LanguageWidget/>
+              <div style={{ width:6 }}></div>
+            </>)}
             <Button size="sm" onClick={()=>go('intro')}>{t('cta.reveal')}</Button>
           </nav>
           <div style={{ display:'none', alignItems:'center', gap:'10px' }} className="lp-burger-wrap">

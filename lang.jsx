@@ -92,8 +92,13 @@ const LP_T = {
 const LangContext = React.createContext({ lang:'en', setLang:()=>{}, t:(k,f)=>f||k });
 function useLang(){ return React.useContext(LangContext); }
 
+/* Language switcher visibility. Flip to true to bring the EN/FR button back
+   everywhere it's used (site navbar + quiz header) — nothing else to change. */
+const SHOW_LANGUAGE_SWITCHER = false;
+
 /* The header dropdown */
 function LanguageWidget({ compact }) {
+  if (!SHOW_LANGUAGE_SWITCHER) return null;
   const { lang, setLang } = useLang();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
