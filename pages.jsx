@@ -88,6 +88,9 @@ function Science({ go }) {
     <div>
       <Module>
         <Container narrow style={{ textAlign:'center' }}>
+          <HeroTile size="lg" src="assets/photos/science-hero-woman-blossoms.webp"
+            alt="Woman smiling joyfully outdoors among cherry blossoms"
+            style={{ position:'static', margin:'0 auto 24px' }}/>
           <Eyebrow color="var(--cta)">Science-backed, not clinically diagnostic</Eyebrow>
           <h1 className="lp-h1" style={{ marginTop:12, color:'var(--head)' }}>The research behind your patterns.</h1>
           <p className="lp-lead" style={{ marginTop:14, color:'var(--body-2)' }}>
