@@ -211,10 +211,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .lp-fam-legend > div { display: inline-flex; align-items: center; gap: 9px; white-space: nowrap; }
 
-  /* Science page: founders grid (4 desktop cols, 2 cols down to phone width) */
+  /* Science page: founders grid (4 desktop cols, 2 cols on tablet, single column on phones so card text doesn't get squeezed) */
   .lp-founders-grid { grid-template-columns: repeat(4,1fr); }
-  @media (max-width: 700px) {
-    .lp-founders-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+  @media (max-width: 900px) {
+    .lp-founders-grid { grid-template-columns: 1fr 1fr !important; }
+  }
+  @media (max-width: 560px) {
+    .lp-founders-grid { grid-template-columns: 1fr !important; }
   }
 
   /* Science page: static Anchor scale (vertical rope + 5 neutral tiers, no "here" marker) */
