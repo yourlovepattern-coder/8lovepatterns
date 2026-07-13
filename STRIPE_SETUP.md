@@ -15,14 +15,14 @@ Everything you touch lives in **one file**: `ui_kits/website/stripe-config.jsx`.
 
    | Code | Product name (suggested) |
    |------|--------------------------|
-   | `inc` | The Firestarter . Full report |
+   | `inc` | The Arsonist . Full report |
    | `gue` | The Watcher . Full report |
-   | `fug` | The Runner . Full report |
+   | `fug` | The Runaway . Full report |
    | `alc` | The Alchemist . Full report |
-   | `sau` | The Rescuer . Full report |
+   | `sau` | The Savior . Full report |
    | `mir` | The Mirror . Full report |
    | `cam` | The Chameleon . Full report |
-   | `bas` | The Fortress . Full report |
+   | `bas` | The Bastion . Full report |
 
    Set each price to **9,00 EUR**, **One time**.
 
@@ -35,14 +35,14 @@ Open `ui_kits/website/stripe-config.jsx` and fill the `links` block:
 
 ```js
 links: {
-  inc: 'https://buy.stripe.com/...',   // The Firestarter
+  inc: 'https://buy.stripe.com/...',   // The Arsonist
   gue: 'https://buy.stripe.com/...',   // The Watcher
-  fug: 'https://buy.stripe.com/...',   // The Runner
+  fug: 'https://buy.stripe.com/...',   // The Runaway
   alc: 'https://buy.stripe.com/...',   // The Alchemist
-  sau: 'https://buy.stripe.com/...',   // The Rescuer
+  sau: 'https://buy.stripe.com/...',   // The Savior
   mir: 'https://buy.stripe.com/...',   // The Mirror
   cam: 'https://buy.stripe.com/...',   // The Chameleon
-  bas: 'https://buy.stripe.com/...',   // The Fortress
+  bas: 'https://buy.stripe.com/...',   // The Bastion
 },
 ```
 

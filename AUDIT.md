@@ -77,7 +77,7 @@ Branch: `preprod` · Generated 2026-07-12 · Scope: routes, rendered text, Frenc
 #### `email-preview.html` (internal dev tool, French UI)
 - H1 "Email de confirmation"; subtitle "Aperçu fidèle du mail que le client reçoit après paiement, avec son rapport en PDF joint."
 - Column headers "🇫🇷 Français" / "🇬🇧 English"; label "Objet :" / "Subject: "
-- Renders both language variants of the transactional email via `email-template.mjs` (`buildOrderEmail`), sample profile names "Le Fugitif" (fr) / "The Runner" (en)
+- Renders both language variants of the transactional email via `email-template.mjs` (`buildOrderEmail`), sample profile names "Le Fugitif" (fr) / "The Runaway" (en)
 
 #### `blog/index.html`
 - H1 "The 8LovePatterns Blog"; intro "Plain-language writing on attachment, relationship patterns, and the protective habits that take over when love feels unsafe. Grounded in the same research behind the test."

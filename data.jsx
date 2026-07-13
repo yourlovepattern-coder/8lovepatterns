@@ -14,7 +14,7 @@ const FAMILIES = {
 };
 
 const ARCHETYPES = [
-  { code:'inc', name:'The Firestarter', family:'poursuis', accent:'#C9433B', soft:'#EDD8D8',
+  { code:'inc', name:'The Arsonist', family:'poursuis', accent:'#C9433B', soft:'#EDD8D8',
     emprise:'Very active', tagline:'When fear rises, you intensify.',
     motto:'\u201cIf you fight for me, I know you\u2019re still here.\u201d',
     hook:'You don\u2019t crave drama. You crave proof that someone will stay.',
@@ -32,7 +32,7 @@ const ARCHETYPES = [
     protects:'The fear of being the last to understand that something has already ended.',
     shows:'Your sensitivity catches real problems early \u2014 but a radar that never sleeps can make a partner feel watched instead of loved.',
     reset:'Ask yourself one question: \u201cAm I reacting to what\u2019s happening, or to what I\u2019m afraid of?\u201d Most alarms are the fear, not the fact.' },
-  { code:'fug', name:'The Runner', family:'fuis', accent:'#CE9A2E', soft:'#F9EED7',
+  { code:'fug', name:'The Runaway', family:'fuis', accent:'#CE9A2E', soft:'#F9EED7',
     emprise:'Emerging', tagline:'When it gets too close, you need distance.',
     motto:'\u201cI stay best when I know I can leave.\u201d',
     hook:'You\u2019re not running from the person. You\u2019re running from the pressure.',
@@ -50,7 +50,7 @@ const ARCHETYPES = [
     protects:'The fear of powerlessness \u2014 of feeling something you can\u2019t manage.',
     shows:'You bring clarity and calm in the storm \u2014 but when a partner wants your heart and gets an explanation, they can feel alone next to you.',
     reset:'Swap one \u201cI think\u201d for one \u201cI feel\u201d \u2014 a single emotion word, with no analysis behind it. That discomfort is where intimacy begins.' },
-  { code:'sau', name:'The Rescuer', family:'efface', accent:'#46934A', soft:'#D6ECE3',
+  { code:'sau', name:'The Savior', family:'efface', accent:'#46934A', soft:'#D6ECE3',
     emprise:'Very active', tagline:'You love by carrying what was never yours.',
     motto:'\u201cIf I\u2019m needed, I can\u2019t be left.\u201d',
     hook:'You spot everyone\u2019s needs before your own \u2014 and somewhere in there, you disappear.',
@@ -77,7 +77,7 @@ const ARCHETYPES = [
     protects:'The fear of not being enough as yourself.',
     shows:'You make relationships smooth and easy \u2014 but they\u2019re built on an edited version of you, and one day you realize they love someone who isn\u2019t quite real.',
     reset:'Once this week, state one true preference \u2014 the film, the restaurant, the plan. Saying \u201cI want this\u201d teaches you your own taste again.' },
-  { code:'bas', name:'The Fortress', family:'protege', accent:'#4A7AA8', soft:'#D8E3ED',
+  { code:'bas', name:'The Bastion', family:'protege', accent:'#4A7AA8', soft:'#D8E3ED',
     emprise:'Very active', tagline:'You stay in control so no one gets too close.',
     motto:'\u201cNo one comes in without a key.\u201d',
     hook:'You feel a great deal. You just decide who gets to see it.',

@@ -3,8 +3,6 @@
    gray-blue page shell, horizontal galleries, illustrative (never invented)
    data visuals. See colors_and_type.css for the module hue tokens. */
 
-const GLYPH_ICON = { inc:'flame', gue:'eye', fug:'feather', alc:'compass', sau:'heart', mir:'star', cam:'route', bas:'shield' };
-
 /* ---- Hero floating photo tile (Liven layout). Accepts img OR a muted
    looping video source so tiles can be swapped for footage later without
    touching markup — pass either `src` (image) or `video` (mp4/webm). ---- */
@@ -175,10 +173,7 @@ function PatternGlyphCard({ arch, go }) {
       className="lp-lift" style={{ cursor:'pointer', border:'none', textAlign:'left', width:'100%',
         background:'#fff', borderRadius:'var(--r-card)', boxShadow:'var(--sh-1)',
         padding:'22px', display:'flex', flexDirection:'column', gap:12 }}>
-      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
-        <span className="lp-glyph" style={{ background:arch.accent }}>
-          <Icon name={GLYPH_ICON[arch.code]||'star'} size={19} stroke={2} style={{ color:'#fff' }}/>
-        </span>
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'flex-end' }}>
         <span style={{ width:100, height:100, borderRadius:'50%', flexShrink:0, position:'relative',
           background:`radial-gradient(120% 100% at 50% 100%, ${arch.soft} 0%, transparent 70%)` }}>
           <img src={`assets/archetypes/${arch.code}.webp`} alt="" style={{ position:'absolute', bottom:0, left:'50%',

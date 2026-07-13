@@ -644,13 +644,13 @@ const LP_TEST = {
   /* The 8 patterns, ordered, with their family hue (for the result chart). */
   patterns: [
     { key:'Miroir',      fr:'Le Miroir',      en:'The Mirror',      fam:'efface' },
-    { key:'Fugitif',     fr:'Le Fugitif',     en:'The Runner',      fam:'fuis' },
-    { key:'Bastion',     fr:'Le Bastion',     en:'The Fortress',    fam:'protege' },
+    { key:'Fugitif',     fr:'Le Fugitif',     en:'The Runaway',     fam:'fuis' },
+    { key:'Bastion',     fr:'Le Bastion',     en:'The Bastion',     fam:'protege' },
     { key:'Guetteur',    fr:'Le Guetteur',    en:'The Watcher',     fam:'poursuis' },
-    { key:'Sauveur',     fr:'Le Sauveur',     en:'The Rescuer',     fam:'efface' },
+    { key:'Sauveur',     fr:'Le Sauveur',     en:'The Savior',      fam:'efface' },
     { key:'Caméléon',    fr:'Le Caméléon',    en:'The Chameleon',   fam:'efface' },
     { key:'Alchimiste',  fr:"L'Alchimiste",   en:'The Alchemist',   fam:'controle' },
-    { key:'Incendiaire', fr:"L'Incendiaire",  en:'The Firestarter', fam:'poursuis' },
+    { key:'Incendiaire', fr:"L'Incendiaire",  en:'The Arsonist',    fam:'poursuis' },
   ],
   /* The 3 sabotage dimensions (for the result). */
   sabotage: [

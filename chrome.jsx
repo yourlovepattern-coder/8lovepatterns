@@ -7,6 +7,7 @@ function Header({ go, route }) {
     { k:'profils', label:t('nav.patterns') },
     { k:'science', label:t('nav.science') },
     { k:'methode', label:t('nav.method') },
+    { k:'blog', label:'Blog', href:'/blog' },
   ];
   return (
     <div className="lp-nav-wrap">
@@ -15,9 +16,13 @@ function Header({ go, route }) {
           <Logo onClick={()=>go('home')} size={19}/>
           <nav style={{ display:'flex', alignItems:'center', gap:'4px' }} className="lp-desktop-nav">
             {links.map(l=>(
-              <button key={l.k} onClick={()=>go(l.k)} className="lp-nav-link" style={{ background:'none', border:'none', cursor:'pointer',
-                fontFamily:'var(--font-body)', fontWeight:600, fontSize:'.94rem', padding:'11px 15px', borderRadius:'var(--r-pill)',
-                color: route===l.k?'var(--ink-1)':'var(--ink-2)' }}>{l.label}</button>
+              l.href
+                ? <a key={l.k} href={l.href} className="lp-nav-link" style={{ display:'inline-flex', alignItems:'center', textDecoration:'none',
+                    fontFamily:'var(--font-body)', fontWeight:600, fontSize:'.94rem', padding:'11px 15px', borderRadius:'var(--r-pill)',
+                    color:'var(--ink-2)' }}>{l.label}</a>
+                : <button key={l.k} onClick={()=>go(l.k)} className="lp-nav-link" style={{ background:'none', border:'none', cursor:'pointer',
+                    fontFamily:'var(--font-body)', fontWeight:600, fontSize:'.94rem', padding:'11px 15px', borderRadius:'var(--r-pill)',
+                    color: route===l.k?'var(--ink-1)':'var(--ink-2)' }}>{l.label}</button>
             ))}
             {SHOW_LANGUAGE_SWITCHER && (<>
               <div style={{ width:6 }}></div>
@@ -38,8 +43,11 @@ function Header({ go, route }) {
           <div style={{ borderTop:'1px solid var(--hairline)' }}>
             <Container style={{ padding:'14px 20px 20px', display:'flex', flexDirection:'column', gap:'4px' }}>
               {links.map(l=>(
-                <button key={l.k} onClick={()=>{go(l.k);setOpen(false);}} className="lp-nav-link" style={{ textAlign:'left', background:'none', border:'none',
-                  fontFamily:'var(--font-body)', fontWeight:600, fontSize:'1.05rem', padding:'12px 4px', color:'var(--ink-2)', borderRadius:'var(--r-sm)' }}>{l.label}</button>
+                l.href
+                  ? <a key={l.k} href={l.href} className="lp-nav-link" style={{ textAlign:'left', textDecoration:'none',
+                      fontFamily:'var(--font-body)', fontWeight:600, fontSize:'1.05rem', padding:'12px 4px', color:'var(--ink-2)', borderRadius:'var(--r-sm)' }}>{l.label}</a>
+                  : <button key={l.k} onClick={()=>{go(l.k);setOpen(false);}} className="lp-nav-link" style={{ textAlign:'left', background:'none', border:'none',
+                      fontFamily:'var(--font-body)', fontWeight:600, fontSize:'1.05rem', padding:'12px 4px', color:'var(--ink-2)', borderRadius:'var(--r-sm)' }}>{l.label}</button>
               ))}
               <div style={{ height:8 }}></div>
               <Button full onClick={()=>{go('intro');setOpen(false);}}>{t('cta.reveal')}</Button>
