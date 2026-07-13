@@ -53,19 +53,6 @@ function HeroPhotoTiles() {
   );
 }
 
-/* ---- Hero: row of 8 archetype glyphs, Apple's app-icon-row transposed ---- */
-function HeroGlyphRow() {
-  return (
-    <div className="lp-glyph-row" style={{ marginBottom: 22 }}>
-      {window.ARCHETYPES.map(a=>(
-        <span key={a.code} className="lp-glyph" style={{ background:a.accent }} title={a.name}>
-          <Icon name={GLYPH_ICON[a.code]||'star'} size={19} stroke={2} style={{ color:'#fff' }}/>
-        </span>
-      ))}
-    </div>
-  );
-}
-
 /* ---- Auto-advancing swipeable image carousel kept for the Loop gallery captions source ---- */
 const LOOP_PHOTOS = [
   { cap:'The message you typed and deleted four times', src:'assets/photos/loop-message-deleted.webp',
@@ -241,8 +228,6 @@ function Home({ go }) {
       <section className="lp-hero-wrap" style={{ padding:'clamp(48px,7vw,84px) var(--gutter) clamp(32px,5vw,56px)' }}>
         <HeroPhotoTiles/>
         <Container style={{ textAlign:'center', position:'relative', zIndex:2 }}>
-          <HeroGlyphRow/>
-          <div style={{ fontSize:'.92rem', fontWeight:700, color:'var(--ink-3)', letterSpacing:'.02em' }}>8LovePatterns</div>
           <h1 className="lp-module-h" style={{ maxWidth:920, margin:'14px auto 0' }}>
             Stop reliving the same heartbreak.
           </h1>

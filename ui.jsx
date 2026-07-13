@@ -191,12 +191,13 @@ function Reveal({ children, as='div', style, className='' }) {
   }, children);
 }
 
-/* ---- Module glyph: rounded-square gradient icon (Apple/Liven app-icon row) ---- */
+/* ---- Module glyph: rounded-square gradient icon (Apple/Liven app-icon row).
+   size="lg" (section-title lead icon) is retired site-wide from this one spot. ---- */
 function ModuleGlyph({ icon, deep1, deep2, size='' }) {
+  if (size === 'lg') return null;
   return (
-    <span className={`lp-glyph ${size==='lg'?'lp-glyph-lg':''}`}
-      style={{ background:`linear-gradient(155deg, ${deep1}, ${deep2})` }}>
-      <Icon name={icon} size={size==='lg'?26:20} stroke={2}/>
+    <span className="lp-glyph" style={{ background:`linear-gradient(155deg, ${deep1}, ${deep2})` }}>
+      <Icon name={icon} size={20} stroke={2}/>
     </span>
   );
 }
