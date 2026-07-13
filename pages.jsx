@@ -99,7 +99,11 @@ function Science({ go }) {
         </Container>
       </Module>
 
+      <FoundersSection/>
+
       <ScienceSection go={go} band="transparent"/>
+
+      <AnchorSection/>
 
       <Module>
         <Container narrow>

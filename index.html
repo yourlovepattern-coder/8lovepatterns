@@ -211,6 +211,31 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .lp-fam-legend > div { display: inline-flex; align-items: center; gap: 9px; white-space: nowrap; }
 
+  /* Science page: founders grid (4 desktop cols, 2 cols down to phone width) */
+  .lp-founders-grid { grid-template-columns: repeat(4,1fr); }
+  @media (max-width: 700px) {
+    .lp-founders-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+  }
+
+  /* Science page: static Anchor scale (vertical rope + 5 neutral tiers, no "here" marker) */
+  .lp-anchor-preview {
+    position: relative; overflow: visible; background: #3B8A9C; border-radius: 34px;
+    padding: 40px 32px 40px 0; max-width: 480px; margin: 0 auto; min-height: 380px;
+  }
+  .lp-ap-rope { position: absolute; left: 22px; top: 18px; height: calc(100% + 8px); width: 100px; z-index: 1; pointer-events: none; }
+  .lp-ap-tiers { position: relative; z-index: 2; padding-left: 120px; display: flex; flex-direction: column; justify-content: space-between; min-height: 340px; gap: 8px; }
+  .lp-ap-tier { display: flex; align-items: baseline; gap: 16px; }
+  .lp-ap-tier .nm { font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; color: #fff; line-height: 1; min-width: 105px; flex-shrink: 0; }
+  .lp-ap-tier .ds { font-size: .95rem; color: #CFE6EA; }
+  @media (max-width: 560px) {
+    .lp-anchor-preview { padding: 32px 20px 32px 0; min-height: 0; }
+    .lp-ap-rope { left: 10px; width: 70px; }
+    .lp-ap-tiers { padding-left: 84px; min-height: 300px; gap: 6px; }
+    .lp-ap-tier { gap: 8px; }
+    .lp-ap-tier .nm { font-size: 1.1rem; min-width: 78px; }
+    .lp-ap-tier .ds { font-size: .85rem; }
+  }
+
   /* Responsive */
   @media (max-width: 900px) {
     .lp-cast { grid-template-columns: 1fr 1fr; }

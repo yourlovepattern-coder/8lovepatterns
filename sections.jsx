@@ -21,7 +21,7 @@ function CredibilityStrip() {
 function ScienceSection({ go, band='var(--paper-2)' }) {
   const cards = [
     { ic:'anchor',  c:'#2C7E91', soft:'#E4F0F2', t:'Adult attachment',
-      d:'Attachment research studies how people respond to closeness, distance, trust, dependence, conflict, and fear of rejection. Many models describe two major dimensions: attachment anxiety and attachment avoidance.' },
+      d:'Attachment research measures two things, and neither of them is a category. How much reassurance you need to feel safe, and how much closeness costs you. Fraley and Waller showed in 1998 that these run as continuous dimensions rather than four boxes, which is why nobody is fully one type. You’re a position on a map, and the position moves.' },
     { ic:'heart',   c:'var(--corail)', soft:'var(--corail-soft)', t:'Emotional regulation',
       d:'When connection feels threatened, people regulate emotions differently. Some seek reassurance and intensify. Others withdraw, suppress, rationalize, or disconnect.' },
     { ic:'compass', c:'var(--violet)', soft:'var(--violet-soft)', t:'Schema patterns',
@@ -59,6 +59,124 @@ function ScienceSection({ go, band='var(--paper-2)' }) {
         </div>
       </Container>
     </Section>
+  );
+}
+
+/* ---- The people who figured this out (Science page, founders grid) ---- */
+function FounderCard({ f }) {
+  const [imgOk, setImgOk] = useState(true);
+  const initials = f.name.split(/\s|&/).filter(Boolean).map(w=>w[0]).slice(0,2).join('');
+  return (
+    <div style={{ background:'var(--surface)', border:'1px solid var(--hairline)', borderTop:`3px solid ${f.accent}`,
+      borderRadius:'var(--r-lg)', padding:'22px', boxShadow:'var(--sh-xs)', display:'flex', flexDirection:'column', gap:'14px' }}>
+      <div style={{ aspectRatio:'1', borderRadius:'18px', overflow:'hidden', background:f.soft, flexShrink:0 }}>
+        {imgOk
+          ? <img src={`assets/science/${f.img}.webp`} alt={`Portrait of ${f.name}`} onError={()=>setImgOk(false)}
+              style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }}/>
+          : <div style={{ width:'100%', height:'100%', display:'grid', placeItems:'center' }}>
+              <span style={{ fontFamily:'var(--font-display)', fontWeight:800, fontSize:'1.5rem', color:f.accent }}>{initials}</span>
+            </div>}
+      </div>
+      <h3 className="lp-h4" style={{ margin:0, color:f.accent }}>{f.name}</h3>
+      <p style={{ margin:0, color:'var(--ink-2)', lineHeight:1.58, fontSize:'.95rem' }}>{f.text}</p>
+    </div>
+  );
+}
+function FoundersSection() {
+  const founders = [
+    { key:'bowlby', img:'bowlby', name:'John Bowlby', accent:'var(--fam-poursuis)', soft:'var(--fam-poursuis-soft)',
+      text:'Working with children separated from their parents after the war, Bowlby noticed something the psychiatry of his time had no room for. The distress wasn’t a symptom to be managed. It was a strategy. A child who cannot reach a parent will do whatever gets that parent back, and will keep doing it long after the parent is gone.' },
+    { key:'ainsworth', img:'ainsworth', name:'Mary Ainsworth', accent:'var(--fam-fuis)', soft:'var(--fam-fuis-soft)',
+      text:'Ainsworth put Bowlby’s idea in a room. She watched what one-year-olds did when their mother left and came back, and found that their reactions sorted into patterns so consistent you could predict them. Some protested. Some pretended not to care. The ones who could show their distress and be comforted were the ones who went back to playing.' },
+    { key:'hazan-shaver', img:'hazan-shaver', name:'Hazan & Shaver', accent:'var(--fam-efface)', soft:'var(--fam-efface-soft)',
+      text:'In 1987 they asked a simple question that changed the field: do adults do this too? They ran a survey in a newspaper, and the answer came back in the same three shapes Ainsworth had found in toddlers. What you do when your partner goes quiet for six hours has a history.' },
+    { key:'mikulincer-shaver', img:'mikulincer-shaver', name:'Mikulincer & Shaver', accent:'var(--fam-protege)', soft:'var(--fam-protege-soft)',
+      text:'Decades of work later, they named the two moves underneath everything else. Hyperactivation: turn the volume up until someone responds. Deactivation: turn the feeling off until it stops mattering. Most people run one of the two, and most people don’t notice they’re running it.' },
+  ];
+  return (
+    <Module>
+      <Container>
+        <div style={{ textAlign:'center', maxWidth:640, margin:'0 auto 14px' }}>
+          <Eyebrow color="var(--fam-ancre)">The people who figured this out</Eyebrow>
+          <h2 className="lp-h1" style={{ marginTop:12, color:'var(--head)' }}>70 years of research to understand why love feels unsafe.</h2>
+          <p className="lp-lead" style={{ marginTop:16 }}>
+            None of this started with us. It started in a hospital ward in London, and it has been tested on tens of thousands of people since.
+          </p>
+        </div>
+        <div className="lp-founders-grid" style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'18px', marginTop:40 }}>
+          {founders.map(f=> <FounderCard key={f.key} f={f}/>)}
+        </div>
+        <p style={{ textAlign:'center', maxWidth:560, margin:'30px auto 0', color:'var(--ink-2)', lineHeight:1.6, fontSize:'1.02rem', textWrap:'pretty' }}>
+          Every mechanism in this test traces back to this work. We didn’t add a theory. We built a way to find yours.
+        </p>
+      </Container>
+    </Module>
+  );
+}
+
+/* ---- The Anchor (Science page, static 5-tier scale, no active marker) ---- */
+function AnchorScalePreview({ tiers }) {
+  return (
+    <div className="lp-anchor-preview">
+      <svg className="lp-ap-rope" viewBox="0 0 120 560" fill="none" preserveAspectRatio="xMidYMin meet" aria-hidden="true">
+        <path d="M60 8 C88 90 34 160 60 250 C86 340 34 400 58 470" stroke="#F0D9B5" strokeWidth="7" strokeLinecap="round"/>
+        <g stroke="#fff" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none">
+          <circle cx="57" cy="484" r="9"/>
+          <line x1="57" y1="493" x2="57" y2="552"/>
+          <line x1="40" y1="510" x2="74" y2="510"/>
+          <path d="M31 528 C31 548 43 556 57 556 C71 556 83 548 83 528"/>
+          <path d="M24 522l7 7 8-8"/>
+          <path d="M90 522l-7 7-8-8"/>
+        </g>
+      </svg>
+      <div className="lp-ap-tiers">
+        {tiers.map(t=>(
+          <div key={t.name} className="lp-ap-tier">
+            <span className="nm">{t.name}</span>
+            <span className="ds">{t.desc}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+function AnchorSection() {
+  const tiers = [
+    { name:'Clear', desc:'You feel it coming.' },
+    { name:'Slipping', desc:'You catch it live.' },
+    { name:'Snagged', desc:'You know, and do it anyway.' },
+    { name:'Hooked', desc:'You understand it, always too late.' },
+    { name:'Buried', desc:'The problem is the other person.' },
+  ];
+  return (
+    <Module>
+      <Container narrow>
+        <div style={{ textAlign:'center', maxWidth:640, margin:'0 auto 14px' }}>
+          <Eyebrow color="var(--fam-ancre)">The Anchor</Eyebrow>
+          <h2 className="lp-h1" style={{ marginTop:12, color:'var(--head)' }}>Seeing the pattern and stopping it are two different problems.</h2>
+        </div>
+        <div style={{ marginTop:28, display:'flex', flexDirection:'column', gap:'18px' }}>
+          <p style={{ color:'var(--body-2)', lineHeight:1.65, fontSize:'1.05rem' }}>
+            Attachment research is clear on one thing that surprises people: patterns do change in adulthood. Mary Main’s work at Berkeley found adults who had every reason to be insecure, difficult childhoods and real relational damage, who nevertheless related to others with the coherence of someone who’d been safe all along. The field calls this earned security, and it is one of the most robust findings in the literature.
+          </p>
+          <p style={{ color:'var(--body-2)', lineHeight:1.65, fontSize:'1.05rem' }}>
+            But the same research is just as clear about what doesn’t move the needle. Insight on its own rarely changes an attachment pattern. Reading about avoidance, naming your own, understanding exactly where it came from, all of that raises awareness and leaves the behavior intact, particularly under stress, which is precisely when the pattern runs.
+          </p>
+          <p style={{ color:'var(--body-2)', lineHeight:1.65, fontSize:'1.05rem' }}>
+            So awareness is not the finish line. It’s the thing that creates a choice where there used to be a reflex.
+          </p>
+          <p style={{ color:'var(--body-2)', lineHeight:1.65, fontSize:'1.05rem' }}>
+            The Anchor measures that gap. Not what you are, and not what happened to you. How much room you currently have between the moment the mechanism fires and the moment you act on it.
+          </p>
+        </div>
+        <div style={{ marginTop:40 }}>
+          <AnchorScalePreview tiers={tiers}/>
+        </div>
+        <p style={{ textAlign:'center', maxWidth:560, margin:'30px auto 0', color:'var(--ink-2)', lineHeight:1.6, fontSize:'1.02rem', textWrap:'pretty' }}>
+          The free test tells you which mechanism runs your loop, and where you’re anchored right now. Moving up a level takes repetition, not information. That part is the work.
+        </p>
+      </Container>
+    </Module>
   );
 }
 
@@ -241,4 +359,4 @@ function TrustBanner() {
   );
 }
 
-Object.assign(window, { CredibilityStrip, ScienceSection, Comparison, AccordionItem, SearchedThis, FAQ, TrustBanner });
+Object.assign(window, { CredibilityStrip, ScienceSection, FoundersSection, AnchorSection, Comparison, AccordionItem, SearchedThis, FAQ, TrustBanner });
