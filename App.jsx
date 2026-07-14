@@ -92,10 +92,10 @@ const PATTERN_META = {
     title: 'The Bastion Pattern: Why You Guard Your Heart So Closely',
     description: 'The Bastion keeps a safe distance and controls who reaches which depth, opening the gate slowly and never all the way. Learn what this guarded relationship pattern protects, and how to build intimacy in small deposits.',
   },
-  anc: {
-    title: 'The Harbor Pattern: What Secure Love Actually Looks Like',
-    description: "The Harbor isn't the absence of fear. It's noticing the reflex before it takes over, and choosing what happens next. See what the eight protection patterns are moving toward.",
-  },
+  // No 'anc' entry: the secure profile has no public page — see PATTERN_SLUGS
+  // in data.jsx. metaForRoute() below falls back to PATTERN_META.bas if a
+  // 'profil' route were ever reached with code 'anc', which can't happen
+  // through any public link or URL.
 };
 
 function metaForRoute(route, code) {

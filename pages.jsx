@@ -31,27 +31,19 @@ function Method({ go }) {
           </div>
         </Container>
         <Container narrow style={{ marginTop:18 }}>
-          <div className="lp-hero-grid" style={{ display:'grid', gridTemplateColumns:'auto 1fr', gap:'clamp(22px,3vw,34px)', alignItems:'center',
-            borderRadius:'var(--r-xl)', padding:'clamp(26px,4vw,40px)',
+          <div style={{ borderRadius:'var(--r-xl)', padding:'clamp(26px,4vw,40px)',
             background:`radial-gradient(120% 140% at 15% 15%, color-mix(in srgb, ${anchorColor} 18%, #fff) 0%, color-mix(in srgb, ${anchorColor} 6%, #fff) 55%, #fff 100%)`,
             border:`1px solid color-mix(in srgb, ${anchorColor} 22%, #fff)` }}>
-            <img src="assets/archetypes/anc.webp" alt="The Harbor" style={{ width:130, height:'auto', flexShrink:0,
-              filter:'drop-shadow(0 12px 16px rgba(20,16,45,.16))' }}/>
-            <div>
-              <Eyebrow color={anchorColor}>The Harbor</Eyebrow>
-              <h3 className="lp-h4" style={{ marginTop:8, color:'var(--head)' }}>How deep, not just what.</h3>
-              <p style={{ color:'var(--body-2)', lineHeight:1.6, marginTop:8 }}>
-                Your answers place you on five levels, Clear to Buried. Shallow needs a reminder in the moment. Deep needs a plan that works before the moment, because in it, you're not reachable. Your report is written for your level, and it aims at the next one up, never a leap to Clear.
-              </p>
-              <div style={{ display:'flex', flexWrap:'wrap', gap:'8px', marginTop:16 }}>
-                {tiers.map(t=>(
-                  <span key={t} style={{ padding:'5px 13px', borderRadius:'var(--r-pill)', fontSize:'.8rem', fontWeight:700,
-                    color:anchorColor, background:`color-mix(in srgb, ${anchorColor} 12%, #fff)` }}>{t}</span>
-                ))}
-              </div>
-              <div style={{ marginTop:18 }}>
-                <Button size="sm" variant="secondary" icon="arrow-right" onClick={()=>go('profil','anc')}>Meet the Harbor</Button>
-              </div>
+            <Eyebrow color={anchorColor}>The Anchor</Eyebrow>
+            <h3 className="lp-h4" style={{ marginTop:8, color:'var(--head)' }}>How deep, not just what.</h3>
+            <p style={{ color:'var(--body-2)', lineHeight:1.6, marginTop:8 }}>
+              Your answers place you on five levels, Clear to Buried. Shallow needs a reminder in the moment. Deep needs a plan that works before the moment, because in it, you're not reachable. Your report is written for your level, and it aims at the next one up, never a leap to Clear.
+            </p>
+            <div style={{ display:'flex', flexWrap:'wrap', gap:'8px', marginTop:16 }}>
+              {tiers.map(t=>(
+                <span key={t} style={{ padding:'5px 13px', borderRadius:'var(--r-pill)', fontSize:'.8rem', fontWeight:700,
+                  color:anchorColor, background:`color-mix(in srgb, ${anchorColor} 12%, #fff)` }}>{t}</span>
+              ))}
             </div>
           </div>
         </Container>

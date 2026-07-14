@@ -202,8 +202,8 @@ export const content = {
         kind: 'compatColumns', n: 5,
         columns: [
           { label: 'The ones who soothe you', tone: 'apaise',
-            blurb: 'An integrated Bastion, a calmed Watcher, someone with a high Harbor. What they share, they’re grounded, they don’t flood you with raw emotion, they leave room for your processing pace without taking it as a rejection. Near them, you don’t need to flee into the head, because the intensity doesn’t overflow.',
-            items: [{ code: 'bas', name: 'Integrated Bastion' }, { code: 'gue', name: 'Calmed Watcher' }, { code: 'anc', name: 'High Harbor' }] },
+            blurb: 'An integrated Bastion, a calmed Watcher, someone with a high Anchor. What they share, they’re grounded, they don’t flood you with raw emotion, they leave room for your processing pace without taking it as a rejection. Near them, you don’t need to flee into the head, because the intensity doesn’t overflow.',
+            items: [{ code: 'bas', name: 'Integrated Bastion' }, { code: 'gue', name: 'Calmed Watcher' }, { code: 'anc', name: 'High Anchor' }] },
           { label: 'The ones who understand you', tone: 'comprend',
             blurb: 'A Bastion or a Watcher on the way, an integrated Runaway. They know from the inside the need to protect themselves, the fear of losing control. After that, everything depends on each person’s Anchor.',
             items: [{ code: 'bas', name: 'Bastion on the way' }, { code: 'gue', name: 'Watcher on the way' }, { code: 'fug', name: 'Integrated Runaway' }] },

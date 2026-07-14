@@ -211,8 +211,8 @@ export const content = {
         kind: 'compatColumns', n: 5,
         columns: [
           { label: 'The ones who soothe you', tone: 'apaise',
-            blurb: 'An integrated Runaway, a calmed Alchemist, someone with a high Harbor. What they share, they respect space and pace, they don’t force the door, they don’t take your silence for a rejection. Near them, you don’t need a wall, because nobody is trying to force their way in.',
-            items: [{ code: 'fug', name: 'Integrated Runaway' }, { code: 'alc', name: 'Calmed Alchemist' }, { code: 'anc', name: 'High Harbor' }] },
+            blurb: 'An integrated Runaway, a calmed Alchemist, someone with a high Anchor. What they share, they respect space and pace, they don’t force the door, they don’t take your silence for a rejection. Near them, you don’t need a wall, because nobody is trying to force their way in.',
+            items: [{ code: 'fug', name: 'Integrated Runaway' }, { code: 'alc', name: 'Calmed Alchemist' }, { code: 'anc', name: 'High Anchor' }] },
           { label: 'The ones who understand you', tone: 'comprend',
             blurb: 'An integrated Watcher, an Alchemist or a Runaway on the way. They know from the inside the need to protect themselves, the fear of being reached. After that, everything depends on each person’s Anchor.',
             items: [{ code: 'gue', name: 'Integrated Watcher' }, { code: 'alc', name: 'Alchemist on the way' }, { code: 'fug', name: 'Runaway on the way' }] },

@@ -88,25 +88,27 @@ const ARCHETYPES = [
     reset:'Share one true, small thing this week. Intimacy is built in deposits, not in one big leap.' },
 ];
 
-/* Display name is "The Harbor" — NOT "The Anchor". "Anchor" is already taken
-   by the 5-tier control scale (Clear/Slipping/Snagged/Hooked/Buried, see
-   ANCHOR_TIERS below) and its Science-page section; the two are unrelated
-   concepts that happen to share a nautical theme, so this profile has its
-   own name. code:'anc' and family:'ancre' are internal identifiers only,
-   never shown to users, and are left as-is. */
-const ANCRE = { code:'anc', name:'The Harbor', family:'ancre', accent:'#2C7E91', soft:'#E4F0F2',
+/* The secure profile. Not part of the public archetype list (see CAST_ORDER
+   in Profile.jsx and PATTERN_SLUGS below, both of which deliberately exclude
+   'anc') and has no public page or URL — only reachable through the quiz's
+   secure route (test_engine.jsx / test_data.jsx's secureResult halte), which
+   has its own independent content and never reads this object. Kept here
+   because a few internal callers still read ANCRE.accent for shared styling
+   (e.g. the depth-scale explainer on the Method page). */
+const ANCRE = { code:'anc', name:'The Anchor', family:'ancre', accent:'#2C7E91', soft:'#E4F0F2',
   tagline:'You can protect yourself without closing your heart.',
   motto:'\u201cI feel the wave, and I stay.\u201d',
-  hook:'The Harbor isn\u2019t a cure. You still have a pattern. It just no longer runs the show.',
+  hook:'The Anchor isn\u2019t a cure. You still have a pattern. It just no longer runs the show.',
   summary:'You feel fear, need and anger like everyone else. What changes is that you notice the reflex before it takes over, and you get to choose what happens next. Close without losing yourself, independent without fleeing.',
-  reset:'Keep naming what rises, even when things are good. The Harbor is a practice, not a status you reach.' };
+  reset:'Keep naming what rises, even when things are good. The Anchor is a practice, not a status you reach.' };
 
-/* Public URL slugs for the /patterns/{slug} pages. One slug per archetype
-   code (the 8 patterns + the secure profile) — the slug is the pattern's
-   display name, kebab-cased, never the internal 3-letter code. Bidirectional so
-   App.jsx can go both ways: code -> path when routing, path -> code when
-   resolving a direct URL load or a popstate. Keep in sync with _redirects
-   (one exact rewrite rule per slug) and ARCHETYPES/ANCRE above. */
+/* Public URL slugs for the /patterns/{slug} pages. One slug per PATTERN only
+   (the 8 patterns) — the secure profile ('anc') is deliberately absent, it
+   has no public page. The slug is the pattern's display name, kebab-cased,
+   never the internal 3-letter code. Bidirectional so App.jsx can go both
+   ways: code -> path when routing, path -> code when resolving a direct URL
+   load or a popstate. Keep in sync with _redirects (one exact rewrite rule
+   per slug) and ARCHETYPES above. */
 const PATTERN_SLUGS = {
   inc: 'the-arsonist',
   gue: 'the-watcher',
@@ -116,7 +118,6 @@ const PATTERN_SLUGS = {
   mir: 'the-mirror',
   cam: 'the-chameleon',
   bas: 'the-bastion',
-  anc: 'the-harbor',
 };
 const SLUG_TO_PATTERN = Object.fromEntries(Object.entries(PATTERN_SLUGS).map(([code, slug]) => [slug, code]));
 

@@ -204,8 +204,8 @@ export const content = {
         kind: 'compatColumns', n: 5,
         columns: [
           { label: 'The ones who soothe you', tone: 'apaise',
-            blurb: 'Someone with a high Harbor, an integrated Bastion, an integrated Chameleon. What they share, they’re self-sufficient, they don’t turn you into a permanent rescuer, they choose you for yourself and not for what you do. Near them, you can set down your load, because nobody asks you to carry it in order to exist.',
-            items: [{ code: 'anc', name: 'High Harbor' }, { code: 'bas', name: 'Integrated Bastion' }, { code: 'cam', name: 'Integrated Chameleon' }] },
+            blurb: 'Someone with a high Anchor, an integrated Bastion, an integrated Chameleon. What they share, they’re self-sufficient, they don’t turn you into a permanent rescuer, they choose you for yourself and not for what you do. Near them, you can set down your load, because nobody asks you to carry it in order to exist.',
+            items: [{ code: 'anc', name: 'High Anchor' }, { code: 'bas', name: 'Integrated Bastion' }, { code: 'cam', name: 'Integrated Chameleon' }] },
           { label: 'The ones who understand you', tone: 'comprend',
             blurb: 'A Mirror on the way, an integrated Watcher, an Arsonist making progress. They know from the inside the fear of losing your place, the need to matter. After that, everything depends on each person’s Anchor.',
             items: [{ code: 'mir', name: 'Mirror on the way' }, { code: 'gue', name: 'Integrated Watcher' }, { code: 'inc', name: 'Arsonist progressing' }] },

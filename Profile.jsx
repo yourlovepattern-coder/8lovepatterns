@@ -1,7 +1,8 @@
 /* 8LovePatterns, Public pattern pages + library (English) */
 
-/* The eight patterns only. The Anchor is not a pattern — it's the center
-   they orbit, presented separately below the grid (see AnchorBand). */
+/* The eight patterns only. The secure profile ('anc') is deliberately not
+   part of this public list or grid — it has no public card, link, or page.
+   It's only reachable through the quiz's own secure-route outcome screen. */
 const CAST_ORDER = ['inc','gue','fug','alc','sau','bas','cam','mir'];
 
 function ProfilsIndex({ go }) {
@@ -32,7 +33,6 @@ function ProfilsIndex({ go }) {
           <div className="lp-cast">
             {CAST_ORDER.map(code=> <CastTile key={code} code={code} go={go}/>)}
           </div>
-          <AnchorBand go={go}/>
         </Container>
       </Module>
     </div>
@@ -68,36 +68,6 @@ function CastTile({ code, go }) {
   );
 }
 
-/* The Anchor isn't a ninth tile in the grid above — it's the direction all
-   eight point toward. Deliberately not a card: full-width, horizontal,
-   radial gradient instead of the tile's flat wash, and two distinct exits
-   rather than one whole-card tap — the portrait meets the Anchor itself,
-   the text CTA explains where the scale behind it lives (Method). */
-function AnchorBand({ go }) {
-  const a = window.ANCRE;
-  const c = a.accent;
-  return (
-    <div className="lp-hero-grid" style={{ marginTop:'clamp(28px,4vw,44px)', display:'grid',
-      gridTemplateColumns:'.8fr 1.2fr', gap:'clamp(20px,3vw,40px)', alignItems:'center',
-      borderRadius:'var(--r-xl)', overflow:'hidden', padding:'clamp(28px,4vw,44px)',
-      background:`radial-gradient(120% 140% at 20% 20%, color-mix(in srgb, ${c} 20%, #fff) 0%, color-mix(in srgb, ${c} 7%, #fff) 55%, #fff 100%)`,
-      border:`1px solid color-mix(in srgb, ${c} 22%, #fff)` }}>
-      <button onClick={()=>go('profil','anc')} aria-label={`Meet ${a.name}`}
-        style={{ display:'flex', justifyContent:'center', background:'none', border:'none', padding:0, cursor:'pointer' }}>
-        <img src={`assets/archetypes/${a.code}.webp`} alt={a.name} style={{ width:'100%', maxWidth:220, height:'auto',
-          filter:'drop-shadow(0 14px 18px rgba(20,16,45,.18))' }}/>
-      </button>
-      <div>
-        <Eyebrow color={c}>The secure center</Eyebrow>
-        <h2 className="lp-h2" style={{ marginTop:10, color:'var(--head)' }}>Not a pattern. The direction they all point toward.</h2>
-        <p style={{ marginTop:12, color:'var(--body-2)', lineHeight:1.6 }}>{a.hook} {a.tagline}</p>
-        <div style={{ marginTop:20 }}>
-          <Button size="md" icon="arrow-right" onClick={()=>go('methode')}>See how the Anchor works</Button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 /* The five-tier grip scale (source of truth: window.LP_ANCHOR_TIERS, set in
    data.jsx). Anchor-only: replaces the fear/mechanism fields the eight

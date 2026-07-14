@@ -201,8 +201,8 @@ export const content = {
         kind: 'compatColumns', n: 5,
         columns: [
           { label: 'The ones who soothe you', tone: 'apaise',
-            blurb: 'An integrated Bastion, someone with a high Harbor, a calmed Alchemist. What they share, they’re stable, readable, they don’t expect a performance from you, they leave you room to be yourself without having to guess what pleases. Near them, you don’t need to change color, because nobody asks you to match.',
-            items: [{ code: 'bas', name: 'Integrated Bastion' }, { code: 'anc', name: 'High Harbor' }, { code: 'alc', name: 'Calmed Alchemist' }] },
+            blurb: 'An integrated Bastion, someone with a high Anchor, a calmed Alchemist. What they share, they’re stable, readable, they don’t expect a performance from you, they leave you room to be yourself without having to guess what pleases. Near them, you don’t need to change color, because nobody asks you to match.',
+            items: [{ code: 'bas', name: 'Integrated Bastion' }, { code: 'anc', name: 'High Anchor' }, { code: 'alc', name: 'Calmed Alchemist' }] },
           { label: 'The ones who understand you', tone: 'comprend',
             blurb: 'A Mirror on the way, an integrated Savior, an integrated Watcher. They know from the inside the fear of losing your place, the difficulty of staying yourself. After that, everything depends on each person’s Anchor.',
             items: [{ code: 'mir', name: 'Mirror on the way' }, { code: 'sau', name: 'Integrated Savior' }, { code: 'gue', name: 'Integrated Watcher' }] },

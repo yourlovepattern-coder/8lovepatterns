@@ -12,11 +12,12 @@
 
 # Same rewrite pattern as /test above, one exact path per SPA page that now
 # has a real, shareable, indexable URL (Science, Method, Patterns index, and
-# one path per archetype detail page). Deliberately NOT a wildcard rule
-# (e.g. /patterns/*) so this can never capture /blog/* or /test — every route
-# below is spelled out. App.jsx reads location.pathname on boot (and on
-# popstate) to pick the matching screen; see PATTERN_SLUGS in data.jsx for the
-# archetype code <-> slug table.
+# one path per PATTERN detail page — 8 of them, the secure profile has no
+# public page). Deliberately NOT a wildcard rule (e.g. /patterns/*) so this
+# can never capture /blog/* or /test — every route below is spelled out.
+# App.jsx reads location.pathname on boot (and on popstate) to pick the
+# matching screen; see PATTERN_SLUGS in data.jsx for the pattern code <-> slug
+# table.
 /science/   /science   301
 /science    /          200
 /method/    /method    301
@@ -39,5 +40,3 @@
 /patterns/the-chameleon       /                         200
 /patterns/the-bastion/        /patterns/the-bastion     301
 /patterns/the-bastion         /                         200
-/patterns/the-harbor/         /patterns/the-harbor      301
-/patterns/the-harbor          /                         200

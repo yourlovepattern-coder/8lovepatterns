@@ -198,8 +198,8 @@ export const content = {
         kind: 'compatColumns', n: 5,
         columns: [
           { label: 'The ones who soothe you', tone: 'apaise',
-            blurb: 'An integrated Bastion, someone with a high Harbor, a calmed Alchemist. What they share, they have their own world, they don\u2019t demand constant presence, they don\u2019t read your need for air as a rejection. Near them, you don\u2019t have to flee, because nobody is trying to absorb you.',
-            items: [{ code: 'bas', name: 'Integrated Bastion' }, { code: 'anc', name: 'High Harbor' }, { code: 'alc', name: 'Calmed Alchemist' }] },
+            blurb: 'An integrated Bastion, someone with a high Anchor, a calmed Alchemist. What they share, they have their own world, they don\u2019t demand constant presence, they don\u2019t read your need for air as a rejection. Near them, you don\u2019t have to flee, because nobody is trying to absorb you.',
+            items: [{ code: 'bas', name: 'Integrated Bastion' }, { code: 'anc', name: 'High Anchor' }, { code: 'alc', name: 'Calmed Alchemist' }] },
           { label: 'The ones who understand you', tone: 'comprend',
             blurb: 'A Bastion or an Alchemist on the way, an integrated Chameleon. They know from the inside the need to protect themselves, the fear of losing yourself in the other person. They understand you, and after that everything depends on each person\u2019s Anchor.',
             items: [{ code: 'bas', name: 'Bastion on the way' }, { code: 'alc', name: 'Alchemist on the way' }, { code: 'cam', name: 'Integrated Chameleon' }] },
