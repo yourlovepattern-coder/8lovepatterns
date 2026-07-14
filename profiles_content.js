@@ -557,34 +557,34 @@ window.LP_PROFILE_HTML.en["mir"] = `
 `;
 
 window.LP_PROFILE_HTML.en["anc"] = `
-<p class="hook">The Anchor does not remove fear. It changes the place fear holds in love.</p>
+<p class="hook">The Harbor does not remove fear. It changes the place fear holds in love.</p>
 
-<p class="lead">The Anchor is not a superior profile. It represents the ability to recognize your mechanism without letting it run the whole relationship.</p>
+<p class="lead">The Harbor is not a superior profile. It represents the ability to recognize your mechanism without letting it run the whole relationship.</p>
 
 <h3>A security that is built</h3>
-<p>The Anchor is not the absence of a mechanism. It does not describe a perfectly calm person, always fair, always available and always able to communicate with impeccable grace. That kind of person exists mostly in inspiring biographies and heavily filtered LinkedIn posts. In reality, even mature people can become anxious, closed, avoidant or too intense again when love touches a sensitive zone.</p>
-<p>The Anchor represents instead a capacity to come back. An anchored person can feel a mechanism activate without obeying it immediately. They can recognize a fear, an impulse or an urge to protect themselves, then choose a clearer response. This is not emotional perfection. It is a margin of freedom.</p>
+<p>The Harbor is not the absence of a mechanism. It does not describe a perfectly calm person, always fair, always available and always able to communicate with impeccable grace. That kind of person exists mostly in inspiring biographies and heavily filtered LinkedIn posts. In reality, even mature people can become anxious, closed, avoidant or too intense again when love touches a sensitive zone.</p>
+<p>The Harbor represents instead a capacity to come back. Someone who has reached it can feel a mechanism activate without obeying it immediately. They can recognize a fear, an impulse or an urge to protect themselves, then choose a clearer response. This is not emotional perfection. It is a margin of freedom.</p>
 
 <h3>Loving without losing yourself</h3>
-<p>People who develop the Anchor know that love makes you vulnerable. They do not pretend to never need to be reassured, chosen, recognized or respected. They do not confuse maturity with indifference. On the contrary, they can name their needs better because they no longer need to disguise them as a test, a flight, a sacrifice or a form of control.</p>
-<p>The Anchor allows you to stay in relationship with yourself when the relationship with the other becomes uncertain. A distance can hurt without immediately becoming a catastrophe. A disagreement can be uncomfortable without being experienced as rejection. A need for space can be voiced without disappearance. This stability does not come from an external guarantee. It comes from an inner ability not to turn every movement of the bond into an emergency.</p>
+<p>People who develop the Harbor know that love makes you vulnerable. They do not pretend to never need to be reassured, chosen, recognized or respected. They do not confuse maturity with indifference. On the contrary, they can name their needs better because they no longer need to disguise them as a test, a flight, a sacrifice or a form of control.</p>
+<p>The Harbor allows you to stay in relationship with yourself when the relationship with the other becomes uncertain. A distance can hurt without immediately becoming a catastrophe. A disagreement can be uncomfortable without being experienced as rejection. A need for space can be voiced without disappearance. This stability does not come from an external guarantee. It comes from an inner ability not to turn every movement of the bond into an emergency.</p>
 
 <h3>When the strategies become visible</h3>
-<p>The Anchor does not judge the other mechanisms. It knows they served a purpose. The Arsonist tests because they are looking for proof. The Chameleon adapts because they fear rejection. The Savior gives because they want to count. The Watcher observes because they dread the departure. The Bastion closes because they want to stay protected. The Runaway pulls back because they fear confinement. The Alchemist transforms because they look for meaning. The Mirror seeks a gaze because they want to feel their worth.</p>
-<p>Change begins when these strategies become visible. As long as they stay automatic, they seem to be the only way to survive the bond. Once they are recognized, they become options, sometimes understandable, but not always necessary. This is where the Anchor takes its place. It does not say I am no longer afraid. It says I see what my fear is trying to do.</p>
+<p>The Harbor does not judge the other mechanisms. It knows they served a purpose. The Arsonist tests because they are looking for proof. The Chameleon adapts because they fear rejection. The Savior gives because they want to count. The Watcher observes because they dread the departure. The Bastion closes because they want to stay protected. The Runaway pulls back because they fear confinement. The Alchemist transforms because they look for meaning. The Mirror seeks a gaze because they want to feel their worth.</p>
+<p>Change begins when these strategies become visible. As long as they stay automatic, they seem to be the only way to survive the bond. Once they are recognized, they become options, sometimes understandable, but not always necessary. This is where the Harbor takes its place. It does not say I am no longer afraid. It says I see what my fear is trying to do.</p>
 
 <h3>The strength of a truer presence</h3>
-<p>The Anchor's strength is to allow a more direct presence. It helps you ask instead of provoke, set a limit instead of punish, take space instead of disappear, help without sacrificing yourself, analyze without cutting off from emotion. This presence is less spectacular than some mechanisms, but it makes relationships more livable.</p>
-<p>The Anchor does not make love flat. It mainly removes a part of the useless panic. It lets desires, conflicts and needs exist without immediately becoming proof of danger. A healthy relationship is not one without discomfort. It is one where discomfort can be moved through without each person immediately returning to their protection strategy.</p>
+<p>The Harbor's strength is to allow a more direct presence. It helps you ask instead of provoke, set a limit instead of punish, take space instead of disappear, help without sacrificing yourself, analyze without cutting off from emotion. This presence is less spectacular than some mechanisms, but it makes relationships more livable.</p>
+<p>The Harbor does not make love flat. It mainly removes a part of the useless panic. It lets desires, conflicts and needs exist without immediately becoming proof of danger. A healthy relationship is not one without discomfort. It is one where discomfort can be moved through without each person immediately returning to their protection strategy.</p>
 
-<h3>What the Anchor does not claim to be</h3>
-<p>The Anchor does not promise a relationship without reaction. It does not turn someone into a neutral, perfectly composed person able to welcome every difficulty with flawless wisdom. It removes neither attachment, nor jealousy, nor the need to be reassured, nor the fear of being left.</p>
-<p>Its role is more concrete. It gives a moment of stepping back between the emotion and the response. This moment can be short, sometimes fragile, but it already changes a lot. It allows you to choose a sentence rather than an attack, a limit rather than a punishment, a request rather than a test. The Anchor does not make love less human. It makes it less automatic.</p>
+<h3>What the Harbor does not claim to be</h3>
+<p>The Harbor does not promise a relationship without reaction. It does not turn someone into a neutral, perfectly composed person able to welcome every difficulty with flawless wisdom. It removes neither attachment, nor jealousy, nor the need to be reassured, nor the fear of being left.</p>
+<p>Its role is more concrete. It gives a moment of stepping back between the emotion and the response. This moment can be short, sometimes fragile, but it already changes a lot. It allows you to choose a sentence rather than an attack, a limit rather than a punishment, a request rather than a test. The Harbor does not make love less human. It makes it less automatic.</p>
 
 <div class="listbox">
   <h3>You might recognize yourself in this profile if...</h3>
-  <p>You might recognize yourself in the Anchor if you still feel your mechanisms, but you are starting to spot them before they take up all the room. You can be afraid without attacking, need without begging, set a limit without disappearing, want to understand without controlling everything.</p>
-  <p>The Anchor is not a final box. It is a direction. It reminds us that the goal of 8LovePatterns is not to remove your romantic mechanisms, but to know them better. A person does not become free because they never react again. They become freer when they can choose what they do with their reaction.</p>
+  <p>You might recognize yourself in the Harbor if you still feel your mechanisms, but you are starting to spot them before they take up all the room. You can be afraid without attacking, need without begging, set a limit without disappearing, want to understand without controlling everything.</p>
+  <p>The Harbor is not a final box. It is a direction. It reminds us that the goal of 8LovePatterns is not to remove your romantic mechanisms, but to know them better. A person does not become free because they never react again. They become freer when they can choose what they do with their reaction.</p>
 </div>
 `;
 

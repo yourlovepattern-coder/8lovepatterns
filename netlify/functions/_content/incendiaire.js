@@ -196,8 +196,8 @@ export const content = {
         kind: 'compatColumns', n: 5,
         columns: [
           { label: 'The ones who soothe you', tone: 'apaise',
-            blurb: 'Someone with a high Anchor, an integrated Bastion, a calmed Alchemist. What they share, they\u2019re steady and they don\u2019t take the bait of the provocation, they stay present without flaring up or shutting down. Near them, your test falls flat, and that\u2019s exactly what you need, a calm that doesn\u2019t turn into abandonment.',
-            items: [{ code: 'anc', name: 'High Anchor' }, { code: 'bas', name: 'Integrated Bastion' }, { code: 'alc', name: 'Calmed Alchemist' }] },
+            blurb: 'Someone with a high Harbor, an integrated Bastion, a calmed Alchemist. What they share, they\u2019re steady and they don\u2019t take the bait of the provocation, they stay present without flaring up or shutting down. Near them, your test falls flat, and that\u2019s exactly what you need, a calm that doesn\u2019t turn into abandonment.',
+            items: [{ code: 'anc', name: 'High Harbor' }, { code: 'bas', name: 'Integrated Bastion' }, { code: 'alc', name: 'Calmed Alchemist' }] },
           { label: 'The ones who understand you', tone: 'comprend',
             blurb: 'A Watcher, a Mirror, or a Savior on the way. They know from the inside the fear of not mattering, the need to be reassured. After that, everything depends on each person\u2019s Anchor.',
             items: [{ code: 'gue', name: 'Watcher on the way' }, { code: 'mir', name: 'Mirror on the way' }, { code: 'sau', name: 'Savior on the way' }] },

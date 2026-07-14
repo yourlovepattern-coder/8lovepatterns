@@ -35,10 +35,10 @@ function Method({ go }) {
             borderRadius:'var(--r-xl)', padding:'clamp(26px,4vw,40px)',
             background:`radial-gradient(120% 140% at 15% 15%, color-mix(in srgb, ${anchorColor} 18%, #fff) 0%, color-mix(in srgb, ${anchorColor} 6%, #fff) 55%, #fff 100%)`,
             border:`1px solid color-mix(in srgb, ${anchorColor} 22%, #fff)` }}>
-            <img src="assets/archetypes/anc.webp" alt="The Anchor" style={{ width:130, height:'auto', flexShrink:0,
+            <img src="assets/archetypes/anc.webp" alt="The Harbor" style={{ width:130, height:'auto', flexShrink:0,
               filter:'drop-shadow(0 12px 16px rgba(20,16,45,.16))' }}/>
             <div>
-              <Eyebrow color={anchorColor}>The Anchor</Eyebrow>
+              <Eyebrow color={anchorColor}>The Harbor</Eyebrow>
               <h3 className="lp-h4" style={{ marginTop:8, color:'var(--head)' }}>How deep, not just what.</h3>
               <p style={{ color:'var(--body-2)', lineHeight:1.6, marginTop:8 }}>
                 Your answers place you on five levels, Clear to Buried. Shallow needs a reminder in the moment. Deep needs a plan that works before the moment, because in it, you're not reachable. Your report is written for your level, and it aims at the next one up, never a leap to Clear.
@@ -50,7 +50,7 @@ function Method({ go }) {
                 ))}
               </div>
               <div style={{ marginTop:18 }}>
-                <Button size="sm" variant="secondary" icon="arrow-right" onClick={()=>go('profil','anc')}>Meet the Anchor</Button>
+                <Button size="sm" variant="secondary" icon="arrow-right" onClick={()=>go('profil','anc')}>Meet the Harbor</Button>
               </div>
             </div>
           </div>

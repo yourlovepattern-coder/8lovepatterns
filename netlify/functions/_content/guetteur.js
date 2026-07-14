@@ -204,8 +204,8 @@ export const content = {
         kind: 'compatColumns', n: 5,
         columns: [
           { label: 'The ones who soothe you', tone: 'apaise',
-            blurb: 'An integrated Bastion, a calmed Alchemist, someone with a high Anchor. What they share, they\u2019re consistent, readable, stable over time, they create no fog. Near them, your alarm has little material to fire on, because what they show matches what they are.',
-            items: [{ code: 'bas', name: 'Integrated Bastion' }, { code: 'alc', name: 'Calmed Alchemist' }, { code: 'anc', name: 'High Anchor' }] },
+            blurb: 'An integrated Bastion, a calmed Alchemist, someone with a high Harbor. What they share, they\u2019re consistent, readable, stable over time, they create no fog. Near them, your alarm has little material to fire on, because what they show matches what they are.',
+            items: [{ code: 'bas', name: 'Integrated Bastion' }, { code: 'alc', name: 'Calmed Alchemist' }, { code: 'anc', name: 'High Harbor' }] },
           { label: 'The ones who understand you', tone: 'comprend',
             blurb: 'An Arsonist on the way, an integrated Chameleon, an Alchemist making progress. They know from the inside the fear of being surprised, the need for truth. After that, everything depends on each person\u2019s Anchor.',
             items: [{ code: 'inc', name: 'Arsonist on the way' }, { code: 'cam', name: 'Integrated Chameleon' }, { code: 'alc', name: 'Alchemist progressing' }] },

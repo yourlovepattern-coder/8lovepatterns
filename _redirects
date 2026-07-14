@@ -9,3 +9,35 @@
 # "intro"). Exact paths only — /api/* Functions and all other assets untouched.
 /test/    /test    301
 /test     /        200
+
+# Same rewrite pattern as /test above, one exact path per SPA page that now
+# has a real, shareable, indexable URL (Science, Method, Patterns index, and
+# one path per archetype detail page). Deliberately NOT a wildcard rule
+# (e.g. /patterns/*) so this can never capture /blog/* or /test — every route
+# below is spelled out. App.jsx reads location.pathname on boot (and on
+# popstate) to pick the matching screen; see PATTERN_SLUGS in data.jsx for the
+# archetype code <-> slug table.
+/science/   /science   301
+/science    /          200
+/method/    /method    301
+/method     /          200
+/patterns/                    /patterns    301
+/patterns                     /            200
+/patterns/the-arsonist/       /patterns/the-arsonist    301
+/patterns/the-arsonist        /                         200
+/patterns/the-watcher/        /patterns/the-watcher     301
+/patterns/the-watcher         /                         200
+/patterns/the-runaway/        /patterns/the-runaway     301
+/patterns/the-runaway         /                         200
+/patterns/the-alchemist/      /patterns/the-alchemist   301
+/patterns/the-alchemist       /                         200
+/patterns/the-savior/         /patterns/the-savior      301
+/patterns/the-savior          /                         200
+/patterns/the-mirror/         /patterns/the-mirror      301
+/patterns/the-mirror          /                         200
+/patterns/the-chameleon/      /patterns/the-chameleon   301
+/patterns/the-chameleon       /                         200
+/patterns/the-bastion/        /patterns/the-bastion     301
+/patterns/the-bastion         /                         200
+/patterns/the-harbor/         /patterns/the-harbor      301
+/patterns/the-harbor          /                         200

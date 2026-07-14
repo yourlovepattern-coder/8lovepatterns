@@ -4,6 +4,17 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
+<!-- Every asset in this app (images in JSX, app.js, vendor/*, colors_and_type.css)
+     is referenced with a path relative to the site root, e.g. src="assets/…".
+     Now that the SPA is reachable at multi-segment URLs like /patterns/the-mirror,
+     the browser would otherwise resolve those against /patterns/ instead of /.
+     Pin relative-URL resolution to the root so every route (however deep) still
+     finds its assets. Does not affect the app's own history/URL handling
+     (App.jsx uses pushState/pathname directly, not relative links), and the one
+     in-page anchor (#ref-1 on the homepage) still resolves correctly since the
+     homepage is only ever served at "/". -->
+<base href="/"/>
+
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -13,7 +24,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 
 <!-- PostHog (cookieless, EU) — shared loader, must load early -->
-<script src="posthog-init.js"></script>
+<script src="/posthog-init.js"></script>
 
 <title>8LovePatterns: Free Relationship Pattern Test | Attachment-Inspired Quiz</title>
 <meta name="description" content="Take the free 5-minute 8LovePatterns test to reveal the protection pattern that takes over when love feels unsafe. A science-backed, attachment-inspired relationship quiz for anxious, avoidant, overthinking, and repeating relationship patterns."/>
@@ -24,7 +35,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:url" content="https://8lovepatterns.com/"/>
 <meta property="og:site_name" content="8LovePatterns"/>
 <link rel="canonical" href="https://8lovepatterns.com/"/>
-<link rel="icon" href="assets/logo_mascot.png"/>
+<link rel="icon" href="/assets/logo_mascot.png"/>
 <style>noscript{display:none!important;}</style>
 
 <!-- ============================================================
@@ -55,7 +66,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     if (window.LP_ADS_ID) gtag('config', window.LP_ADS_ID);
   })();
 </script>
-<script src="analytics.js"></script>
+<script src="/analytics.js"></script>
 
 <script type="application/ld+json">
 {
@@ -75,7 +86,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   ]
 }
 </script>
-<link rel="stylesheet" href="colors_and_type.css"/>
+<link rel="stylesheet" href="/colors_and_type.css"/>
 <style>
   * { box-sizing: border-box; }
   html, body { margin:0; padding:0; }
@@ -484,8 +495,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div id="root"></div>
 
-<script src="vendor/react.production.min.js"></script>
-<script src="vendor/react-dom.production.min.js"></script>
-<script src="app.js"></script>
+<script src="/vendor/react.production.min.js"></script>
+<script src="/vendor/react-dom.production.min.js"></script>
+<script src="/app.js"></script>
 </body>
 </html>

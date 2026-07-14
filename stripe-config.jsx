@@ -58,7 +58,7 @@ const LP_STRIPE = {
      Leave empty unless you want per-profile Stripe stats. */
   links: {
     inc: '', gue: '', fug: '', alc: '', sau: '', mir: '', cam: '', bas: '',
-    // anc (The Anchor) is the secure center. It is not sold.
+    // anc (The Harbor) is the secure center. It is not sold.
   },
 };
 

@@ -206,8 +206,8 @@ export const content = {
         kind: 'compatColumns', n: 5,
         columns: [
           { label: 'The ones who soothe you', tone: 'apaise',
-            blurb: 'Someone with a high Anchor, a Bastion who has learned to open up, a Savior who no longer sacrifices themselves. They don\u2019t turn your fear of being abandoned into a daily routine. They\u2019re steady, readable, able to repair, and your fear falls asleep gently beside them.',
-            items: [{ code: 'anc', name: 'High Anchor' }, { code: 'bas', name: 'Open Bastion' }, { code: 'sau', name: 'Steady Savior' }] },
+            blurb: 'Someone with a high Harbor, a Bastion who has learned to open up, a Savior who no longer sacrifices themselves. They don\u2019t turn your fear of being abandoned into a daily routine. They\u2019re steady, readable, able to repair, and your fear falls asleep gently beside them.',
+            items: [{ code: 'anc', name: 'High Harbor' }, { code: 'bas', name: 'Open Bastion' }, { code: 'sau', name: 'Steady Savior' }] },
           { label: 'The ones who understand you', tone: 'comprend',
             blurb: 'A Chameleon or a Savior still on the way, an Arsonist who has calmed down. They know from the inside the fear of losing your place. They understand you without necessarily soothing you, and with them everything depends on each person\u2019s Anchor.',
             items: [{ code: 'cam', name: 'Chameleon on the way' }, { code: 'sau', name: 'Savior on the way' }, { code: 'inc', name: 'Calmed Arsonist' }] },
