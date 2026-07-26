@@ -34,7 +34,7 @@ function Icon({ name, size=20, stroke=1.75, className='', style={} }) {
 }
 
 /* ---- Boutons ---- */
-function Button({ children, variant='primary', size='md', icon, iconLeft, onClick, href, full, style={}, type, static: isStatic }) {
+function Button({ children, variant='primary', size='md', icon, iconLeft, onClick, href, full, style={}, type, static: isStatic, className='' }) {
   const base = {
     fontFamily:'var(--font-body)', fontWeight:700, cursor:'pointer', border:'none',
     display:'inline-flex', alignItems:'center', justifyContent:'center', gap:'.55em',
@@ -54,9 +54,6 @@ function Button({ children, variant='primary', size='md', icon, iconLeft, onClic
     secondary:{ background:'transparent', color:'var(--encre)', boxShadow:'inset 0 0 0 1.5px var(--encre)' },
     ghost:{ background:'transparent', color:'var(--violet)', padding:'10px 8px' },
     light:{ background:'#fff', color:'var(--encre)', boxShadow:'var(--sh-sm)' },
-    /* Homepage/header action green (validated mockup). Fill comes from the
-       --green-cta token so the colour is changed in one place, never here. */
-    green:{ background:'var(--green-cta)', color:'var(--green-cta-text)', boxShadow:'var(--sh-green-cta)' },
   };
   const [hover, setHover] = useState(false);
   const [pressed, setPressed] = useState(false);
@@ -66,12 +63,11 @@ function Button({ children, variant='primary', size='md', icon, iconLeft, onClic
     secondary:{ background:'var(--encre)', color:'#fff' },
     ghost:{ opacity:.7 },
     light:{ transform:'translateY(-1px)', boxShadow:'var(--sh-md)' },
-    green:{ background:'var(--green-cta-600)', transform:'translateY(-1px)' },
   }[variant]) : {};
   const pressStyle = (pressed && !isStatic) ? { transform:'scale(.96)' } : {};
   const endPress = ()=>setPressed(false);
   const props = {
-    onClick, type, style:{ ...base, ...sizes[size], ...variants[variant], ...hoverStyle, ...pressStyle },
+    onClick, type, className, style:{ ...base, ...sizes[size], ...variants[variant], ...hoverStyle, ...pressStyle },
     onMouseEnter:()=>setHover(true), onMouseLeave:()=>{ setHover(false); endPress(); },
     onMouseDown:()=>setPressed(true), onMouseUp:endPress,
     onTouchStart:()=>setPressed(true), onTouchEnd:endPress, onTouchCancel:endPress,
@@ -83,23 +79,22 @@ function Button({ children, variant='primary', size='md', icon, iconLeft, onClic
 }
 
 /* ---- Layout ---- */
-const Container = ({ children, narrow, style }) =>
-  <div style={{ maxWidth: narrow?'var(--maxw-readable)':'var(--maxw)', margin:'0 auto', padding:'0 var(--gutter)', ...style }}>{children}</div>;
+const Container = ({ children, narrow, style, className }) =>
+  <div className={className} style={{ maxWidth: narrow?'var(--maxw-readable)':'var(--maxw)', margin:'0 auto', padding:'0 var(--gutter)', ...style }}>{children}</div>;
 
 const Eyebrow = ({ children, color }) =>
   <div className="lp-eyebrow" style={{ color: color||'var(--ink-3)' }}>{children}</div>;
 
-/* ---- Marque. `accent` overrides the colour of the "Patterns" half of the
-   wordmark; the header passes --brand-rose per the validated mockup, every
-   other caller (footer included) keeps the historical --corail rendering. ---- */
-function Logo({ light, size=22, onClick, accent }) {
+/* ---- Marque. "Patterns" is always --corail (the single site green),
+   everywhere it appears — nav, footer, /test shell. ---- */
+function Logo({ light, size=22, onClick }) {
   return (
     <div onClick={onClick} style={{ display:'flex', alignItems:'center', gap:'9px', cursor:'pointer', userSelect:'none' }}>
       <img src="assets/8lovepatterns-logo.png" alt="" width={size+10} height={size+10}
         style={{ borderRadius:'50%', objectFit:'contain', flexShrink:0 }}/>
       <span style={{ fontFamily:'var(--font-display)', fontWeight:800, fontSize:size*0.92, letterSpacing:'-.02em',
         color: light?'#fff':'var(--encre)' }}>
-        8Love<span style={{ color: accent||'var(--corail)' }}>Patterns</span>
+        8Love<span style={{ color:'var(--corail)' }}>Patterns</span>
       </span>
     </div>
   );
@@ -151,7 +146,7 @@ function EmpriseTag({ level }) {
   const map = {
     'Very active': { pct:0.9,  c:'#D8564A', key:'high' },
     'Emerging':    { pct:0.55, c:'#C7973F', key:'mid'  },
-    'Integrated':  { pct:0.25, c:'#3FA06B', key:'low'  },
+    'Integrated':  { pct:0.25, c:'var(--cta)', key:'low'  },
   };
   const m = map[level] || map['Emerging'];
   return (

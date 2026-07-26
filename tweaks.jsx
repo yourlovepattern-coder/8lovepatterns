@@ -12,8 +12,8 @@ const LP_TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 
 /* ---- Mood: the "emotional intensity" accent that runs through CTAs, chips, highlights ---- */
 const LP_MOODS = {
-  green: { label:'Apple-Health green', accent:'#2FBE73', pressed:'#24A362', soft:'#E4F7EC',
-    hero:['#2E8294','#236B7C'], glow:'47,190,115' },
+  green: { label:'Apple-Health green', accent:'#59c021', pressed:'color-mix(in srgb, #59c021 86%, #000)', soft:'color-mix(in srgb, #59c021 14%, #fff)',
+    hero:['#2E8294','#236B7C'], glow:'89,192,33' },
   rose:  { label:'Tender rose', accent:'#E0627F', pressed:'#CC5070', soft:'#FBE6EC',
     hero:['#7C6BB0','#5E5193'], glow:'224,98,127' },
   sage:  { label:'Calm sage', accent:'#549A7E', pressed:'#43886C', soft:'#E2EFE8',

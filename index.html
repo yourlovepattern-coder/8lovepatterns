@@ -257,6 +257,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   @media (max-width: 900px) {
     .lp-desktop-nav { display:none !important; }
     .lp-burger-wrap { display:flex !important; }
+    /* Header Container's own inline padding (0 20px) and the mobile CTA
+       Button's own size preset both out-rank a plain inline style override,
+       so these two live here instead — see chrome.jsx. */
+    .lp-nav-inner { padding: 0 12px !important; }
+    .lp-nav-mobile-cta { padding: 6px 12px !important; font-size: .74rem !important; }
     .lp-hero-grid { grid-template-columns: 1fr !important; gap:36px !important; }
     .lp-mech-grid { grid-template-columns: 1fr 1fr !important; }
     .lp-2col { grid-template-columns: 1fr !important; }
@@ -449,17 +454,33 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   .lp-hm-cta-row { display: flex; justify-content: center; margin-top: clamp(24px, 3vw, 34px); }
 
-  /* ---- 1. HERO ---- */
+  /* ---- 1. HERO ----------------------------------------------------------
+     min-height: 90vh so the hero fills nearly the whole first screen at
+     1440x900-ish, with the content column vertically centered. Horizontal
+     padding lives on .lp-hm-hero-inner, NOT this section, so .lp-hm-floats
+     (a sibling of hero-inner) can span truly edge-to-edge and "2% from the
+     card to the edge" means 2% of the real window, not the 1160px column. */
   .lp-hm-hero {
     position: relative;
-    background: linear-gradient(180deg, #E6EBF2 0%, #F3F6FA 45%, #FFFFFF 100%);
-    padding: clamp(28px, 4vw, 52px) var(--gutter) clamp(40px, 5vw, 68px);
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    background: var(--hero-bg-grad);
+    padding: clamp(24px, 3vw, 40px) 0;
     overflow: hidden;
   }
-  .lp-hm-hero-inner { position: relative; max-width: var(--maxw); margin: 0 auto; }
+  .lp-hm-hero-inner { position: relative; width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
   /* Kept narrow on purpose: the floating cards need the outer thirds of the
-     hero, and the mockup's headline column is a lot narrower than the page. */
-  .lp-hm-hero-content { position: relative; z-index: 3; max-width: 560px; margin: 0 auto; text-align: center; }
+     window, and the mockup's headline column is a lot narrower than the page.
+     No align-items here on purpose: default `stretch` gives every child the
+     full 640px to lay out against (each section centers its own content via
+     text-align/justify-content) — `align-items:center` would shrink-wrap
+     each child to its own fit-content width instead, which was wrapping the
+     3-stat row a beat early. */
+  .lp-hm-hero-content {
+    position: relative; z-index: 3; max-width: 640px; margin: 0 auto; text-align: center;
+    display: flex; flex-direction: column;
+  }
 
   .lp-hm-title {
     font-family: var(--font-display);
@@ -470,10 +491,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     color: var(--encre);
     margin: 0;
     text-wrap: balance;
+    order: 1;
   }
+  .lp-hm-stats { order: 2; }
+  .lp-hm-sub { order: 3; }
+  .lp-hm-cta-row { order: 4; }
+  .lp-hm-stars { order: 5; }
 
-  /* Floating cards. Absolutely positioned around the headline on desktop,
-     replaced by .lp-hm-float-row on phones so the hero never overflows. */
+  /* Floating cards: absolutely positioned over the FULL .lp-hm-hero section
+     (edge-to-edge, no padding of its own), replaced by .lp-hm-cluster on
+     phones so the hero never overflows. */
   .lp-hm-floats { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
   .lp-hm-float {
     position: absolute;
@@ -509,12 +536,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .lp-hm-drift { animation: none; transform: none; }
   }
 
-  .lp-hm-float-row { display: none; }
-  .lp-hm-float-sm {
-    width: 84px; height: 84px; border-radius: 18px; overflow: hidden;
-    box-shadow: 0 10px 24px rgba(20,20,43,.16); background: #fff; flex: 0 0 auto;
+  /* ---- Mobile photo cluster (Liven structure): one dominant tile with
+     several smaller, rotated, overlapping satellites. Hidden on desktop,
+     where .lp-hm-floats takes over. Height is capped at ~40% of the
+     viewport height per the corrections brief. ---- */
+  .lp-hm-cluster { display: none; }
+  .lp-hm-cluster-main, .lp-hm-cluster-sat {
+    position: absolute; border-radius: 18px; overflow: hidden; background: #fff;
+    box-shadow: 0 10px 24px rgba(20,20,43,.18);
   }
-  .lp-hm-float-sm img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .lp-hm-cluster-main img, .lp-hm-cluster-sat img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .lp-hm-cluster-main {
+    width: 55%; aspect-ratio: 4 / 5;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    z-index: 4;
+  }
+  .lp-hm-cluster-sat { aspect-ratio: 1 / 1; }
 
   /* Hero proof row */
   .lp-hm-stats {
@@ -526,13 +563,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .lp-hm-stat { flex: 0 1 156px; text-align: center; }
   .lp-hm-stat-vis { height: 46px; display: grid; place-items: center; margin-bottom: 8px; }
   .lp-hm-stat-emoji { width: 42px; height: 42px; object-fit: contain; display: block; }
-  .lp-hm-avatars { display: inline-flex; align-items: center; }
-  .lp-hm-avatars img {
-    width: 32px; height: 32px; border-radius: 50%; object-fit: cover;
-    border: 2px solid #fff; background: #E3E9F0; display: block;
-  }
-  .lp-hm-avatars img + img { margin-left: -11px; }
-  .lp-hm-avatars .badge { width: 20px; height: 20px; border: none; margin-left: -7px; align-self: flex-end; background: none; }
   .lp-hm-stat-txt { margin: 0; font-size: .78rem; line-height: 1.35; color: var(--encre); }
   .lp-hm-stat-big { font-family: var(--font-display); font-weight: 800; font-size: 2.1rem; line-height: 1.1; letter-spacing: -.02em; }
   .lp-hm-stat-big-sm { font-family: var(--font-display); font-weight: 800; font-size: 1.02rem; line-height: 1.5; }
@@ -590,7 +620,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .lp-hm-mini-card {
     position: relative; border-radius: 20px; overflow: hidden;
-    min-height: clamp(300px, 26vw, 340px);
+    min-height: clamp(340px, 30vw, 400px);
     display: flex; align-items: flex-end;
   }
   .lp-hm-mini-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -656,11 +686,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   /* ---- Homepage responsive ---- */
   @media (max-width: 1080px) {
+    .lp-hm-hero { min-height: 0; padding-top: clamp(84px, 16vw, 104px); }
     .lp-hm-float, .lp-hm-emoji { display: none; }
-    .lp-hm-hero-content { max-width: 720px; }
-    .lp-hm-float-row {
-      display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 22px;
-    }
+    .lp-hm-hero-content { max-width: 520px; }
+    /* Mobile order: cluster, title, sub, CTA, stats (the button moves above
+       the stats here only — desktop order is untouched, see base rules). */
+    .lp-hm-cluster { display: block; position: relative; height: clamp(230px, 40vh, 320px); order: 0; margin-bottom: clamp(24px, 5vw, 40px); }
+    .lp-hm-title { order: 1; }
+    .lp-hm-sub { order: 2; margin-top: 16px; }
+    .lp-hm-cta-row { order: 3; margin-top: 20px; }
+    .lp-hm-stats { order: 4; margin-top: 26px; }
+    .lp-hm-stars { order: 5; }
   }
   @media (max-width: 980px) {
     .lp-hm-pgrid { grid-template-columns: repeat(2, 1fr); }
@@ -670,10 +706,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   @media (max-width: 620px) {
     .lp-hm-pgrid { grid-template-columns: 1fr; }
     .lp-hm-sci-grid { grid-template-columns: 1fr; }
-    .lp-hm-stats { gap: 22px 14px; }
-    .lp-hm-stat { flex: 0 1 132px; }
+    /* One row, no wrap: three equal-width stats instead of 2-then-1. */
+    .lp-hm-stats { flex-wrap: nowrap; gap: 8px; }
+    .lp-hm-stat { flex: 1 1 0; min-width: 0; }
+    .lp-hm-stat-vis { height: 36px; margin-bottom: 6px; }
+    .lp-hm-stat-emoji { width: 34px; height: 34px; }
+    .lp-hm-stat-txt { font-size: .66rem; }
+    .lp-hm-stat-big { font-size: 1.5rem; }
+    .lp-hm-stat-big-sm { font-size: .78rem; }
     .lp-hm-sub br { display: none; }
-    .lp-hm-title { font-size: clamp(2rem, 1.2rem + 4.4vw, 2.6rem); }
+    .lp-hm-sub { font-size: .84rem; }
+    .lp-hm-title { font-size: clamp(1.9rem, 1.3rem + 4vw, 2.4rem); }
+    .lp-hm-cluster { height: clamp(200px, 36vh, 260px); }
   }
 </style>
 </head>

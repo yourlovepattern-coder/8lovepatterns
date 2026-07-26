@@ -16,7 +16,7 @@ const BRAND = {
   ink:     '#14142B',
   ink2:    '#57527A',
   ink3:    '#8A86A3',
-  corail:  '#2FBE73',
+  corail:  '#59c021',
   or:      '#C7973F',
   hair:    '#EAE3D7',
   font:    "'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",

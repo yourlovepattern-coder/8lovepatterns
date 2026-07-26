@@ -93,7 +93,7 @@ LP_STRIPE._showPreparing = function () {
     o.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(20,20,43,.72);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;';
     o.innerHTML =
       '<div style="background:#fff;border-radius:18px;padding:24px 30px;font-family:var(--font-body),system-ui,sans-serif;color:#14142B;font-weight:600;font-size:15px;display:flex;align-items:center;gap:14px;box-shadow:0 24px 56px -16px rgba(20,20,43,.45);">' +
-        '<span style="width:20px;height:20px;border:3px solid #EAE3D7;border-top-color:#2FBE73;border-radius:50%;display:inline-block;animation:lpspin .8s linear infinite;"></span>' +
+        '<span style="width:20px;height:20px;border:3px solid #EAE3D7;border-top-color:#59c021;border-radius:50%;display:inline-block;animation:lpspin .8s linear infinite;"></span>' +
         '<span>' + msg + '</span>' +
       '</div>' +
       '<style>@keyframes lpspin{to{transform:rotate(360deg)}}</style>';

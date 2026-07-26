@@ -6,9 +6,8 @@
    section here without a mockup for it.
    Layout classes are all `lp-hm-*` and live in index.html's <style>. */
 
-/* The five gold stars under the hero CTA ship behind this flag. Flip to true
-   to show them; nothing else in the hero changes. */
-const SHOW_HERO_STARS = false;
+/* The five gold stars under the hero CTA ship behind this flag. */
+const SHOW_HERO_STARS = true;
 
 /* Every CTA on this page is a real <a href="/test"> — crawlable, middle-
    clickable, keyboard-reachable — and this handler keeps the navigation
@@ -29,34 +28,35 @@ function testNav(go) {
 
 /* ---- Hero floating cards ------------------------------------------------
    Seven animated WebP cards (three left, four right) plus three small white
-   emoji cards, scattered around the headline exactly as in the mockup.
-   Sizes are deliberately uneven, some portrait and some square.
+   emoji cards, spread wide across the hero — outermost cards sit ~2% from
+   the browser edge, not from the text column, so the spread scales with the
+   window (see .lp-hm-floats: it spans the full hero section, not the
+   1160px content wrapper). Sizes range 150-230px, mixing portrait and
+   square, per the validated mockup.
    Every card is decorative: alt="" + aria-hidden.
    `dur` / `delay` / `rot` drive the per-card float (see .lp-hm-drift in
    index.html); the delays are all different so no two cards ever move in
    sync. The whole float is disabled under prefers-reduced-motion. */
 const HERO_CARDS = [
   /* left */
-  { src: 'couple2.webp',   w: 130, h: 172, top: '2%',  left: '6%',    dy: '-11px', r0: '-2deg', r1: '0deg',    dur: '7.4s', delay: '-0.4s' },
-  { src: 'butterfly.webp', w: 108, h: 138, top: '33%', left: '-1%',   dy: '-9px',  r0: '1.5deg', r1: '-0.5deg', dur: '8.6s', delay: '-3.1s' },
-  { src: 'flower.webp',    w: 122, h: 122, top: '63%', left: '8%',    dy: '-12px', r0: '-1deg',  r1: '1deg',    dur: '6.5s', delay: '-1.7s' },
+  { src: 'couple2.webp',   w: 200, h: 260, top: '5%',  left: '2%',  dy: '-11px', r0: '-2deg', r1: '0deg',    dur: '7.4s', delay: '-0.4s' },
+  { src: 'butterfly.webp', w: 180, h: 180, top: '42%', left: '8%',  dy: '-9px',  r0: '1.5deg', r1: '-0.5deg', dur: '8.6s', delay: '-3.1s' },
+  { src: 'flower.webp',    w: 160, h: 200, top: '70%', left: '19%', dy: '-12px', r0: '-1deg',  r1: '1deg',    dur: '6.5s', delay: '-1.7s' },
   /* right */
-  { src: 'happy.webp',     w: 108, h: 108, top: '3%',  right: '13%',  dy: '-10px', r0: '1deg',   r1: '-1deg',   dur: '8.1s', delay: '-2.6s' },
-  { src: 'dance2.webp',    w: 96,  h: 138, top: '0%',  right: '-8%',  dy: '-8px',  r0: '-1.5deg', r1: '0.5deg', dur: '6.9s', delay: '-5.2s' },
-  { src: 'wave.webp',      w: 112, h: 112, top: '19%', right: '1%',   dy: '-11px', r0: '2deg',   r1: '0deg',    dur: '7.9s', delay: '-0.9s' },
-  { src: 'dance.webp',     w: 146, h: 140, top: '55%', right: '7%',   dy: '-12px', r0: '-1deg',  r1: '1.5deg',  dur: '8.9s', delay: '-4.3s' },
+  { src: 'happy.webp',     w: 160, h: 160, top: '10%', right: '21%', dy: '-10px', r0: '1deg',   r1: '-1deg',   dur: '8.1s', delay: '-2.6s' },
+  { src: 'dance2.webp',    w: 190, h: 230, top: '2%',  right: '2%',  dy: '-8px',  r0: '-1.5deg', r1: '0.5deg', dur: '6.9s', delay: '-5.2s' },
+  { src: 'wave.webp',      w: 200, h: 200, top: '36%', right: '3%',  dy: '-11px', r0: '2deg',   r1: '0deg',    dur: '7.9s', delay: '-0.9s' },
+  { src: 'dance.webp',     w: 210, h: 200, top: '62%', right: '7%',  dy: '-12px', r0: '-1deg',  r1: '1.5deg',  dur: '8.9s', delay: '-4.3s' },
 ];
 
-/* Small white square cards, each carrying one emoji. */
+/* Small white square cards, each carrying one emoji. Placements per the
+   corrections pass: coeur_repare next to the title, love_comptability on
+   the left, puzzle just above the dance.webp card on the right. */
 const HERO_EMOJI = [
-  { src: 'love_discution.png', s: 62, top: '19%', left: '20%',  dy: '-10px', r0: '-3deg', r1: '1deg',  dur: '6.7s', delay: '-2.2s' },
-  { src: 'coeur.png',          s: 68, top: '11%', right: '25%', dy: '-9px',  r0: '2deg',  r1: '-2deg', dur: '7.7s', delay: '-4.8s' },
-  { src: 'coeur_puzzle.png',   s: 64, top: '70%', right: '17%', dy: '-11px', r0: '-2deg', r1: '2deg',  dur: '8.4s', delay: '-1.2s' },
+  { src: 'coeur_repare.png',      s: 80, top: '8%',  left: '38%',  dy: '-10px', r0: '-3deg', r1: '1deg',  dur: '6.7s', delay: '-2.2s' },
+  { src: 'love_comptability.png', s: 80, top: '32%', left: '25%',  dy: '-9px',  r0: '2deg',  r1: '-2deg', dur: '7.7s', delay: '-4.8s' },
+  { src: 'puzzle.png',            s: 80, top: '52%', right: '12%', dy: '-11px', r0: '-2deg', r1: '2deg',  dur: '8.4s', delay: '-1.2s' },
 ];
-
-/* The three cards kept on phones, where the scatter is replaced by a single
-   centred row so the hero can never overflow horizontally. */
-const HERO_CARDS_MOBILE = ['couple2.webp', 'happy.webp', 'wave.webp'];
 
 function heroFloatStyle(c) {
   return {
@@ -70,45 +70,57 @@ function HeroFloatingCards() {
     <div className="lp-hm-floats" aria-hidden="true">
       {HERO_CARDS.map(c => (
         <div key={c.src} className="lp-hm-float lp-hm-drift" style={heroFloatStyle(c)}>
-          <img src={`public/assets/hero/${c.src}`} alt="" aria-hidden="true"/>
+          <img src={`assets/hero/${c.src}`} alt="" aria-hidden="true"/>
         </div>
       ))}
       {HERO_EMOJI.map(c => (
         <div key={c.src} className="lp-hm-emoji lp-hm-drift"
           style={heroFloatStyle({ ...c, w: c.s, h: c.s })}>
-          <img src={`public/assets/emoji/${c.src}`} alt="" aria-hidden="true"/>
+          <img src={`assets/emoji/${c.src}`} alt="" aria-hidden="true"/>
         </div>
       ))}
     </div>
   );
 }
 
-function HeroMobileRow() {
+/* ---- Mobile photo cluster (theliven.com structure, not its style): one
+   dominant tile (~55% of screen width) with 5 smaller, rotated satellites
+   overlapping its edges, the whole thing capped at ~40% of viewport height.
+   Reuses the same hero photos as the desktop float — no new assets. ---- */
+const CLUSTER_MAIN = 'couple2.webp';
+const CLUSTER_SATELLITES = [
+  { src: 'butterfly.webp', w: '26%', top: '4%',  left: '6%',  rot: '-4deg', z: 2 },
+  { src: 'flower.webp',    w: '30%', top: '56%', left: '2%',  rot: '3deg',  z: 3 },
+  { src: 'happy.webp',     w: '18%', top: '0%',  left: '60%', rot: '4deg',  z: 2 },
+  { src: 'dance2.webp',    w: '24%', top: '58%', left: '64%', rot: '-3deg', z: 3 },
+  { src: 'wave.webp',      w: '15%', top: '32%', left: '82%', rot: '2deg',  z: 5 },
+];
+
+function HeroMobileCluster() {
   return (
-    <div className="lp-hm-float-row" aria-hidden="true">
-      {HERO_CARDS_MOBILE.map(src => (
-        <div key={src} className="lp-hm-float-sm">
-          <img src={`public/assets/hero/${src}`} alt="" aria-hidden="true"/>
+    <div className="lp-hm-cluster" aria-hidden="true">
+      {CLUSTER_SATELLITES.map(s => (
+        <div key={s.src} className="lp-hm-cluster-sat"
+          style={{ width: s.w, top: s.top, left: s.left, transform: `rotate(${s.rot})`, zIndex: s.z }}>
+          <img src={`assets/hero/${s.src}`} alt="" aria-hidden="true"/>
         </div>
       ))}
+      <div className="lp-hm-cluster-main">
+        <img src={`assets/hero/${CLUSTER_MAIN}`} alt="" aria-hidden="true"/>
+      </div>
     </div>
   );
 }
 
-/* ---- Hero proof row: three numbers, each under its own visual ---- */
-const STAT_AVATARS = ['inc', 'gue', 'sau', 'bas'];
-
+/* ---- Hero proof row: three numbers, each under its own visual. The
+   archetype-avatar stack is gone (corrections pass) — certified2.png alone
+   carries the "Built on 50 years" claim. ---- */
 function HeroStats() {
   return (
     <div className="lp-hm-stats">
       <div className="lp-hm-stat">
         <div className="lp-hm-stat-vis">
-          <span className="lp-hm-avatars">
-            {STAT_AVATARS.map(code => (
-              <img key={code} src={`assets/archetypes/${code}_avatar.webp`} alt="" aria-hidden="true"/>
-            ))}
-            <img className="badge" src="public/assets/emoji/certified.png" alt="" aria-hidden="true"/>
-          </span>
+          <img className="lp-hm-stat-emoji" src="assets/emoji/certified2.png" alt="" aria-hidden="true"/>
         </div>
         <p className="lp-hm-stat-txt">
           Built on<br/>
@@ -119,7 +131,7 @@ function HeroStats() {
 
       <div className="lp-hm-stat">
         <div className="lp-hm-stat-vis">
-          <img className="lp-hm-stat-emoji" src="public/assets/emoji/coeur_puzzle.png" alt="" aria-hidden="true"/>
+          <img className="lp-hm-stat-emoji" src="assets/emoji/coeur_puzzle.png" alt="" aria-hidden="true"/>
         </div>
         <p className="lp-hm-stat-txt">
           <b className="lp-hm-stat-big">8</b><br/>
@@ -129,7 +141,7 @@ function HeroStats() {
 
       <div className="lp-hm-stat">
         <div className="lp-hm-stat-vis">
-          <img className="lp-hm-stat-emoji" src="public/assets/emoji/anchor_2693.png" alt="" aria-hidden="true"/>
+          <img className="lp-hm-stat-emoji" src="assets/emoji/anchor_2693.png" alt="" aria-hidden="true"/>
         </div>
         <p className="lp-hm-stat-txt">
           <b className="lp-hm-stat-big-sm">30 days</b><br/>
@@ -169,19 +181,19 @@ const MINI_ARTICLES = [
     img: 'mini_blog_01.webp',
     label: 'Pattern research',
     title: 'One step at a time',
-    text: 'The Anchor measures how deep your defense mechanism runs. The better you get at catching the early signs, the more of your own reaction you get to keep.',
+    text: 'The Anchor measures how deep your defense runs. The earlier you catch the signs, the more of your reaction stays yours.',
   },
   {
     img: 'mini_blog_02.webp',
     label: 'New habits',
     title: "Your pattern doesn't define you",
-    text: 'Your defenses were never the enemy. They kept something safe once, and most people find that accepting that is where the movement actually starts.',
+    text: 'Your defenses were never the enemy. They kept something safe once, and accepting that is where movement usually starts.',
   },
   {
     img: 'mini_blog_03.webp',
     label: 'New habits',
     title: 'Move at your own pace',
-    text: "Everyone arrives with a different history, so your answers shape a plan built around your profile rather than a general template. Decades of automatic reactions don't unwind overnight, and that's fine.",
+    text: "Your answers shape a plan built around your profile, not a template. Decades of automatic reactions don't unwind overnight, and that's fine.",
   },
 ];
 
@@ -191,7 +203,7 @@ function MiniArticles({ go }) {
     <section className="lp-hm-mini">
       {MINI_ARTICLES.map(a => (
         <article key={a.title} className="lp-hm-mini-card">
-          <img className="lp-hm-mini-bg" src={`public/assets/mini/${a.img}`} alt="" aria-hidden="true"/>
+          <img className="lp-hm-mini-bg" src={`assets/mini/${a.img}`} alt="" aria-hidden="true"/>
           <span className="lp-hm-mini-veil" aria-hidden="true"/>
           <div className="lp-hm-mini-body">
             <span className="lp-hm-mini-label">{a.label}</span>
@@ -257,12 +269,19 @@ function Home({ go }) {
   return (
     <div className="lp-hm">
 
-      {/* ---- HERO ---- */}
+      {/* ---- HERO ----------------------------------------------------------
+          HeroFloatingCards is a sibling of .lp-hm-hero-inner, not nested in
+          it, so its "2% from the edge" positions are relative to the full
+          viewport-width section, not the 1160px content column (see
+          .lp-hm-floats in index.html). Children of .lp-hm-hero-content use
+          a flex `order` so the mobile breakpoint can reflow to
+          cluster/title/sub/cta/stats without touching the desktop order
+          (title/stats/sub/cta/stars) or duplicating markup. */}
       <section className="lp-hm-hero">
+        <HeroFloatingCards/>
         <div className="lp-hm-hero-inner">
-          <HeroFloatingCards/>
           <div className="lp-hm-hero-content">
-            <HeroMobileRow/>
+            <HeroMobileCluster/>
             <h1 className="lp-hm-title">Stop reliving the<br/>same heartbreak.</h1>
             <HeroStats/>
             <p className="lp-hm-sub">
@@ -270,7 +289,7 @@ function Home({ go }) {
               <br/><span className="lp-hm-coral">attachment pattern works</span> and why you do things the way you do.
             </p>
             <div className="lp-hm-cta-row">
-              <Button variant="green" size="lg" icon="arrow-right" href="/test" onClick={nav}>Take the free test</Button>
+              <Button variant="primary" size="lg" icon="arrow-right" href="/test" onClick={nav}>Take the free test</Button>
             </div>
             <HeroStars/>
           </div>
@@ -323,7 +342,7 @@ function Home({ go }) {
             <p>8LovePatterns is educational and is not a clinical diagnosis.</p>
           </div>
           <div className="lp-hm-cta-row">
-            <Button variant="green" size="lg" icon="arrow-right" href="/test" onClick={nav}>Take the free test</Button>
+            <Button variant="primary" size="lg" icon="arrow-right" href="/test" onClick={nav}>Take the free test</Button>
           </div>
         </div>
       </section>

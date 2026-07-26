@@ -8,8 +8,8 @@ function CircleScale({ value, onPick }) {
     { v:1, c:'var(--violet)', size:66 },
     { v:2, c:'var(--violet)', size:54 },
     { v:3, c:'#9A86C4', size:42 },
-    { v:4, c:'#3FA06B', size:54 },
-    { v:5, c:'#3FA06B', size:66 },
+    { v:4, c:'var(--cta)', size:54 },
+    { v:5, c:'var(--cta)', size:66 },
   ];
   return (
     <div style={{ display:'flex', alignItems:'center', gap:'clamp(12px,2.2vw,22px)', flexWrap:'nowrap' }}>
@@ -26,7 +26,7 @@ function CircleScale({ value, onPick }) {
           </button>
         );
       })}
-      <span style={{ color:'#3FA06B', fontWeight:700, fontSize:'1.05rem', whiteSpace:'nowrap' }}>{t('scale.agree')}</span>
+      <span style={{ color:'var(--cta)', fontWeight:700, fontSize:'1.05rem', whiteSpace:'nowrap' }}>{t('scale.agree')}</span>
     </div>
   );
 }
@@ -38,7 +38,7 @@ function Intro({ go, onResult }) {
 
   const phases = [
     ['feather','#2C7E91','#E4F0F2','Step 1', t('intro.s1t'), t('intro.s1d')],
-    ['heart','#3FA06B','#D9EFE2','Step 2', t('intro.s2t'), t('intro.s2d')],
+    ['heart','var(--cta)','var(--cta-soft)','Step 2', t('intro.s2t'), t('intro.s2d')],
     ['compass','#6B5CCB','#ECE9FB','Step 3', t('intro.s3t'), t('intro.s3d')],
   ];
 
@@ -263,15 +263,15 @@ function Analyse({ go }) {
   },[]);
   return (
     <div style={{ minHeight:'calc(100vh - 72px)', display:'grid', placeItems:'center',
-      background:'linear-gradient(160deg, var(--mod-how-bold1) 0%, var(--mod-how-bold2) 100%)', color:'#fff' }}>
+      background:'var(--hero-bg-grad)', color:'var(--ink)' }}>
       <div style={{ textAlign:'center', padding:'0 24px' }}>
         <div style={{ width:130, height:130, margin:'0 auto', borderRadius:'50%', position:'relative', display:'grid', placeItems:'center' }}>
-          <div style={{ position:'absolute', inset:0, borderRadius:'50%', border:'3px solid rgba(255,255,255,.14)',
-            borderTopColor:'#fff', animation:'lp-spin 1s linear infinite' }}></div>
+          <div style={{ position:'absolute', inset:0, borderRadius:'50%', border:'3px solid rgba(20,20,43,.12)',
+            borderTopColor:'var(--cta)', animation:'lp-spin 1s linear infinite' }}></div>
           <Icon name="anchor" size={48} style={{ color:'var(--or)' }}/>
         </div>
-        <h2 className="lp-h2" style={{ color:'#fff', marginTop:34 }}>We're reading between your lines.</h2>
-        <p style={{ color:'rgba(255,255,255,.6)', marginTop:14, height:24, transition:'all .3s' }}>{lines[step]}</p>
+        <h2 className="lp-h2" style={{ color:'var(--ink)', marginTop:34 }}>We're reading between your lines.</h2>
+        <p style={{ color:'var(--ink-3)', marginTop:14, height:24, transition:'all .3s' }}>{lines[step]}</p>
         <style>{`@keyframes lp-spin{to{transform:rotate(360deg)}}`}</style>
       </div>
     </div>

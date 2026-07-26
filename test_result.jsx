@@ -267,7 +267,7 @@ function OfferStyles(){
   .lp-offer-layer .price{ font-family:var(--font-display); font-weight:800; font-size:3.6rem; line-height:1; color:var(--ink); }
   .lp-offer-layer .price .once{ font-size:1.2rem; color:var(--ink-2); font-weight:600; }
   .lp-offer-layer .anchor-line{ font-size:1.05rem; color:var(--ink-2); margin:var(--sp-4) 0 var(--sp-6); line-height:1.4; }
-  .lp-offer-layer .cta{ display:inline-flex; align-items:center; gap:12px; font-family:var(--font-display); font-weight:800; font-size:1.4rem; color:#fff; background:var(--corail); padding:22px 44px; border:0; border-radius:100px; text-decoration:none; cursor:pointer; transition:background .18s,transform .18s; box-shadow:0 14px 34px -10px rgba(47,190,115,.45); width:100%; justify-content:center; }
+  .lp-offer-layer .cta{ display:inline-flex; align-items:center; gap:12px; font-family:var(--font-display); font-weight:800; font-size:1.4rem; color:#fff; background:var(--corail); padding:22px 44px; border:0; border-radius:100px; text-decoration:none; cursor:pointer; transition:background .18s,transform .18s; box-shadow:0 14px 34px -10px rgba(89,192,33,.45); width:100%; justify-content:center; }
   .lp-offer-layer .cta:hover{ background:var(--corail-600); transform:translateY(-2px); }
   .lp-offer-layer .cta svg{ width:26px; height:26px; }
   .lp-offer-layer .guarantee-line{ font-size:1.05rem; color:var(--ink-2); margin-top:var(--sp-5); font-weight:600; }

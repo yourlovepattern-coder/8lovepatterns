@@ -50,9 +50,9 @@
   --encre-500:    #3A3A4A;   /* lifted neutral                              */
   --violet:       #6B5CCB;   /* muted violet — interactive / links          */
   --violet-soft:  #ECE9FB;   /* violet wash                                 */
-  --corail:       #2FBE73;   /* retired coral now = green CTA */
-  --corail-600:   #24A362;   /* retired coral-pressed now = green pressed   */
-  --corail-soft:  #E4F7EC;   /* retired coral-wash now = green wash         */
+  --corail:       var(--cta);        /* retired coral now = single site green */
+  --corail-600:   var(--cta-600);
+  --corail-soft:  var(--cta-soft);
   --or:           #C7973F;   /* gold — the Ancre / integration / premium     */
   --or-soft:      #F6EDD8;
 
@@ -103,33 +103,30 @@
 
   /* ---- State ----------------------------------------------------------- */
   --focus-ring:  #6B5CCB;
-  --positive:    #3FA06B;
+  --positive:    var(--cta);   /* was a second green (#3FA06B) — collapsed onto the single site green */
   --warning:     #C7973F;
 
-  /* ---- Global CTA accent (Apple-Health rebuild) ------------------------
-     Every button on the site pulls from this, independent of --corail
-     (which stays reserved for /profils and /profil archetype UI). */
-  --cta:         #2FBE73;
-  --cta-600:     #24A362;
-  --cta-soft:    #E4F7EC;
-  --sh-cta:      0 10px 22px -6px rgba(47,190,115,.4);
+  /* ---- Global CTA accent -------------------------------------------------
+     THE single action color for every button on every page, no exceptions.
+     Runtime note: LP_MOODS.green in tweaks.jsx overrides --corail/-600/-soft
+     on :root at runtime (the tweaks panel's default mood) — keep that preset
+     in sync with this hex, it is the value that actually reaches the page. */
+  --cta:         #59c021;
+  --cta-600:     color-mix(in srgb, #59c021 86%, #000);
+  --cta-soft:    color-mix(in srgb, #59c021 14%, #fff);
+  --sh-cta:      0 10px 22px -6px rgba(89,192,33,.4);
 
   /* ---- Homepage redesign tokens (validated mockup, 2026) ---------------
-     --green-cta is the action-button fill for every CTA on the homepage and
-     for the header's "Reveal My Pattern" pill. It is deliberately separate
-     from --cta (#2FBE73) so the rest of the site keeps its current button
-     green. Never hard-code #59c021 in a component — go through the token.
-     --green-cta-600 is the pressed/hover shade, derived from the token.
-     --brand-rose colours the "Patterns" half of the wordmark in the header.
      --footer-grad is the footer's dark-blue -> blue vertical gradient; the
-     footer's text stays #FFFFFF on top of it. */
-  --green-cta:      #59c021;
-  --green-cta-600:  color-mix(in srgb, #59c021 86%, #000);
-  --green-cta-text: #FFFFFF;
-  --sh-green-cta:   0 10px 22px -6px rgba(89, 192, 33, .42);
-  --brand-rose:     #E0559E;
+     footer's text stays #FFFFFF on top of it. The "Patterns" half of the
+     wordmark uses --corail (the single site green) via Logo's default,
+     everywhere — no separate accent token.
+     --hero-bg-grad is the homepage hero's blue-gray -> white wash; the /test
+     flow (TestShell in test.jsx) reuses this exact value for its background,
+     see block F. Keep index.html's .lp-hm-hero in sync with this token. */
   --footer-grad:    linear-gradient(180deg, #1B2A5E 0%, #2C5CA8 100%);
   --footer-text:    #FFFFFF;
+  --hero-bg-grad:   linear-gradient(180deg, #E6EBF2 0%, #F3F6FA 45%, #FFFFFF 100%);
 
   /* ---- App-shell page background (Liven-style, sits behind white cards) */
   --page-bg:     #EEF1F4;
@@ -146,10 +143,10 @@
   --mod-anchor-deep1: #2E86C4;
   --mod-anchor-deep2: #1F6EA8;
 
-  --mod-how-wash:  #EDF9F2;
-  --mod-how-mid:   #1FA35C;
-  --mod-how-deep1: #1FA35C;
-  --mod-how-deep2: #158A4C;
+  --mod-how-wash:  color-mix(in srgb, var(--cta) 10%, #fff);
+  --mod-how-mid:   var(--cta);
+  --mod-how-deep1: var(--cta);
+  --mod-how-deep2: color-mix(in srgb, var(--cta) 70%, #000);
 
   --mod-cred-wash:  #EDF7F6;
   --mod-cred-mid:   #1E8E86;
@@ -166,8 +163,8 @@
   --sh-glyph: 0 4px 10px rgba(0,0,0,.15);            /* icon badges lift */
 
   /* ---- Bolder gradient stops for the two saturated bands ---------------- */
-  --mod-how-bold1:    #1FA35C;
-  --mod-how-bold2:    #0B5C34;
+  --mod-how-bold1:    var(--cta);
+  --mod-how-bold2:    color-mix(in srgb, var(--cta) 45%, #000);
   --mod-anchor-bold1: #163F63;
   --mod-anchor-bold2: #8FC6EE;
 

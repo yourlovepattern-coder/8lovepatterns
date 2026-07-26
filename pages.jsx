@@ -40,10 +40,15 @@ function Method({ go }) {
               Your answers place you on five levels, Clear to Buried. Shallow needs a reminder in the moment. Deep needs a plan that works before the moment, because in it, you're not reachable. Your report is written for your level, and it aims at the next one up, never a leap to Clear.
             </p>
             <div style={{ display:'flex', flexWrap:'wrap', gap:'8px', marginTop:16 }}>
-              {tiers.map(t=>(
-                <span key={t} style={{ padding:'5px 13px', borderRadius:'var(--r-pill)', fontSize:'.8rem', fontWeight:700,
-                  color:anchorColor, background:`color-mix(in srgb, ${anchorColor} 12%, #fff)` }}>{t}</span>
-              ))}
+              {tiers.map(t=>{
+                /* "Hooked" is the one tier marked in the site's coral accent —
+                   its only remaining job (text + this one marker), no buttons. */
+                const c = t==='Hooked' ? '#EE6352' : anchorColor;
+                return (
+                  <span key={t} style={{ padding:'5px 13px', borderRadius:'var(--r-pill)', fontSize:'.8rem', fontWeight:700,
+                    color:c, background:`color-mix(in srgb, ${c} 12%, #fff)` }}>{t}</span>
+                );
+              })}
             </div>
           </div>
         </Container>

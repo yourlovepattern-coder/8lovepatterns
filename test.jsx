@@ -40,8 +40,10 @@ function InlineRich({ text }){
   return parts.map((s,i)=> i%2===1 ? <strong key={i}>{s}</strong> : <React.Fragment key={i}>{s}</React.Fragment>);
 }
 
-/* 5-level intensity ramp: neutral (not me) → coral (completely me). */
-const LP_RAMP = ['#A7A2BC','#8CA9AE','#6FB08C','#4AB87D','#2FBE73'];
+/* 5-level intensity ramp: neutral (not me) → the site green (completely me).
+   Only the final, fully-saturated stop is the brand color; the rest are
+   transitional blend tones, left as-is. */
+const LP_RAMP = ['#A7A2BC','#8CA9AE','#6FB08C','#4AB87D','var(--cta)'];
 
 /* ---- One scale dot (used by the statement scale) ------------------------ */
 function ScaleDot({ v, size=30, active, onPick, label }){
@@ -411,12 +413,14 @@ const LP_HALTE_CODE = {
   'Sauveur':'sau', 'Caméléon':'cam', 'Alchimiste':'alc', 'Incendiaire':'inc',
 };
 
-/* ---- shared shell: slim header + centered column ------------------------ */
+/* ---- shared shell: slim header + centered column -------------------------
+   Background is the same blue-gray -> white wash as the homepage hero
+   (--hero-bg-grad), not the old cream/green — see block F. */
 function TestShell({ children, go }){
   return (
-    <div style={{ minHeight:'100vh', background:'var(--paper)', display:'flex', flexDirection:'column' }}>
+    <div style={{ minHeight:'100vh', background:'var(--hero-bg-grad)', display:'flex', flexDirection:'column' }}>
       <header style={{ display:'flex', alignItems:'center', justifyContent:'space-between',
-        padding:'18px clamp(20px,5vw,48px)', borderBottom:'1px solid var(--hairline)', background:'var(--paper)' }}>
+        padding:'18px clamp(20px,5vw,48px)', borderBottom:'1px solid var(--hairline)' }}>
         <Logo size={20} onClick={()=>go('home')}/>
         <LanguageWidget/>
       </header>
@@ -433,7 +437,7 @@ function TestIntro({ onStart }){
   return (
     <div style={{ maxWidth:620, margin:'clamp(20px,6vw,80px) auto 0', textAlign:'center' }}>
       <Avatar code="anc" size={84}/>
-      <h1 className="lp-h1" style={{ marginTop:18 }}>{tx({ fr:'On commence en douceur.', en:"Let's start gently." })}</h1>
+      <h1 className="lp-h1" style={{ marginTop:18, fontFamily:'var(--font-display)', fontWeight:800, letterSpacing:'-0.02em' }}>{tx({ fr:'On commence en douceur.', en:'Free Love pattern test' })}</h1>
       <p className="lp-lead" style={{ marginTop:14, maxWidth:520, marginInline:'auto' }}>
         {tx({ fr:"Une question à la fois. Réponds avec ton instinct, il n'y a pas de bonne réponse. On parle de ta vie à toi, telle qu'elle est aujourd'hui.",
               en:"One question at a time. Answer with your gut, there is no right answer. We're talking about your life, as it is today." })}

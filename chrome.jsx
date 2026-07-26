@@ -12,8 +12,8 @@ function Header({ go, route }) {
   return (
     <div className="lp-nav-wrap">
       <header className={`lp-nav-pill ${open?'is-open':''}`}>
-        <Container style={{ display:'flex', alignItems:'center', justifyContent:'space-between', height:64, padding:'0 20px' }}>
-          <Logo onClick={()=>go('home')} size={19} accent="var(--brand-rose)"/>
+        <Container className="lp-nav-inner" style={{ display:'flex', alignItems:'center', justifyContent:'space-between', height:64, padding:'0 20px' }}>
+          <Logo onClick={()=>go('home')} size={19}/>
           <nav style={{ display:'flex', alignItems:'center', gap:'4px' }} className="lp-desktop-nav">
             {links.map(l=>(
               l.href
@@ -29,9 +29,16 @@ function Header({ go, route }) {
               <LanguageWidget/>
               <div style={{ width:6 }}></div>
             </>)}
-            <Button size="sm" variant="green" onClick={()=>go('intro')}>{t('cta.reveal')}</Button>
+            <Button size="sm" onClick={()=>go('intro')}>{t('cta.reveal')}</Button>
           </nav>
-          <div style={{ display:'none', alignItems:'center', gap:'10px' }} className="lp-burger-wrap">
+          <div style={{ display:'none', alignItems:'center', gap:'6px' }} className="lp-burger-wrap">
+            {/* Shortened label + a dedicated size override (see .lp-nav-mobile-cta
+                in index.html): the full "Reveal My Pattern" pill, even at the
+                "sm" size, overflows a 375px nav pill once the logo and burger
+                are also in the row — Button's own size/variant presets always
+                win over an inline style prop, so the override has to live in
+                a stylesheet rule with !important. */}
+            <Button className="lp-nav-mobile-cta" onClick={()=>go('intro')}>Take the test</Button>
             <LanguageWidget compact/>
             <button onClick={()=>setOpen(o=>!o)} className="lp-icon-btn" style={{ background:'none', border:'none', cursor:'pointer', color:'var(--encre)' }}
               aria-label={open?'Close menu':'Open menu'}>
@@ -50,7 +57,7 @@ function Header({ go, route }) {
                       fontFamily:'var(--font-body)', fontWeight:600, fontSize:'1.05rem', padding:'12px 4px', color:'var(--ink-2)', borderRadius:'var(--r-sm)' }}>{l.label}</button>
               ))}
               <div style={{ height:8 }}></div>
-              <Button full variant="green" onClick={()=>{go('intro');setOpen(false);}}>{t('cta.reveal')}</Button>
+              <Button full onClick={()=>{go('intro');setOpen(false);}}>{t('cta.reveal')}</Button>
             </Container>
           </div>
         )}
