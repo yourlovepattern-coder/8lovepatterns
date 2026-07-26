@@ -456,29 +456,41 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   /* ---- 1. HERO ----------------------------------------------------------
      min-height: 90vh so the hero fills nearly the whole first screen at
-     1440x900-ish, with the content column vertically centered. Horizontal
-     padding lives on .lp-hm-hero-inner, NOT this section, so .lp-hm-floats
-     (a sibling of hero-inner) can span truly edge-to-edge and "2% from the
-     card to the edge" means 2% of the real window, not the 1160px column. */
+     1440x900-ish. .lp-hm-hero-stage caps the composition (cards + text) at
+     1280px and centers it, so on very wide screens (2560px+) the cards
+     stay grouped around the title instead of spreading to the browser
+     edges. No align-items on the hero itself (default stretch): the stage
+     is the section's only child, so it stretches to the hero's full
+     height, which is what lets HeroFloatingCards spread top-to-bottom
+     across the whole hero instead of just the text column's height. */
   .lp-hm-hero {
     position: relative;
     min-height: 90vh;
     display: flex;
-    align-items: center;
     background: var(--hero-bg-grad);
     padding: clamp(24px, 3vw, 40px) 0;
     overflow: hidden;
   }
-  .lp-hm-hero-inner { position: relative; width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
+  .lp-hm-hero-stage { position: relative; width: 100%; max-width: 1280px; margin: 0 auto; }
+  /* .lp-hm-hero-inner centers the text column both ways WITHIN the
+     full-height stage (padding lives here, not on the stage, so
+     .lp-hm-floats — a sibling, absolute+inset:0 on the stage — spans the
+     stage truly edge-to-edge and "4% from the card to the edge" means 4%
+     of the 1280px stage, not of the padded text area). */
+  .lp-hm-hero-inner {
+    position: relative; z-index: 3; min-height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 var(--gutter);
+  }
   /* Kept narrow on purpose: the floating cards need the outer thirds of the
-     window, and the mockup's headline column is a lot narrower than the page.
+     stage, and the mockup's headline column is a lot narrower than the page.
      No align-items here on purpose: default `stretch` gives every child the
      full 640px to lay out against (each section centers its own content via
      text-align/justify-content) — `align-items:center` would shrink-wrap
      each child to its own fit-content width instead, which was wrapping the
      3-stat row a beat early. */
   .lp-hm-hero-content {
-    position: relative; z-index: 3; max-width: 640px; margin: 0 auto; text-align: center;
+    width: 100%; max-width: 640px; text-align: center;
     display: flex; flex-direction: column;
   }
 
@@ -519,7 +531,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     display: grid;
     place-items: center;
   }
-  .lp-hm-emoji img { width: 68%; height: 68%; object-fit: contain; display: block; }
+  .lp-hm-emoji img { width: 70%; height: 70%; object-fit: contain; display: block; }
 
   /* Per-card float: 8-12px of vertical travel, 6-9s, ease-in-out, infinite,
      each card started at its own negative delay so none of them move in sync.
@@ -556,16 +568,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   /* Hero proof row */
   .lp-hm-stats {
     display: flex; justify-content: center; align-items: flex-start;
-    gap: clamp(16px, 2vw, 28px);
+    gap: clamp(10px, 1.6vw, 20px);
     margin-top: clamp(24px, 3vw, 36px);
     flex-wrap: wrap;
   }
-  .lp-hm-stat { flex: 0 1 156px; text-align: center; }
-  .lp-hm-stat-vis { height: 46px; display: grid; place-items: center; margin-bottom: 8px; }
-  .lp-hm-stat-emoji { width: 42px; height: 42px; object-fit: contain; display: block; }
-  .lp-hm-stat-txt { margin: 0; font-size: .78rem; line-height: 1.35; color: var(--encre); }
-  .lp-hm-stat-big { font-family: var(--font-display); font-weight: 800; font-size: 2.1rem; line-height: 1.1; letter-spacing: -.02em; }
-  .lp-hm-stat-big-sm { font-family: var(--font-display); font-weight: 800; font-size: 1.02rem; line-height: 1.5; }
+  /* 3 x 185px + 2 gaps must stay under the 640px hero-content column so the
+     row never wraps to 2-then-1 at desktop widths (see the align-items note
+     above — the column really is only 640px, no shrink-wrap involved). */
+  .lp-hm-stat { flex: 0 1 185px; text-align: center; }
+  .lp-hm-stat-vis { height: 80px; display: grid; place-items: center; margin-bottom: 10px; }
+  .lp-hm-stat-emoji { width: 56px; height: 56px; object-fit: contain; display: block; }
+  /* certified2.png is a wide-format image (3 headshots + a badge), not a
+     square emoji — sized on its own so it stays readable. */
+  .lp-hm-stat-emoji-wide { width: 150px; height: auto; object-fit: contain; display: block; }
+  .lp-hm-stat-txt { margin: 0; font-size: .9375rem; font-weight: 400; line-height: 1.35; color: var(--encre); }
+  .lp-hm-stat-big { font-family: var(--font-display); font-weight: 800; font-size: 2.75rem; line-height: 1.1; letter-spacing: -.02em; }
+  .lp-hm-stat-big-sm { font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; line-height: 1.4; }
 
   .lp-hm-sub {
     margin: clamp(22px, 3vw, 32px) auto 0;
@@ -711,6 +729,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .lp-hm-stat { flex: 1 1 0; min-width: 0; }
     .lp-hm-stat-vis { height: 36px; margin-bottom: 6px; }
     .lp-hm-stat-emoji { width: 34px; height: 34px; }
+    .lp-hm-stat-emoji-wide { width: 92px; }
     .lp-hm-stat-txt { font-size: .66rem; }
     .lp-hm-stat-big { font-size: 1.5rem; }
     .lp-hm-stat-big-sm { font-size: .78rem; }
