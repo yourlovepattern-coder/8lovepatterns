@@ -456,13 +456,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   /* ---- 1. HERO ----------------------------------------------------------
      min-height: 90vh so the hero fills nearly the whole first screen at
-     1440x900-ish. .lp-hm-hero-stage caps the composition (cards + text) at
-     1280px and centers it, so on very wide screens (2560px+) the cards
-     stay grouped around the title instead of spreading to the browser
-     edges. No align-items on the hero itself (default stretch): the stage
-     is the section's only child, so it stretches to the hero's full
-     height, which is what lets HeroFloatingCards spread top-to-bottom
-     across the whole hero instead of just the text column's height. */
+     1440x900-ish. The 1280px "stage" cap from a previous pass is GONE per
+     the mockup re-match: HeroFloatingCards is positioned against the full
+     .lp-hm-hero section (whatever the window width is), matching the
+     validated mockup's cards spreading from ~12% to ~92% of the window.
+     Only the text column (.lp-hm-hero-content) stays capped at 640px and
+     centered — that part is unchanged. No align-items on the hero itself
+     (default stretch): .lp-hm-hero-inner is the section's only IN-FLOW
+     child (HeroFloatingCards is position:absolute, out of flow), so it
+     stretches to the hero's full height and centers the text column
+     within that full height via its own align-items/justify-content. */
   .lp-hm-hero {
     position: relative;
     min-height: 90vh;
@@ -471,19 +474,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     padding: clamp(24px, 3vw, 40px) 0;
     overflow: hidden;
   }
-  .lp-hm-hero-stage { position: relative; width: 100%; max-width: 1280px; margin: 0 auto; }
-  /* .lp-hm-hero-inner centers the text column both ways WITHIN the
-     full-height stage (padding lives here, not on the stage, so
-     .lp-hm-floats — a sibling, absolute+inset:0 on the stage — spans the
-     stage truly edge-to-edge and "4% from the card to the edge" means 4%
-     of the 1280px stage, not of the padded text area). */
   .lp-hm-hero-inner {
-    position: relative; z-index: 3; min-height: 100%;
+    position: relative; z-index: 3; width: 100%;
     display: flex; align-items: center; justify-content: center;
     padding: 0 var(--gutter);
   }
   /* Kept narrow on purpose: the floating cards need the outer thirds of the
-     stage, and the mockup's headline column is a lot narrower than the page.
+     window, and the mockup's headline column is a lot narrower than the page.
      No align-items here on purpose: default `stretch` gives every child the
      full 640px to lay out against (each section centers its own content via
      text-align/justify-content) — `align-items:center` would shrink-wrap
@@ -512,10 +509,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   /* Floating cards: absolutely positioned over the FULL .lp-hm-hero section
      (edge-to-edge, no padding of its own), replaced by .lp-hm-cluster on
-     phones so the hero never overflows. */
+     phones so the hero never overflows. Every card in the mockup is a
+     perfect square, sized as a % of the hero's width (matching the
+     "4-7.5% of the window" measurement) — width is set inline per card,
+     aspect-ratio:1 derives the height so it scales together, instead of a
+     fixed px height that would drift off-square at other viewport widths. */
   .lp-hm-floats { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
   .lp-hm-float {
     position: absolute;
+    aspect-ratio: 1;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 12px 30px rgba(20,20,43,.16);
@@ -524,6 +526,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .lp-hm-float img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .lp-hm-emoji {
     position: absolute;
+    aspect-ratio: 1;
     z-index: 2;
     background: #fff;
     border-radius: 17px;

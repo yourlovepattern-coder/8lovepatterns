@@ -27,51 +27,60 @@ function testNav(go) {
 }
 
 /* ---- Hero floating cards ------------------------------------------------
-   Seven animated WebP cards (three left, four right) plus three white emoji
-   cards, positioned against .lp-hm-hero-stage — a centered container capped
-   at 1280px (see index.html) — not the browser window. On screens wider
-   than 1280px the whole composition stays put instead of spreading to the
-   edges, matching the validated mockup. The outermost card sits ~4% in from
-   the stage edge; the set is spread top-to-bottom across the stage's full
-   height (the stage now stretches to the hero's own height) so there's no
-   empty band under the stats/CTA.
+   Measured directly off docs/mockup-home.png (percentages of the hero's own
+   width/height — the 1280px "stage" cap from a previous pass is gone, the
+   mockup spreads cards from ~12% to ~92% of the FULL window). Every card in
+   the mockup is a perfect square; width is a % of hero width and
+   aspect-ratio:1 (see .lp-hm-float in index.html) derives the height so
+   cards stay square at every viewport width instead of just at 2560px.
+   Two constellations, left of the title and right of it, each with
+   partial card-on-card overlap — no cards live below the numbers row.
+   Files were matched by opening each one and looking at the scene, not by
+   filename: butterfly.webp and dance.webp don't correspond to anything in
+   the mockup and are dropped from the desktop hero (still used by the
+   mobile cluster below, untouched by this pass). The mockup's family-photo
+   card (bottom-right, warm indoor scene, 3 people) has no matching asset
+   anywhere in assets/hero/ — left out, flagged in the report, nothing
+   substituted for it.
    Every card is decorative: alt="" + aria-hidden.
    `dur` / `delay` / `rot` drive the per-card float (see .lp-hm-drift in
    index.html); the delays are all different so no two cards ever move in
    sync. The whole float is disabled under prefers-reduced-motion. */
-/* Sizes halved from the previous pass (that +25% was a mistake); top/left/
-   right are recomputed so each card's CENTER stays exactly where it was —
-   the anchor is a corner, not the center, so shrinking in place means the
-   edge percentages have to move even though the card itself doesn't. */
+/* left/top values are the mockup-measured ones EXCEPT where noted — the
+   center column is a fixed 640px regardless of window width, so it eats a
+   much bigger share of the hero at 1440px than at 2560px, and several cards
+   that were clear at 2560 (matching the mockup exactly) intruded on the
+   column at 1440. Fixed two ways, verified by measuring both widths rather
+   than computing once and assuming: cards near the top of the hero are
+   pushed up further, clearing the column vertically regardless of window
+   width (robust at any width, since it doesn't depend on the column's
+   variable horizontal footprint); flower and puzzle, which sit lower and
+   can't reasonably move up without leaving their mockup-matched area, are
+   nudged further out horizontally instead. */
 const HERO_CARDS = [
-  /* left */
-  { src: 'couple2.webp',   w: 125, h: 163, top: '13.1%', left: '8.9%',  dy: '-11px', r0: '-2deg', r1: '0deg',    dur: '7.4s', delay: '-0.4s' },
-  { src: 'butterfly.webp', w: 113, h: 113, top: '47.7%', left: '12.4%', dy: '-9px',  r0: '1.5deg', r1: '-0.5deg', dur: '8.6s', delay: '-3.1s' },
-  { src: 'flower.webp',    w: 100, h: 125, top: '82.6%', left: '13.3%', dy: '-12px', r0: '-1deg',  r1: '1deg',    dur: '6.5s', delay: '-1.7s' },
-  /* right */
-  { src: 'dance2.webp',    w: 119, h: 144, top: '9.9%',  right: '8.7%',  dy: '-8px',  r0: '-1.5deg', r1: '0.5deg', dur: '6.9s', delay: '-5.2s' },
-  { src: 'happy.webp',     w: 100, h: 100, top: '40.9%', right: '13.1%', dy: '-10px', r0: '1deg',   r1: '-1deg',   dur: '8.1s', delay: '-2.6s' },
-  { src: 'wave.webp',      w: 125, h: 125, top: '48.6%', right: '7.9%',  dy: '-11px', r0: '2deg',   r1: '0deg',    dur: '7.9s', delay: '-0.9s' },
-  { src: 'dance.webp',     w: 132, h: 125, top: '74.6%', right: '10.6%', dy: '-12px', r0: '-1deg',  r1: '1.5deg',  dur: '8.9s', delay: '-4.3s' },
+  /* left constellation */
+  { src: 'couple2.webp', w: '5.63%', top: '22.1%', left: '12.7%', dy: '-11px', r0: '-2deg',  r1: '0deg',   dur: '7.4s', delay: '-0.4s' },
+  { src: 'happy.webp',   w: '7.47%', top: '2.5%',  left: '14%',   dy: '-9px',  r0: '0.5deg', r1: '-1deg',  dur: '8.6s', delay: '-3.1s' }, /* top nudged up + left nudged out (was 6.8% / 21.9%): the vertical-only fix pushed it too close to the nav, so this one clears horizontally instead, with extra margin so 1280px clears too */
+  { src: 'flower.webp',  w: '5.84%', top: '38.7%', left: '15.5%', dy: '-12px', r0: '-1deg',  r1: '1deg',   dur: '6.5s', delay: '-1.7s' }, /* left nudged out (was 22.7%), extra margin so 1280px clears too */
+  /* right constellation */
+  { src: 'dance2.webp',                    w: '5.37%', top: '3%',    left: '72.7%', dy: '-8px',  r0: '1deg',    r1: '-0.5deg', dur: '6.9s', delay: '-5.2s' }, /* top nudged up (was 8.7%) — clears the column vertically */
+  { src: 'wave.webp',                      w: '5.42%', top: '12.2%', left: '83%',   dy: '-11px', r0: '-1.5deg', r1: '0.5deg', dur: '7.9s', delay: '-0.9s' },
+  { src: 'hero-tile-forest-canopy.webp',   w: '4.02%', top: '7.9%',  left: '87.2%', dy: '-10px', r0: '2deg',    r1: '0deg',    dur: '8.1s', delay: '-2.6s' },
 ];
 
-/* White square cards, each carrying one emoji, 110px. Kept outside the
-   320-960px (of 1280px stage) text column with a real margin — not just
-   clear of it — so none ever sits on top of readable text, AND positioned
-   so their CENTER never lands inside a photo card's box (a corner clip is
-   fine, being centered on a photo reads as a bug). coeur_repare sits above
-   the hero entirely (clear of dance2 below it); love_comptability sits in
-   the gap between couple2 and butterfly, clipping butterfly's top corner
-   only; puzzle sits above dance.webp, clear of both it and wave. */
+/* White square cards, each carrying one emoji. Sized as a % of hero width
+   too (matching the photo cards' ~4% scale in the mockup), not a fixed px
+   size, for the same reason — keeps their clearance from the center column
+   consistent across viewport widths instead of just at 2560px. */
 const HERO_EMOJI = [
-  { src: 'coeur_repare.png',      s: 110, top: '-8%',   right: '13%', dy: '-10px', r0: '-3deg', r1: '1deg',  dur: '6.7s', delay: '-2.2s' },
-  { src: 'love_comptability.png', s: 110, top: '34.9%', left: '12%',  dy: '-9px',  r0: '2deg',  r1: '-2deg', dur: '7.7s', delay: '-4.8s' },
-  { src: 'puzzle.png',            s: 110, top: '60%',   right: '12.2%', dy: '-11px', r0: '-2deg', r1: '2deg',  dur: '8.4s', delay: '-1.2s' },
+  { src: 'love_comptability.png', w: '4.34%', top: '3%',    left: '27.6%', dy: '-9px',  r0: '2deg',  r1: '-2deg', dur: '7.7s', delay: '-4.8s' }, /* top nudged up (was 18.5%) — clears the column vertically */
+  { src: 'coeur_repare.png',      w: '4.21%', top: '3%',    left: '64.6%', dy: '-10px', r0: '-3deg', r1: '1deg',  dur: '6.7s', delay: '-2.2s' }, /* top nudged up (was 11.2%) — clears the column vertically */
+  { src: 'puzzle.png',            w: '3.74%', top: '49.4%', left: '78.5%', dy: '-11px', r0: '-2deg', r1: '2deg',  dur: '8.4s', delay: '-1.2s' }, /* left nudged out (was 70.4%), extra margin so 1280px clears too */
 ];
 
 function heroFloatStyle(c) {
   return {
-    width: c.w, height: c.h, top: c.top, left: c.left, right: c.right,
+    width: c.w, top: c.top, left: c.left,
     '--dy': c.dy, '--r0': c.r0, '--r1': c.r1, '--dur': c.dur, '--delay': c.delay,
   };
 }
@@ -85,8 +94,7 @@ function HeroFloatingCards() {
         </div>
       ))}
       {HERO_EMOJI.map(c => (
-        <div key={c.src} className="lp-hm-emoji lp-hm-drift"
-          style={heroFloatStyle({ ...c, w: c.s, h: c.s })}>
+        <div key={c.src} className="lp-hm-emoji lp-hm-drift" style={heroFloatStyle(c)}>
           <img src={`assets/emoji/${c.src}`} alt="" aria-hidden="true"/>
         </div>
       ))}
@@ -283,33 +291,28 @@ function Home({ go }) {
     <div className="lp-hm">
 
       {/* ---- HERO ----------------------------------------------------------
-          .lp-hm-hero-stage caps the whole composition (cards + text) at
-          1280px and centers it — on wide screens the cards stay grouped
-          around the title instead of spreading to the browser edges. It
-          stretches to the hero's full height so HeroFloatingCards (a sibling
-          of .lp-hm-hero-inner, positioned against the stage) can spread
-          top-to-bottom across the whole hero, not just the text column's
-          own height. Children of .lp-hm-hero-content use a flex `order` so
-          the mobile breakpoint can reflow to cluster/title/sub/cta/stats
-          without touching the desktop order (title/stats/sub/cta/stars) or
-          duplicating markup. */}
+          HeroFloatingCards is positioned against the full .lp-hm-hero
+          section (no width cap — see index.html), a sibling of
+          .lp-hm-hero-inner which centers the text column at a fixed 640px
+          regardless of window width. Children of .lp-hm-hero-content use a
+          flex `order` so the mobile breakpoint can reflow to
+          cluster/title/sub/cta/stats without touching the desktop order
+          (title/stats/sub/cta/stars) or duplicating markup. */}
       <section className="lp-hm-hero">
-        <div className="lp-hm-hero-stage">
-          <HeroFloatingCards/>
-          <div className="lp-hm-hero-inner">
-            <div className="lp-hm-hero-content">
-              <HeroMobileCluster/>
-              <h1 className="lp-hm-title">Stop reliving the<br/>same heartbreak.</h1>
-              <HeroStats/>
-              <p className="lp-hm-sub">
-                Only 5 minutes to get a <span className="lp-hm-coral">"freakishly accurate"</span> description of how your{' '}
-                <br/><span className="lp-hm-coral">attachment pattern works</span> and why you do things the way you do.
-              </p>
-              <div className="lp-hm-cta-row">
-                <Button variant="primary" size="lg" icon="arrow-right" href="/test" onClick={nav}>Take the free test</Button>
-              </div>
-              <HeroStars/>
+        <HeroFloatingCards/>
+        <div className="lp-hm-hero-inner">
+          <div className="lp-hm-hero-content">
+            <HeroMobileCluster/>
+            <h1 className="lp-hm-title">Stop reliving the<br/>same heartbreak.</h1>
+            <HeroStats/>
+            <p className="lp-hm-sub">
+              Only 5 minutes to get a <span className="lp-hm-coral">"freakishly accurate"</span> description of how your{' '}
+              <br/><span className="lp-hm-coral">attachment pattern works</span> and why you do things the way you do.
+            </p>
+            <div className="lp-hm-cta-row">
+              <Button variant="primary" size="lg" icon="arrow-right" href="/test" onClick={nav}>Take the free test</Button>
             </div>
+            <HeroStars/>
           </div>
         </div>
       </section>
