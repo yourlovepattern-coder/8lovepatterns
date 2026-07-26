@@ -13,7 +13,7 @@ function Header({ go, route }) {
     <div className="lp-nav-wrap">
       <header className={`lp-nav-pill ${open?'is-open':''}`}>
         <Container style={{ display:'flex', alignItems:'center', justifyContent:'space-between', height:64, padding:'0 20px' }}>
-          <Logo onClick={()=>go('home')} size={19}/>
+          <Logo onClick={()=>go('home')} size={19} accent="var(--brand-rose)"/>
           <nav style={{ display:'flex', alignItems:'center', gap:'4px' }} className="lp-desktop-nav">
             {links.map(l=>(
               l.href
@@ -29,7 +29,7 @@ function Header({ go, route }) {
               <LanguageWidget/>
               <div style={{ width:6 }}></div>
             </>)}
-            <Button size="sm" onClick={()=>go('intro')}>{t('cta.reveal')}</Button>
+            <Button size="sm" variant="green" onClick={()=>go('intro')}>{t('cta.reveal')}</Button>
           </nav>
           <div style={{ display:'none', alignItems:'center', gap:'10px' }} className="lp-burger-wrap">
             <LanguageWidget compact/>
@@ -50,7 +50,7 @@ function Header({ go, route }) {
                       fontFamily:'var(--font-body)', fontWeight:600, fontSize:'1.05rem', padding:'12px 4px', color:'var(--ink-2)', borderRadius:'var(--r-sm)' }}>{l.label}</button>
               ))}
               <div style={{ height:8 }}></div>
-              <Button full onClick={()=>{go('intro');setOpen(false);}}>{t('cta.reveal')}</Button>
+              <Button full variant="green" onClick={()=>{go('intro');setOpen(false);}}>{t('cta.reveal')}</Button>
             </Container>
           </div>
         )}
@@ -66,43 +66,46 @@ function Footer({ go }) {
     { h:t('footer.brand'), items:[[t('footer.about'),'methode'],[t('footer.privacy'),'/legal.html#privacy'],['Legal','/legal.html'],[t('footer.contact'),'mailto:support@8lovepatterns.com']] },
   ];
   const supportEmail = 'support@8lovepatterns.com';
+  /* Dark-blue -> blue vertical gradient with white text (see --footer-grad in
+     colors_and_type.css). The wordmark keeps its historical rendering here:
+     no `accent` prop, unlike the header. */
   return (
-    <footer style={{ background:'var(--page-bg)', color:'var(--body-2)', padding:'72px 0 40px', borderTop:'1px solid var(--hairline)' }}>
+    <footer className="lp-footer" style={{ background:'var(--footer-grad)', color:'var(--footer-text)', padding:'72px 0 40px' }}>
       <Container>
         <div style={{ display:'grid', gridTemplateColumns:'1.5fr 1fr 1fr 1fr', gap:'40px', alignItems:'start' }} className="lp-footer-grid">
           <div style={{ maxWidth:340 }}>
-            <Logo/>
-            <p style={{ marginTop:16, fontSize:'.95rem', lineHeight:1.6, color:'var(--body-2)' }}>
+            <Logo light/>
+            <p style={{ marginTop:16, fontSize:'.95rem', lineHeight:1.6, color:'rgba(255,255,255,.82)' }}>
               {t('footer.tagline')}
             </p>
           </div>
           {cols.map(c=>(
             <div key={c.h}>
-              <div style={{ fontWeight:700, color:'var(--head)', marginBottom:14, fontSize:'.95rem' }}>{c.h}</div>
+              <div style={{ fontWeight:700, color:'#fff', marginBottom:14, fontSize:'.95rem' }}>{c.h}</div>
               <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
                 {c.items.map(([label,k])=>(
                   (k.charAt(0)==='/' || k.startsWith('mailto:'))
-                    ? <a key={label} href={k} style={{ textAlign:'left', color:'var(--body-2)', textDecoration:'none',
+                    ? <a key={label} href={k} style={{ textAlign:'left', color:'rgba(255,255,255,.82)', textDecoration:'none',
                         fontFamily:'var(--font-body)', fontSize:'.92rem', padding:0, width:'fit-content' }}>{label}</a>
                     : <button key={label} onClick={()=>go(k)} style={{ textAlign:'left', background:'none', border:'none', cursor:'pointer',
-                        color:'var(--body-2)', fontFamily:'var(--font-body)', fontSize:'.92rem', padding:0 }}>{label}</button>
+                        color:'rgba(255,255,255,.82)', fontFamily:'var(--font-body)', fontSize:'.92rem', padding:0 }}>{label}</button>
                 ))}
               </div>
             </div>
           ))}
           <div>
-            <div style={{ fontWeight:700, color:'var(--head)', marginBottom:14, fontSize:'.95rem' }}>{t('footer.support')}</div>
+            <div style={{ fontWeight:700, color:'#fff', marginBottom:14, fontSize:'.95rem' }}>{t('footer.support')}</div>
             <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
-              <a href={`mailto:${supportEmail}`} style={{ color:'var(--body-2)', textDecoration:'none',
+              <a href={`mailto:${supportEmail}`} style={{ color:'rgba(255,255,255,.82)', textDecoration:'none',
                 fontSize:'.92rem', display:'inline-flex', alignItems:'center', gap:'8px', width:'fit-content' }}>
                 <Icon name="mail" size={15}/>{supportEmail}
               </a>
-              <span style={{ color:'var(--ink-3)', fontSize:'.82rem', lineHeight:1.5 }}>{t('footer.supportNote')}</span>
+              <span style={{ color:'rgba(255,255,255,.58)', fontSize:'.82rem', lineHeight:1.5 }}>{t('footer.supportNote')}</span>
             </div>
           </div>
         </div>
-        <div style={{ marginTop:52, paddingTop:24, borderTop:'1px solid var(--hairline)', display:'flex',
-          justifyContent:'space-between', flexWrap:'wrap', gap:'12px', fontSize:'.82rem', color:'var(--ink-3)' }}>
+        <div style={{ marginTop:52, paddingTop:24, borderTop:'1px solid rgba(255,255,255,.18)', display:'flex',
+          justifyContent:'space-between', flexWrap:'wrap', gap:'12px', fontSize:'.82rem', color:'rgba(255,255,255,.62)' }}>
           <span>{t('footer.legal')}</span>
           <span>{t('footer.made')}</span>
         </div>

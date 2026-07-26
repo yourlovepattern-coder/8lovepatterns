@@ -1,411 +1,335 @@
-/* 8LovePatterns, Homepage — Apple Health / Liven anatomy rebuild.
-   One hue per module (wash/mid/deep), white module cards floating on the
-   gray-blue page shell, horizontal galleries, illustrative (never invented)
-   data visuals. See colors_and_type.css for the module hue tokens. */
+/* 8LovePatterns — homepage, rebuilt from the validated mockup.
+   Section order is fixed and exhaustive: hero, the eight patterns, mini
+   articles, science, FAQ. Nav and footer live in chrome.jsx. Anything that
+   used to sit between these (loop module, anchor module, how-it-works band,
+   support band, final CTA) was removed with the redesign — do not re-add a
+   section here without a mockup for it.
+   Layout classes are all `lp-hm-*` and live in index.html's <style>. */
 
-/* ---- Hero floating photo tile (Liven layout). Accepts img OR a muted
-   looping video source so tiles can be swapped for footage later without
-   touching markup — pass either `src` (image) or `video` (mp4/webm). ---- */
-function HeroTile({ src, video, alt, size, style, className='' }) {
-  const box = { lg:180, md:130, sm:90 }[size] || 130;
-  return (
-    <div className={`lp-hero-tile ${className}`.trim()} style={{ width:box, height:box, ...style }}>
-      {video
-        ? <video src={video} autoPlay muted loop playsInline aria-hidden="true"/>
-        : <img src={src} alt={alt}/>}
-    </div>
-  );
+/* The five gold stars under the hero CTA ship behind this flag. Flip to true
+   to show them; nothing else in the hero changes. */
+const SHOW_HERO_STARS = false;
+
+/* Every CTA on this page is a real <a href="/test"> — crawlable, middle-
+   clickable, keyboard-reachable — and this handler keeps the navigation
+   inside the SPA. App.jsx's routeFromPath() already maps /test to the test
+   intro screen, so a hard load of the pushed URL resolves to the same place. */
+function testNav(go) {
+  return function (e) {
+    if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.button)) return;
+    if (e) e.preventDefault();
+    try {
+      if (window.location.pathname.replace(/\/+$/, '') !== '/test') {
+        history.pushState({ route: 'intro' }, '', '/test');
+      }
+    } catch (err) {}
+    go('intro');
+  };
 }
 
-/* Seven tiles scattered around the hero headline, sized/positioned like
-   theliven.com/fr: 2 large, 3 medium, 2 small, asymmetric left/right. */
-const HERO_TILES = [
-  { size:'lg', top:'4%',  left:'2%',  src:'assets/photos/hero-tile-father-child-river.webp',
-    alt:'Father holding his young child by a river at golden hour' },
-  { size:'lg', top:'62%', right:'3%', src:'assets/photos/hero-tile-mother-daughter-laughing.webp',
-    alt:'Mother and daughter laughing together outdoors' },
-  { size:'md', top:'8%',  right:'16%', src:'assets/photos/hero-tile-forest-canopy.webp',
-    alt:'Looking up through a green forest canopy at the sky' },
-  { size:'md', top:'40%', left:'13%', src:'assets/photos/hero-tile-couple-coffee.webp',
-    alt:'Couple sitting together on the floor holding mugs of coffee' },
-  { size:'md', top:'80%', left:'20%', src:'assets/photos/hero-tile-hand-wildflowers.webp',
-    alt:'A hand gently touching wildflowers in golden light' },
-  { size:'sm', top:'26%', right:'1%', src:'assets/photos/hero-tile-man-therapy-couch.webp',
-    alt:'Man lying back on a couch, reflective' },
-  { size:'sm', top:'44%', right:'2%', src:'assets/photos/hero-tile-man-phone-bed.webp',
-    alt:'Man lying in bed at night checking his phone' },
+/* ---- Hero floating cards ------------------------------------------------
+   Seven animated WebP cards (three left, four right) plus three small white
+   emoji cards, scattered around the headline exactly as in the mockup.
+   Sizes are deliberately uneven, some portrait and some square.
+   Every card is decorative: alt="" + aria-hidden.
+   `dur` / `delay` / `rot` drive the per-card float (see .lp-hm-drift in
+   index.html); the delays are all different so no two cards ever move in
+   sync. The whole float is disabled under prefers-reduced-motion. */
+const HERO_CARDS = [
+  /* left */
+  { src: 'couple2.webp',   w: 130, h: 172, top: '2%',  left: '6%',    dy: '-11px', r0: '-2deg', r1: '0deg',    dur: '7.4s', delay: '-0.4s' },
+  { src: 'butterfly.webp', w: 108, h: 138, top: '33%', left: '-1%',   dy: '-9px',  r0: '1.5deg', r1: '-0.5deg', dur: '8.6s', delay: '-3.1s' },
+  { src: 'flower.webp',    w: 122, h: 122, top: '63%', left: '8%',    dy: '-12px', r0: '-1deg',  r1: '1deg',    dur: '6.5s', delay: '-1.7s' },
+  /* right */
+  { src: 'happy.webp',     w: 108, h: 108, top: '3%',  right: '13%',  dy: '-10px', r0: '1deg',   r1: '-1deg',   dur: '8.1s', delay: '-2.6s' },
+  { src: 'dance2.webp',    w: 96,  h: 138, top: '0%',  right: '-8%',  dy: '-8px',  r0: '-1.5deg', r1: '0.5deg', dur: '6.9s', delay: '-5.2s' },
+  { src: 'wave.webp',      w: 112, h: 112, top: '19%', right: '1%',   dy: '-11px', r0: '2deg',   r1: '0deg',    dur: '7.9s', delay: '-0.9s' },
+  { src: 'dance.webp',     w: 146, h: 140, top: '55%', right: '7%',   dy: '-12px', r0: '-1deg',  r1: '1.5deg',  dur: '8.9s', delay: '-4.3s' },
 ];
-const HERO_TILES_MOBILE = [HERO_TILES[0], HERO_TILES[2], HERO_TILES[1]];
 
-function HeroPhotoTiles() {
+/* Small white square cards, each carrying one emoji. */
+const HERO_EMOJI = [
+  { src: 'love_discution.png', s: 62, top: '19%', left: '20%',  dy: '-10px', r0: '-3deg', r1: '1deg',  dur: '6.7s', delay: '-2.2s' },
+  { src: 'coeur.png',          s: 68, top: '11%', right: '25%', dy: '-9px',  r0: '2deg',  r1: '-2deg', dur: '7.7s', delay: '-4.8s' },
+  { src: 'coeur_puzzle.png',   s: 64, top: '70%', right: '17%', dy: '-11px', r0: '-2deg', r1: '2deg',  dur: '8.4s', delay: '-1.2s' },
+];
+
+/* The three cards kept on phones, where the scatter is replaced by a single
+   centred row so the hero can never overflow horizontally. */
+const HERO_CARDS_MOBILE = ['couple2.webp', 'happy.webp', 'wave.webp'];
+
+function heroFloatStyle(c) {
+  return {
+    width: c.w, height: c.h, top: c.top, left: c.left, right: c.right,
+    '--dy': c.dy, '--r0': c.r0, '--r1': c.r1, '--dur': c.dur, '--delay': c.delay,
+  };
+}
+
+function HeroFloatingCards() {
   return (
-    <>
-      {HERO_TILES.map(t=>(
-        <HeroTile key={t.src} className="lp-hero-tile-desktop" size={t.size} src={t.src} alt={t.alt}
-          style={{ top:t.top, left:t.left, right:t.right }}/>
+    <div className="lp-hm-floats" aria-hidden="true">
+      {HERO_CARDS.map(c => (
+        <div key={c.src} className="lp-hm-float lp-hm-drift" style={heroFloatStyle(c)}>
+          <img src={`public/assets/hero/${c.src}`} alt="" aria-hidden="true"/>
+        </div>
       ))}
-      <div className="lp-hero-tile-mobile-row">
-        {HERO_TILES_MOBILE.map(t=> <HeroTile key={t.src} size="sm" src={t.src} alt={t.alt}/>)}
-      </div>
-    </>
-  );
-}
-
-/* ---- Auto-advancing swipeable image carousel kept for the Loop gallery captions source ---- */
-const LOOP_PHOTOS = [
-  { cap:'The message you typed and deleted four times', src:'assets/photos/loop-message-deleted.webp',
-    alt:'Hands holding a phone showing an unanswered text message that reads "Hi, hope it will be over soon"' },
-  { cap:"Checking if they're online. Again.", src:'assets/photos/loop-checking-online.webp',
-    alt:'Woman lying in bed checking her phone late at night while her partner sleeps turned away beside her' },
-  { cap:'Going cold at dinner and not knowing why', src:'assets/photos/loop-going-cold.webp',
-    alt:'Woman lying in bed with arms crossed, looking away, a wall of pillows between her and her partner' },
-];
-
-/* ---- Depth scale product shot: Clear -> Buried, framed as an app window ---- */
-function AnchorScaleProduct() {
-  const levels = ['Clear','Light','Felt','Deep','Buried'];
-  const current = 2; // "Felt" — illustrative reading, not a real user's result
-  return (
-    <ProductCard>
-      <div style={{ fontSize:'.72rem', fontWeight:700, letterSpacing:'.1em', textTransform:'uppercase', color:'var(--ink-3)', marginBottom:16 }}>
-        Your depth today
-      </div>
-      <div style={{ display:'flex', height:12, borderRadius:6, overflow:'hidden', gap:3 }}>
-        {levels.map((l,i)=>(
-          <div key={l} style={{ flex:1, borderRadius:3,
-            background: i<=current ? `color-mix(in srgb, var(--mod-anchor-mid) ${40+i*15}%, #DCEBF7)` : '#EDF2F6' }}/>
-        ))}
-      </div>
-      <div style={{ display:'flex', justifyContent:'space-between', marginTop:10 }}>
-        {levels.map((l,i)=>(
-          <span key={l} style={{ fontSize:'.74rem', fontWeight: i===current?700:500,
-            color: i===current?'var(--mod-anchor-mid)':'var(--ink-3)' }}>{l}</span>
-        ))}
-      </div>
-      <div style={{ marginTop:18, padding:'12px 14px', borderRadius:14, background:'var(--mod-anchor-wash)',
-        display:'flex', alignItems:'center', gap:10 }}>
-        <span style={{ width:30, height:30, borderRadius:9, display:'grid', placeItems:'center', flexShrink:0,
-          background:`linear-gradient(155deg, var(--mod-anchor-deep1), var(--mod-anchor-deep2))` }}>
-          <Icon name="anchor" size={15} stroke={2} style={{ color:'#fff' }}/>
-        </span>
-        <p style={{ margin:0, fontSize:'.86rem', color:'var(--ink-1)', lineHeight:1.4 }}>Today's level: <b>Felt</b> — illustrative reading</p>
-      </div>
-    </ProductCard>
-  );
-}
-
-/* ---- Bento card 1: mini calendar, weekly recurrence, illustrative ---- */
-function LoopCalendarCard() {
-  const hitIdx = new Set([3, 10, 17, 24]); // same weekday, four weeks — illustrative pattern only
-  return (
-    <div className="lp-bento-cell">
-      <ModuleGlyph icon="route" deep1="var(--mod-loop-deep1)" deep2="var(--mod-loop-deep2)"/>
-      <h3 className="lp-h4" style={{ margin:0 }}>The loop, seen over a month.</h3>
-      <Reveal className="lp-calendar" style={{ marginTop:4 }}>
-        {Array.from({length:28}).map((_,i)=>(
-          <span key={i} className={hitIdx.has(i)?'hit is-visible':''} style={hitIdx.has(i)?{ transitionDelay:`${[...hitIdx].indexOf(i)*60}ms` }:undefined}/>
-        ))}
-      </Reveal>
-      <p style={{ margin:'auto 0 0', color:'var(--ink-3)', fontSize:'.88rem' }}>Same trigger, same week, same ending.</p>
+      {HERO_EMOJI.map(c => (
+        <div key={c.src} className="lp-hm-emoji lp-hm-drift"
+          style={heroFloatStyle({ ...c, w: c.s, h: c.s })}>
+          <img src={`public/assets/emoji/${c.src}`} alt="" aria-hidden="true"/>
+        </div>
+      ))}
     </div>
   );
 }
 
-/* ---- Bento card 2: semicircular Anchor gauge ---- */
-function AnchorGaugeCard() {
-  const segColors = ['#DCEBF7','#B9D9F0','var(--mod-anchor-mid)','#1F6EA8','#14507E'];
+function HeroMobileRow() {
   return (
-    <div className="lp-bento-cell">
-      <ModuleGlyph icon="compass" deep1="var(--mod-anchor-deep1)" deep2="var(--mod-anchor-deep2)"/>
-      <h3 className="lp-h4" style={{ margin:0 }}>The Anchor gauge.</h3>
-      <svg viewBox="0 0 200 110" style={{ width:'100%', maxWidth:220, margin:'4px auto 0' }}>
-        {segColors.map((c,i)=>{
-          const a0 = Math.PI - i*(Math.PI/5), a1 = Math.PI - (i+1)*(Math.PI/5);
-          const x0=100+90*Math.cos(a0), y0=100-90*Math.sin(a0);
-          const x1=100+90*Math.cos(a1), y1=100-90*Math.sin(a1);
-          return <path key={i} d={`M ${x0} ${y0} A 90 90 0 0 1 ${x1} ${y1}`} stroke={c} strokeWidth="16" fill="none" strokeLinecap="round"/>;
-        })}
-        {(()=>{ const ang = Math.PI - 2.5*(Math.PI/5); const nx=100+62*Math.cos(ang), ny=100-62*Math.sin(ang);
-          return <><line x1="100" y1="100" x2={nx} y2={ny} stroke="var(--ink-1)" strokeWidth="3" strokeLinecap="round"/>
-          <circle cx="100" cy="100" r="6" fill="var(--ink-1)"/></>; })()}
-      </svg>
-      <p style={{ margin:'auto 0 0', color:'var(--ink-3)', fontSize:'.88rem' }}>Your depth today decides what helps today.</p>
+    <div className="lp-hm-float-row" aria-hidden="true">
+      {HERO_CARDS_MOBILE.map(src => (
+        <div key={src} className="lp-hm-float-sm">
+          <img src={`public/assets/hero/${src}`} alt="" aria-hidden="true"/>
+        </div>
+      ))}
     </div>
   );
 }
 
-/* ---- Bento card 3: typographic "33" ---- */
-function CountCard() {
-  return (
-    <div className="lp-bento-cell">
-      <ModuleGlyph icon="check" deep1="var(--mod-how-deep1)" deep2="var(--mod-how-deep2)"/>
-      <h3 className="lp-h4" style={{ margin:0 }}>Five minutes, thirty-three questions.</h3>
-      <div style={{ margin:'6px 0 0', fontFamily:'var(--font-display)', fontWeight:700, fontSize:'clamp(3rem,2.4rem+2vw,4.2rem)',
-        lineHeight:1, color:'var(--mod-how-mid)' }}>33</div>
-      <p style={{ margin:'auto 0 0', color:'var(--ink-3)', fontSize:'.88rem' }}>questions · 5 minutes · 2 research axes</p>
-    </div>
-  );
-}
+/* ---- Hero proof row: three numbers, each under its own visual ---- */
+const STAT_AVATARS = ['inc', 'gue', 'sau', 'bas'];
 
-/* ---- Bento card 4: photo-quote (testimonial-ready slot) ---- */
-function PhotoQuoteCard() {
+function HeroStats() {
   return (
-    <div className="lp-bento-cell" style={{ position:'relative', padding:0, minHeight:280, overflow:'hidden' }}>
-      <img src="assets/photos/hero-late-night-phone.webp" alt="Woman lying in bed at night, checking her phone"
-        style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover',
-          outline:'1px solid rgba(0,0,0,.1)', outlineOffset:'-1px' }}/>
-      <div style={{ position:'absolute', inset:0, background:'linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.65))' }}/>
-      <div style={{ position:'relative', marginTop:'auto', padding:'22px 22px 24px', color:'#fff' }}>
-        <span style={{ fontSize:'2rem', fontFamily:'Georgia,serif', opacity:.7, lineHeight:1 }}>&ldquo;</span>
-        <p style={{ margin:'4px 0 0', fontWeight:600, fontSize:'1.05rem', lineHeight:1.4, textWrap:'pretty' }}>
-          I knew exactly what I was doing. I did it anyway.
+    <div className="lp-hm-stats">
+      <div className="lp-hm-stat">
+        <div className="lp-hm-stat-vis">
+          <span className="lp-hm-avatars">
+            {STAT_AVATARS.map(code => (
+              <img key={code} src={`assets/archetypes/${code}_avatar.webp`} alt="" aria-hidden="true"/>
+            ))}
+            <img className="badge" src="public/assets/emoji/certified.png" alt="" aria-hidden="true"/>
+          </span>
+        </div>
+        <p className="lp-hm-stat-txt">
+          Built on<br/>
+          <b className="lp-hm-stat-big-sm">50 YEARS</b><br/>
+          of attachment research.
+        </p>
+      </div>
+
+      <div className="lp-hm-stat">
+        <div className="lp-hm-stat-vis">
+          <img className="lp-hm-stat-emoji" src="public/assets/emoji/coeur_puzzle.png" alt="" aria-hidden="true"/>
+        </div>
+        <p className="lp-hm-stat-txt">
+          <b className="lp-hm-stat-big">8</b><br/>
+          Attachment patterns identified
+        </p>
+      </div>
+
+      <div className="lp-hm-stat">
+        <div className="lp-hm-stat-vis">
+          <img className="lp-hm-stat-emoji" src="public/assets/emoji/anchor_2693.png" alt="" aria-hidden="true"/>
+        </div>
+        <p className="lp-hm-stat-txt">
+          <b className="lp-hm-stat-big-sm">30 days</b><br/>
+          transformation plan
         </p>
       </div>
     </div>
   );
 }
 
-/* ---- Patterns module: minimal glyph cards, no character illustration ---- */
-function PatternGlyphCard({ arch, go }) {
-  const [h,setH] = useState(false);
+function HeroStars() {
+  if (!SHOW_HERO_STARS) return null;
   return (
-    <button onClick={()=>go('profil',arch.code)} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)}
-      className="lp-lift" style={{ cursor:'pointer', border:'none', textAlign:'left', width:'100%',
-        background:'#fff', borderRadius:'var(--r-card)', boxShadow:'var(--sh-1)',
-        padding:'22px', display:'flex', flexDirection:'column', gap:12 }}>
-      <div style={{ display:'flex', alignItems:'center', justifyContent:'flex-end' }}>
-        <span style={{ width:100, height:100, borderRadius:'50%', flexShrink:0, position:'relative',
-          background:`radial-gradient(120% 100% at 50% 100%, ${arch.soft} 0%, transparent 70%)` }}>
-          <img src={`assets/archetypes/${arch.code}.webp`} alt="" style={{ position:'absolute', bottom:0, left:'50%',
-            transform:'translateX(-50%)', height:'100%', width:'auto', objectFit:'contain', objectPosition:'bottom',
-            filter:'drop-shadow(0 6px 10px rgba(0,0,0,.14))' }}/>
-        </span>
-      </div>
-      <h3 className="lp-h4" style={{ margin:0 }}>{arch.name}</h3>
-      <p style={{ margin:0, color:'var(--ink-3)', fontSize:'.92rem', lineHeight:1.45 }}>{arch.tagline}</p>
-      <span style={{ display:'flex', alignItems:'center', gap:6, marginTop:'auto', color: h?arch.accent:'var(--ink-3)',
-        fontWeight:600, fontSize:'.85rem', transition:'color .2s ease' }}>
-        Discover <Icon name="arrow-right" size={14} style={{ transform: h?'translateX(3px)':'none', transition:'transform .2s ease' }}/>
-      </span>
-    </button>
-  );
-}
-
-/* ---- Pain-entry chips (Liven multi-door pattern) ---- */
-function PainEntryChips({ go }) {
-  const chips = [
-    { label:'Why do I push people away', entry:'push_away' },
-    { label:'Why do I need constant reassurance', entry:'reassurance' },
-    { label:'Why do I keep picking fights', entry:'picking_fights' },
-    { label:'Why do I feel trapped when it gets serious', entry:'feel_trapped' },
-  ];
-  function click(entry){
-    try { window.LP_track && window.LP_track('pain_entry_click', { entry }); } catch(e){}
-    try { window.LP_PH && window.LP_PH('pain_entry_click', { entry }); } catch(e){}
-    go('intro', null, { entry });
-  }
-  return (
-    <div className="lp-chip-row">
-      {chips.map(c=>(
-        <button key={c.entry} className="lp-pain-chip" onClick={()=>click(c.entry)} data-track={`pain:${c.entry}`}>
-          {c.label}
-        </button>
-      ))}
+    <div className="lp-hm-stars" aria-hidden="true">
+      {[0, 1, 2, 3, 4].map(i => <Icon key={i} name="star" size={20}/>)}
     </div>
   );
 }
 
-function Home({ go }) {
-  const { t } = useLang();
+/* ---- Section 2: the eight patterns ---- */
+function PatternCard({ arch, go }) {
   return (
-    <div>
-      {/* HERO — directly on the neutral page background, no card, no wash */}
-      <section className="lp-hero-wrap" style={{ padding:'clamp(48px,7vw,84px) var(--gutter) clamp(32px,5vw,56px)' }}>
-        <HeroPhotoTiles/>
-        <Container style={{ textAlign:'center', position:'relative', zIndex:2 }}>
-          <h1 className="lp-module-h" style={{ maxWidth:920, margin:'14px auto 0' }}>
-            Stop reliving the same heartbreak.
-          </h1>
-          <p className="lp-module-lead" style={{ margin:'20px auto 0' }}>
-            When love feels unsafe, <span style={{ color:'var(--mod-loop-mid)', fontWeight:600 }}>something in you takes over</span>. Find out what, before it decides for you again.
-          </p>
-          <div style={{ display:'flex', gap:14, justifyContent:'center', marginTop:28, flexWrap:'wrap' }}>
-            <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>Reveal My Pattern</Button>
-          </div>
-          <div style={{ marginTop:18, color:'var(--ink-3)', fontSize:'.9rem' }}>Free · Private · No sign-up</div>
-        </Container>
-      </section>
+    <button className="lp-hm-pcard lp-lift" onClick={() => go('profil', arch.code)}>
+      <span className="lp-hm-pcard-fig">
+        <img src={`assets/archetypes/${arch.code}.webp`} alt="" aria-hidden="true"/>
+      </span>
+      <h3 className="lp-hm-pcard-name">{arch.name}</h3>
+      <p className="lp-hm-pcard-desc">{arch.tagline}</p>
+      <span className="lp-hm-pcard-go">Discover →</span>
+    </button>
+  );
+}
 
-      {/* LOOP MODULE — warm */}
-      <Module wash="var(--mod-loop-wash)">
-        <Reveal>
-          <ModuleGlyph icon="route" deep1="var(--mod-loop-deep1)" deep2="var(--mod-loop-deep2)" size="lg"/>
-          <h2 className="lp-module-h" style={{ marginTop:20, maxWidth:640 }}>Different person. Same ending.</h2>
-          <p className="lp-module-lead" style={{ marginTop:16 }}>
-            The 2am reread. The fight you started to feel something. The silence you couldn't break. It's not bad luck. <span style={{ color:'var(--mod-loop-mid)', fontWeight:600 }}>It's a loop, and loops can be mapped.</span>
-          </p>
-        </Reveal>
-        <div style={{ marginTop:36 }}>
-          <Gallery>
-            {LOOP_PHOTOS.map(p=> <PhotoCard key={p.src} src={p.src} alt={p.alt} caption={p.cap}/>)}
-            <StatCard icon="heart" deep1="var(--mod-loop-deep1)" deep2="var(--mod-loop-deep2)"
-              claim="The urge to distance shows up before anything goes wrong."
-              support="Distancing and reassurance-seeking are documented attachment strategies, not character flaws."
-              footnote={<a href="#ref-1" style={{ color:'inherit' }}>1</a>}/>
-          </Gallery>
+/* ---- Section 3: mini articles ---- */
+const MINI_ARTICLES = [
+  {
+    img: 'mini_blog_01.webp',
+    label: 'Pattern research',
+    title: 'One step at a time',
+    text: 'The Anchor measures how deep your defense mechanism runs. The better you get at catching the early signs, the more of your own reaction you get to keep.',
+  },
+  {
+    img: 'mini_blog_02.webp',
+    label: 'New habits',
+    title: "Your pattern doesn't define you",
+    text: 'Your defenses were never the enemy. They kept something safe once, and most people find that accepting that is where the movement actually starts.',
+  },
+  {
+    img: 'mini_blog_03.webp',
+    label: 'New habits',
+    title: 'Move at your own pace',
+    text: "Everyone arrives with a different history, so your answers shape a plan built around your profile rather than a general template. Decades of automatic reactions don't unwind overnight, and that's fine.",
+  },
+];
+
+function MiniArticles({ go }) {
+  const nav = testNav(go);
+  return (
+    <section className="lp-hm-mini">
+      {MINI_ARTICLES.map(a => (
+        <article key={a.title} className="lp-hm-mini-card">
+          <img className="lp-hm-mini-bg" src={`public/assets/mini/${a.img}`} alt="" aria-hidden="true"/>
+          <span className="lp-hm-mini-veil" aria-hidden="true"/>
+          <div className="lp-hm-mini-body">
+            <span className="lp-hm-mini-label">{a.label}</span>
+            <h3 className="lp-hm-mini-title">{a.title}</h3>
+            <p className="lp-hm-mini-text">{a.text}</p>
+            <Button variant="light" size="sm" href="/test" onClick={nav}>Take the free test</Button>
+          </div>
+        </article>
+      ))}
+    </section>
+  );
+}
+
+/* ---- Section 4: science ---- */
+const SCIENCE_CARDS = [
+  { t: 'Bowlby (1969)', d: 'Founding work on attachment as a survival system in close relationships.' },
+  { t: 'Hazan & Shaver (1987)', d: 'Extended attachment theory into adult romantic relationships.' },
+  { t: 'Mikulincer & Shaver (2016)', d: 'Mapped anxious and avoidant strategies for regulating closeness and fear.' },
+  { t: 'Fraley & Waller (1998)', d: 'Evidence for attachment styles as continuous dimensions, not fixed boxes.' },
+];
+
+/* ---- Section 5: FAQ ------------------------------------------------------
+   Native <details>/<summary> accordion (first item open by default). The
+   answers are the ones already published in the site's FAQ; every question
+   in the mockup's list has one, so all ten render and all ten are mirrored
+   into the FAQPage JSON-LD in index.html — keep the two in sync. */
+const HOME_FAQ = [
+  ['What is a relationship protection pattern?', 'A relationship protection pattern is the automatic strategy you may use when intimacy, conflict, uncertainty, or fear of rejection makes you feel emotionally exposed. You may chase, withdraw, scan, fix, adapt, control, rescue, or shut down.'],
+  ['Is 8LovePatterns an attachment style quiz?', '8LovePatterns is attachment-inspired, but it is not limited to classic labels like anxious, avoidant, secure, or disorganized. It focuses on the specific role you fall into when love feels unsafe.'],
+  ['What is my attachment style?', 'Your attachment style describes how you tend to respond to closeness, distance, trust, dependence, and fear of rejection. 8LovePatterns uses attachment-informed ideas, but it translates them into more specific relationship protection patterns.'],
+  ["Why do I get anxious when they don't text back?", 'A delayed reply can feel threatening when your system is sensitive to disconnection. For some people, uncertainty triggers reassurance-seeking, overthinking, testing, or emotional urgency. 8LovePatterns helps you identify what takes over in that moment.'],
+  ['Why do I pull away when someone gets close?', 'Pulling away can be a protection strategy. When closeness starts to feel overwhelming, distance can feel like safety. 8LovePatterns helps you understand whether withdrawal is your automatic way of staying protected.'],
+  ['Why do I sabotage relationships?', 'Many people do not sabotage love because they do not care. They sabotage when connection starts to feel dangerous, uncertain, or too vulnerable. 8LovePatterns helps you recognize the pattern before it chooses for you.'],
+  ['Am I anxious or avoidant?', 'You may recognize anxious or avoidant tendencies, but most people are more nuanced than one label. 8LovePatterns helps identify the specific protection role that appears when attachment, fear, or conflict is activated.'],
+  ['Can my relationship pattern change?', 'Yes. Patterns are not life sentences. Awareness, emotional regulation, secure relationships, therapy, and consistent practice can help people respond differently over time.'],
+  ['Is this a love language test?', 'No. Love language tests focus on how you give and receive affection. 8LovePatterns focuses on what protects you when affection feels uncertain, threatened, or unsafe.'],
+  ['Is 8LovePatterns scientifically proven?', '8LovePatterns is science-backed and research-informed. It is grounded in established psychological research on adult attachment, emotion regulation, schema patterns, and defensive responses. The 8LovePatterns test itself is not a clinical diagnosis and does not replace therapy.'],
+];
+
+function HomeFAQ() {
+  return (
+    <section className="lp-hm-faq">
+      <div className="lp-hm-faq-card">
+        <h2 className="lp-hm-h2 lp-hm-faq-h">Relationship<br/>Pattern FAQ.</h2>
+        <div className="lp-hm-faq-list">
+          {HOME_FAQ.map(([q, a], i) => (
+            <details key={q} className="lp-hm-faq-item" open={i === 0}>
+              <summary>
+                <span>{q}</span>
+                <Icon name="chevron-down" size={18}/>
+              </summary>
+              <p>{a}</p>
+            </details>
+          ))}
         </div>
-        <div style={{ marginTop:8, display:'flex', justifyContent:'center' }}>
-          <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>Reveal My Pattern</Button>
-        </div>
-      </Module>
+      </div>
+    </section>
+  );
+}
 
-      {/* ANCHOR MODULE — sky */}
-      <Module wash="var(--mod-anchor-wash)">
-        <Reveal>
-          <ModuleGlyph icon="anchor" deep1="var(--mod-anchor-deep1)" deep2="var(--mod-anchor-deep2)" size="lg"/>
-          <h2 className="lp-module-h" style={{ marginTop:20, maxWidth:640 }}>The Anchor.</h2>
-          <p className="lp-module-lead" style={{ marginTop:16 }}>
-            You already know what you do. Knowing it hasn't stopped you. That gap is <span style={{ color:'var(--mod-anchor-mid)', fontWeight:600 }}>how deep the pattern runs in you right now</span>. Shallow, you catch it in time. Deep, you watch yourself do it anyway. Every other test skips the one measure that decides what actually helps.
-          </p>
-        </Reveal>
-        <div style={{ marginTop:36 }}>
-          <Gallery>
-            <AnchorScaleProduct/>
-            <StatCard icon="compass" deep1="var(--mod-anchor-deep1)" deep2="var(--mod-anchor-deep2)"
-              claim="Same pattern. Five possible depths."
-              support="Your level decides what actually helps — a reminder in the moment, or a plan for before it."/>
-            <PhotoCard src="assets/photos/hero-quiet-distance.webp"
-              alt="Woman sitting alone on a bed, knees pulled in, looking down quietly"
-              caption="The quiet distance nobody asked about"/>
-          </Gallery>
-        </div>
-        <div style={{ marginTop:8, display:'flex', justifyContent:'center' }}>
-          <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>Reveal My Pattern</Button>
-        </div>
+function Home({ go }) {
+  const nav = testNav(go);
+  return (
+    <div className="lp-hm">
 
-        {/* BENTO STAT GRID — illustrative visuals, placed right after the Anchor module */}
-        <Reveal style={{ marginTop:56 }}>
-          <div className="lp-bento">
-            <LoopCalendarCard/>
-            <AnchorGaugeCard/>
-            <CountCard/>
-            <PhotoQuoteCard/>
-          </div>
-          <p style={{ marginTop:14, textAlign:'center', color:'var(--ink-3)', fontSize:'.8rem' }}>Visualizations are illustrative.</p>
-        </Reveal>
-      </Module>
-
-      {/* PATTERNS — plain, directly on the page (no card), like Liven's review strip */}
-      <section style={{ padding:'clamp(48px,7vw,84px) var(--gutter)' }}>
-        <Container>
-          <Reveal style={{ textAlign:'center', maxWidth:640, margin:'0 auto' }}>
-            <h2 className="lp-module-h">Meet the eight things that take over.</h2>
-            <p className="lp-module-lead" style={{ margin:'16px auto 0' }}>One of them runs your loop. Five minutes to find out which.</p>
-          </Reveal>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'18px', marginTop:36 }} className="lp-mech-grid">
-            {window.ARCHETYPES.map(a=> <PatternGlyphCard key={a.code} arch={a} go={go}/>)}
-          </div>
-          <div style={{ marginTop:32, display:'flex', justifyContent:'center' }}>
-            <Button size="lg" variant="secondary" icon="arrow-right" onClick={()=>go('profils')}>{t('teaser.cta')}</Button>
-          </div>
-        </Container>
-      </section>
-
-      {/* HOW IT WORKS — full-bleed saturated green gradient, Apple accent moment, glass step cards */}
-      <section style={{ background:`linear-gradient(160deg, var(--mod-how-bold1) 0%, var(--mod-how-bold2) 100%)`,
-        boxShadow:'var(--sh-band-highlight)', padding:'clamp(48px,7vw,84px) var(--gutter)', textAlign:'center' }}>
-        <Container narrow>
-          <Reveal>
-            <h2 className="lp-module-h" style={{ color:'#fff' }}>Five minutes. Then the map.</h2>
-          </Reveal>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:18, marginTop:36, maxWidth:820, marginInline:'auto' }} className="lp-mech-grid">
-            {[
-              'Answer 33 questions. No sign-up, nothing stored with your name.',
-              'See your pattern and how deep it currently runs.',
-              'Get the one move that loosens it, matched to your level.',
-            ].map((s,i)=>(
-              <div key={s} className="lp-glass-card" style={{ padding:'24px 20px', textAlign:'left' }}>
-                <span style={{ display:'inline-grid', placeItems:'center', width:36, height:36, borderRadius:'50%',
-                  background:'rgba(255,255,255,.22)', color:'#fff', fontWeight:700, fontFamily:'var(--font-display)', fontSize:'1rem' }}>{i+1}</span>
-                <p style={{ margin:'14px 0 0', color:'#fff', fontSize:'1rem', lineHeight:1.5 }}>{s}</p>
-              </div>
-            ))}
-          </div>
-          <div style={{ maxWidth:820, marginInline:'auto' }}>
-            <PainEntryChips go={go}/>
-          </div>
-          <div style={{ marginTop:32, display:'flex', justifyContent:'center' }}>
-            <Button size="lg" variant="light" icon="arrow-right" onClick={()=>go('intro')}>Reveal My Pattern</Button>
-          </div>
-        </Container>
-      </section>
-
-      {/* CREDIBILITY — full-bleed teal wash, no card, Apple diagonal-section style */}
-      <section style={{ background:`linear-gradient(180deg, #FFFFFF 0%, var(--mod-cred-wash) 100%)`, padding:'clamp(48px,7vw,84px) var(--gutter)' }}>
-        <Container>
-          <Reveal style={{ textAlign:'center', maxWidth:660, margin:'0 auto' }}>
-            <ModuleGlyph icon="shield" deep1="var(--mod-cred-deep1)" deep2="var(--mod-cred-deep2)" size="lg" style={{ margin:'0 auto' }}/>
-            <h2 className="lp-module-h" style={{ marginTop:20 }}>Built on 50 years of attachment research.</h2>
-            <p className="lp-module-lead" style={{ margin:'16px auto 0' }}>
-              <span style={{ color:'var(--mod-cred-mid)', fontWeight:600 }}>Not a diagnosis, a mirror.</span> Educational self-reflection tool · Not a clinical diagnosis.
+      {/* ---- HERO ---- */}
+      <section className="lp-hm-hero">
+        <div className="lp-hm-hero-inner">
+          <HeroFloatingCards/>
+          <div className="lp-hm-hero-content">
+            <HeroMobileRow/>
+            <h1 className="lp-hm-title">Stop reliving the<br/>same heartbreak.</h1>
+            <HeroStats/>
+            <p className="lp-hm-sub">
+              Only 5 minutes to get a <span className="lp-hm-coral">"freakishly accurate"</span> description of how your{' '}
+              <br/><span className="lp-hm-coral">attachment pattern works</span> and why you do things the way you do.
             </p>
-          </Reveal>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:16, marginTop:36 }} className="lp-mech-grid">
-            {[
-              { t:'Bowlby (1969)', d:'Founding work on attachment as a survival system in close relationships.' },
-              { t:'Hazan & Shaver (1987)', d:'Extended attachment theory into adult romantic relationships.' },
-              { t:'Mikulincer & Shaver (2016)', d:'Mapped anxious and avoidant strategies for regulating closeness and fear.' },
-              { t:'Fraley & Waller (1998)', d:'Evidence for attachment styles as continuous dimensions, not fixed boxes.' },
-            ].map(c=>(
-              <div key={c.t} className="lp-lift" style={{ background:'#fff', borderRadius:'var(--r-card)', boxShadow:'var(--sh-1)', padding:'22px' }}>
-                <h3 className="lp-h4" style={{ margin:0, color:'var(--mod-cred-mid)' }}>{c.t}</h3>
-                <p style={{ margin:'10px 0 0', color:'var(--ink-3)', fontSize:'.9rem', lineHeight:1.5 }}>{c.d}</p>
+            <div className="lp-hm-cta-row">
+              <Button variant="green" size="lg" icon="arrow-right" href="/test" onClick={nav}>Take the free test</Button>
+            </div>
+            <HeroStars/>
+          </div>
+        </div>
+      </section>
+
+      {/* ---- THE EIGHT PATTERNS ---- */}
+      <section className="lp-hm-patterns">
+        <div className="lp-hm-wrap">
+          <h2 className="lp-hm-h2">Meet the eight<br/>patterns that<br/>take over.</h2>
+          <p className="lp-hm-h2-sub">One of them runs your loop. Five minutes to find out which.</p>
+          <div className="lp-hm-pgrid">
+            {window.ARCHETYPES.map(a => <PatternCard key={a.code} arch={a} go={go}/>)}
+          </div>
+          <div className="lp-hm-cta-row">
+            <a className="lp-hm-outline" href="/patterns"
+              onClick={(e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return; e.preventDefault(); go('profils'); }}>
+              Explore all 8 patterns →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ---- MINI ARTICLES ---- */}
+      <MiniArticles go={go}/>
+
+      {/* ---- SCIENCE ---- */}
+      <section className="lp-hm-science">
+        <div className="lp-hm-wrap">
+          <h2 className="lp-hm-h2">Built on 50 years<br/>of attachment<br/>research.</h2>
+          <p className="lp-hm-h2-sub">
+            <span className="lp-hm-teal">Not a diagnosis, a mirror.</span>{' '}
+            <span className="lp-hm-grey">Educational self-reflection tool · Not a clinical diagnosis.</span>
+          </p>
+          <div className="lp-hm-sci-grid">
+            {SCIENCE_CARDS.map(c => (
+              <div key={c.t} className="lp-hm-sci-card">
+                <h3>{c.t}</h3>
+                <p>{c.d}</p>
               </div>
             ))}
           </div>
-          <div style={{ maxWidth:680, margin:'30px auto 0', fontSize:'.82rem', color:'var(--ink-3)', lineHeight:1.7 }}>
-            <ol style={{ paddingLeft:18, margin:0 }}>
+          <div className="lp-hm-refs">
+            <ol>
               <li id="ref-1">Mikulincer, M. &amp; Shaver, P. R. (2016). <i>Attachment in Adulthood: Structure, Dynamics, and Change.</i></li>
               <li id="ref-2">Bowlby, J. (1969). <i>Attachment and Loss, Vol. 1.</i></li>
-              <li id="ref-3">Hazan, C. &amp; Shaver, P. (1987). Romantic love conceptualized as an attachment process.</li>
-              <li id="ref-4">Fraley, R. C. &amp; Waller, N. G. (1998). Adult attachment patterns: A test of the typological model.</li>
+              <li id="ref-3">Hazan, C. &amp; Shaver, P. (1987). <i>Romantic love conceptualized as an attachment process.</i></li>
+              <li id="ref-4">Fraley, R. C. &amp; Waller, N. G. (1998). <i>Adult attachment patterns: A test of the typological model.</i></li>
             </ol>
-            <p style={{ marginTop:14 }}>8LovePatterns is educational and is not a clinical diagnosis.</p>
+            <p>8LovePatterns is educational and is not a clinical diagnosis.</p>
           </div>
-        </Container>
-      </section>
-
-      {/* FAQ — restyled to system */}
-      <Module>
-        <FAQ embedded/>
-      </Module>
-
-      {/* GRADIENT SUPPORT BAND — pre-footer */}
-      <section style={{ padding:'0 var(--gutter) clamp(56px,8vw,100px)' }}>
-        <div className="lp-support-band" style={{ maxWidth:'var(--maxw)', margin:'0 auto' }}>
-          <h2 className="lp-module-h" style={{ color:'#fff', fontSize:'clamp(2rem,1.6rem+2vw,2.8rem)' }}>A question before you start.</h2>
-          <p style={{ margin:'14px auto 0', color:'rgba(255,255,255,.88)', fontSize:'1.05rem' }}>
-            support@8lovepatterns.com — we usually reply within 48 hours.
-          </p>
-          <div style={{ marginTop:26 }}>
-            <Button size="lg" variant="light" href="mailto:support@8lovepatterns.com">Email us</Button>
+          <div className="lp-hm-cta-row">
+            <Button variant="green" size="lg" icon="arrow-right" href="/test" onClick={nav}>Take the free test</Button>
           </div>
         </div>
       </section>
 
-      {/* FINAL CTA */}
-      <section style={{ padding:'0 var(--gutter) clamp(56px,9vw,110px)' }}>
-        <div style={{ maxWidth:'var(--maxw)', margin:'0 auto', borderRadius:'var(--r-module)', padding:'clamp(40px,6vw,72px)',
-          background:'linear-gradient(160deg, var(--mod-how-bold1) 0%, var(--mod-how-bold2) 100%)', boxShadow:'var(--sh-band-highlight)', textAlign:'center' }}>
-          <h2 className="lp-module-h" style={{ color:'#fff', fontSize:'clamp(2rem,1.6rem+2vw,2.8rem)' }}>The pattern repeats until someone looks at it. Be the one who looks.</h2>
-          <div style={{ marginTop:28, display:'flex', justifyContent:'center' }}>
-            <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>Reveal My Pattern</Button>
-          </div>
-          <div style={{ marginTop:20, color:'rgba(255,255,255,.72)', fontSize:'.9rem', display:'flex', gap:'8px', justifyContent:'center', alignItems:'center', flexWrap:'wrap' }}>
-            <Icon name="lock" size={15}/> Free · 5 minutes · Private
-          </div>
-        </div>
-      </section>
+      {/* ---- FAQ ---- */}
+      <HomeFAQ/>
     </div>
   );
 }

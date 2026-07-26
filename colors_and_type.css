@@ -114,6 +114,23 @@
   --cta-soft:    #E4F7EC;
   --sh-cta:      0 10px 22px -6px rgba(47,190,115,.4);
 
+  /* ---- Homepage redesign tokens (validated mockup, 2026) ---------------
+     --green-cta is the action-button fill for every CTA on the homepage and
+     for the header's "Reveal My Pattern" pill. It is deliberately separate
+     from --cta (#2FBE73) so the rest of the site keeps its current button
+     green. Never hard-code #59c021 in a component — go through the token.
+     --green-cta-600 is the pressed/hover shade, derived from the token.
+     --brand-rose colours the "Patterns" half of the wordmark in the header.
+     --footer-grad is the footer's dark-blue -> blue vertical gradient; the
+     footer's text stays #FFFFFF on top of it. */
+  --green-cta:      #59c021;
+  --green-cta-600:  color-mix(in srgb, #59c021 86%, #000);
+  --green-cta-text: #FFFFFF;
+  --sh-green-cta:   0 10px 22px -6px rgba(89, 192, 33, .42);
+  --brand-rose:     #E0559E;
+  --footer-grad:    linear-gradient(180deg, #1B2A5E 0%, #2C5CA8 100%);
+  --footer-text:    #FFFFFF;
+
   /* ---- App-shell page background (Liven-style, sits behind white cards) */
   --page-bg:     #EEF1F4;
   --ink-1:       #1D1D1F;   /* Apple headline ink */

@@ -54,6 +54,9 @@ function Button({ children, variant='primary', size='md', icon, iconLeft, onClic
     secondary:{ background:'transparent', color:'var(--encre)', boxShadow:'inset 0 0 0 1.5px var(--encre)' },
     ghost:{ background:'transparent', color:'var(--violet)', padding:'10px 8px' },
     light:{ background:'#fff', color:'var(--encre)', boxShadow:'var(--sh-sm)' },
+    /* Homepage/header action green (validated mockup). Fill comes from the
+       --green-cta token so the colour is changed in one place, never here. */
+    green:{ background:'var(--green-cta)', color:'var(--green-cta-text)', boxShadow:'var(--sh-green-cta)' },
   };
   const [hover, setHover] = useState(false);
   const [pressed, setPressed] = useState(false);
@@ -63,6 +66,7 @@ function Button({ children, variant='primary', size='md', icon, iconLeft, onClic
     secondary:{ background:'var(--encre)', color:'#fff' },
     ghost:{ opacity:.7 },
     light:{ transform:'translateY(-1px)', boxShadow:'var(--sh-md)' },
+    green:{ background:'var(--green-cta-600)', transform:'translateY(-1px)' },
   }[variant]) : {};
   const pressStyle = (pressed && !isStatic) ? { transform:'scale(.96)' } : {};
   const endPress = ()=>setPressed(false);
@@ -85,16 +89,33 @@ const Container = ({ children, narrow, style }) =>
 const Eyebrow = ({ children, color }) =>
   <div className="lp-eyebrow" style={{ color: color||'var(--ink-3)' }}>{children}</div>;
 
-/* ---- Marque ---- */
-function Logo({ light, size=22, onClick }) {
+/* ---- Marque. `accent` overrides the colour of the "Patterns" half of the
+   wordmark; the header passes --brand-rose per the validated mockup, every
+   other caller (footer included) keeps the historical --corail rendering. ---- */
+function Logo({ light, size=22, onClick, accent }) {
   return (
     <div onClick={onClick} style={{ display:'flex', alignItems:'center', gap:'9px', cursor:'pointer', userSelect:'none' }}>
       <img src="assets/8lovepatterns-logo.png" alt="" width={size+10} height={size+10}
         style={{ borderRadius:'50%', objectFit:'contain', flexShrink:0 }}/>
       <span style={{ fontFamily:'var(--font-display)', fontWeight:800, fontSize:size*0.92, letterSpacing:'-.02em',
         color: light?'#fff':'var(--encre)' }}>
-        8Love<span style={{ color:'var(--corail)' }}>Patterns</span>
+        8Love<span style={{ color: accent||'var(--corail)' }}>Patterns</span>
       </span>
+    </div>
+  );
+}
+
+/* ---- Floating photo tile. Accepts img OR a muted looping video source so a
+   tile can be swapped for footage without touching markup — pass either
+   `src` (image) or `video` (mp4/webm). Lives here rather than in Home.jsx
+   because the Science page (pages.jsx) is now its only caller. ---- */
+function HeroTile({ src, video, alt, size, style, className='' }) {
+  const box = { lg:180, md:130, sm:90 }[size] || 130;
+  return (
+    <div className={`lp-hero-tile ${className}`.trim()} style={{ width:box, height:box, ...style }}>
+      {video
+        ? <video src={video} autoPlay muted loop playsInline aria-hidden="true"/>
+        : <img src={src} alt={alt}/>}
     </div>
   );
 }
@@ -263,5 +284,5 @@ function ProductCard({ children, windowChrome=true }) {
   );
 }
 
-Object.assign(window, { Icon, Button, Container, Eyebrow, Logo, Avatar, archByCode, FamilyDot, Chip, EmpriseTag, ProgressBar, Section,
+Object.assign(window, { Icon, Button, Container, Eyebrow, Logo, HeroTile, Avatar, archByCode, FamilyDot, Chip, EmpriseTag, ProgressBar, Section,
   Module, Reveal, ModuleGlyph, Gallery, PhotoCard, StatCard, ProductCard });
