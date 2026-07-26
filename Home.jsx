@@ -39,29 +39,34 @@ function testNav(go) {
    `dur` / `delay` / `rot` drive the per-card float (see .lp-hm-drift in
    index.html); the delays are all different so no two cards ever move in
    sync. The whole float is disabled under prefers-reduced-motion. */
+/* Sizes halved from the previous pass (that +25% was a mistake); top/left/
+   right are recomputed so each card's CENTER stays exactly where it was —
+   the anchor is a corner, not the center, so shrinking in place means the
+   edge percentages have to move even though the card itself doesn't. */
 const HERO_CARDS = [
   /* left */
-  { src: 'couple2.webp',   w: 250, h: 325, top: '2%',  left: '4%',  dy: '-11px', r0: '-2deg', r1: '0deg',    dur: '7.4s', delay: '-0.4s' },
-  { src: 'butterfly.webp', w: 225, h: 225, top: '40%', left: '8%',  dy: '-9px',  r0: '1.5deg', r1: '-0.5deg', dur: '8.6s', delay: '-3.1s' },
-  { src: 'flower.webp',    w: 200, h: 250, top: '74%', left: '15%', dy: '-12px', r0: '-1deg',  r1: '1deg',    dur: '6.5s', delay: '-1.7s' },
+  { src: 'couple2.webp',   w: 125, h: 163, top: '13.1%', left: '8.9%',  dy: '-11px', r0: '-2deg', r1: '0deg',    dur: '7.4s', delay: '-0.4s' },
+  { src: 'butterfly.webp', w: 113, h: 113, top: '47.7%', left: '12.4%', dy: '-9px',  r0: '1.5deg', r1: '-0.5deg', dur: '8.6s', delay: '-3.1s' },
+  { src: 'flower.webp',    w: 100, h: 125, top: '82.6%', left: '13.3%', dy: '-12px', r0: '-1deg',  r1: '1deg',    dur: '6.5s', delay: '-1.7s' },
   /* right */
-  { src: 'dance2.webp',    w: 238, h: 288, top: '0%',  right: '4%',  dy: '-8px',  r0: '-1.5deg', r1: '0.5deg', dur: '6.9s', delay: '-5.2s' },
-  { src: 'happy.webp',     w: 200, h: 200, top: '34%', right: '19%', dy: '-10px', r0: '1deg',   r1: '-1deg',   dur: '8.1s', delay: '-2.6s' },
-  { src: 'wave.webp',      w: 250, h: 250, top: '40%', right: '3%',  dy: '-11px', r0: '2deg',   r1: '0deg',    dur: '7.9s', delay: '-0.9s' },
-  { src: 'dance.webp',     w: 263, h: 250, top: '66%', right: '9%',  dy: '-12px', r0: '-1deg',  r1: '1.5deg',  dur: '8.9s', delay: '-4.3s' },
+  { src: 'dance2.webp',    w: 119, h: 144, top: '9.9%',  right: '8.7%',  dy: '-8px',  r0: '-1.5deg', r1: '0.5deg', dur: '6.9s', delay: '-5.2s' },
+  { src: 'happy.webp',     w: 100, h: 100, top: '40.9%', right: '13.1%', dy: '-10px', r0: '1deg',   r1: '-1deg',   dur: '8.1s', delay: '-2.6s' },
+  { src: 'wave.webp',      w: 125, h: 125, top: '48.6%', right: '7.9%',  dy: '-11px', r0: '2deg',   r1: '0deg',    dur: '7.9s', delay: '-0.9s' },
+  { src: 'dance.webp',     w: 132, h: 125, top: '74.6%', right: '10.6%', dy: '-12px', r0: '-1deg',  r1: '1.5deg',  dur: '8.9s', delay: '-4.3s' },
 ];
 
-/* White square cards, each carrying one emoji, 110px per the corrections
-   pass. Placements: coeur_repare next to the title, love_comptability on
-   the left, puzzle just above the dance.webp card on the right — all three
-   kept outside the 320-960px (of 1280px stage) text column so none of them
-   ever sit on top of readable text; the tradeoff is some overlap with the
-   photo cards instead, which is fine, they're meant to look like a
-   scattered pile. */
+/* White square cards, each carrying one emoji, 110px. Kept outside the
+   320-960px (of 1280px stage) text column with a real margin — not just
+   clear of it — so none ever sits on top of readable text, AND positioned
+   so their CENTER never lands inside a photo card's box (a corner clip is
+   fine, being centered on a photo reads as a bug). coeur_repare sits above
+   the hero entirely (clear of dance2 below it); love_comptability sits in
+   the gap between couple2 and butterfly, clipping butterfly's top corner
+   only; puzzle sits above dance.webp, clear of both it and wave. */
 const HERO_EMOJI = [
-  { src: 'coeur_repare.png',      s: 110, top: '4%',  right: '13%', dy: '-10px', r0: '-3deg', r1: '1deg',  dur: '6.7s', delay: '-2.2s' },
-  { src: 'love_comptability.png', s: 110, top: '20%', left: '14%',  dy: '-9px',  r0: '2deg',  r1: '-2deg', dur: '7.7s', delay: '-4.8s' },
-  { src: 'puzzle.png',            s: 110, top: '60%', right: '15%', dy: '-11px', r0: '-2deg', r1: '2deg',  dur: '8.4s', delay: '-1.2s' },
+  { src: 'coeur_repare.png',      s: 110, top: '-8%',   right: '13%', dy: '-10px', r0: '-3deg', r1: '1deg',  dur: '6.7s', delay: '-2.2s' },
+  { src: 'love_comptability.png', s: 110, top: '34.9%', left: '12%',  dy: '-9px',  r0: '2deg',  r1: '-2deg', dur: '7.7s', delay: '-4.8s' },
+  { src: 'puzzle.png',            s: 110, top: '60%',   right: '12.2%', dy: '-11px', r0: '-2deg', r1: '2deg',  dur: '8.4s', delay: '-1.2s' },
 ];
 
 function heroFloatStyle(c) {
