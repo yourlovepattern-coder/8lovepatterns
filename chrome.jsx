@@ -1,5 +1,22 @@
 /* 8LovePatterns, header + footer (English) */
 
+/* One entry per network, shared by the mobile header menu and the footer.
+   `href` goes straight to the real profile URL — no custom instagram://
+   scheme: iOS Safari and Android Chrome/WebView already intercept a plain
+   instagram.com link via Instagram's own universal/app links and offer to
+   open the app straight to this profile when it's installed, falling back
+   to the mobile web profile when it isn't. A custom URI scheme would be
+   LESS reliable (breaks with no app-not-found fallback in several in-app
+   browsers) for no real gain. Add a row here to add a network everywhere at
+   once; nothing else needs to change. */
+const SOCIALS = [
+  { name:'Instagram', href:'https://www.instagram.com/8lovepatterns/', icon:'instagram' },
+  /* Pinterest's mark is a solid glyph, not a stroke-drawn outline like the
+     rest of ICONS — `filled` swaps the <Icon> to fill:currentColor/stroke:none
+     so it doesn't render as an empty outline. */
+  { name:'Pinterest', href:'https://fr.pinterest.com/8LovePatterns/', icon:'pinterest', filled:true },
+];
+
 function Header({ go, route }) {
   const [open, setOpen] = useState(false);
   const { t } = useLang();
@@ -58,6 +75,19 @@ function Header({ go, route }) {
               ))}
               <div style={{ height:8 }}></div>
               <Button full onClick={()=>{go('intro');setOpen(false);}}>{t('cta.reveal')}</Button>
+              {/* Same SOCIALS array as the footer (chrome.jsx, above) — one
+                  network, one line, no duplicated list to keep in sync.
+                  .lp-icon-btn (not .lp-footer-social) because this pill is
+                  light, not the footer's dark gradient. */}
+              <div style={{ display:'flex', gap:'6px', marginTop:14, paddingTop:14, borderTop:'1px solid var(--hairline)' }}>
+                {SOCIALS.map(s=>(
+                  <a key={s.name} href={s.href} target="_blank" rel="noopener noreferrer"
+                    aria-label={s.name} className="lp-icon-btn" style={{ color:'var(--ink-2)' }}
+                    onClick={()=>setOpen(false)}>
+                    <Icon name={s.icon} size={20} style={s.filled ? { fill:'currentColor', stroke:'none' } : {}}/>
+                  </a>
+                ))}
+              </div>
             </Container>
           </div>
         )}
@@ -65,22 +95,6 @@ function Header({ go, route }) {
     </div>
   );
 }
-
-/* One entry per network. `href` goes straight to the real profile URL — no
-   custom instagram:// scheme: iOS Safari and Android Chrome/WebView already
-   intercept a plain instagram.com link via Instagram's own universal/app
-   links and offer to open the app straight to this profile when it's
-   installed, falling back to the mobile web profile when it isn't. A custom
-   URI scheme would be LESS reliable (breaks with no app-not-found fallback
-   in several in-app browsers) for no real gain. Add a row here to add a
-   network; nothing else in the footer needs to change. */
-const SOCIALS = [
-  { name:'Instagram', href:'https://www.instagram.com/8lovepatterns/', icon:'instagram' },
-  /* Pinterest's mark is a solid glyph, not a stroke-drawn outline like the
-     rest of ICONS — `filled` swaps the <Icon> to fill:currentColor/stroke:none
-     so it doesn't render as an empty outline. */
-  { name:'Pinterest', href:'https://fr.pinterest.com/8LovePatterns/', icon:'pinterest', filled:true },
-];
 
 function Footer({ go }) {
   const { t } = useLang();
