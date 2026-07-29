@@ -81,10 +81,15 @@ const LP_TEST_C0 = [
       fr:"Dis-moi où tu en es en ce moment. Il n'y a pas de bonne réponse, ça nous sert juste à te parler de ta vie à toi, pas de celle d'un autre.",
       en:"Tell me where you are right now. There is no right answer, it just lets us talk about your life, not someone else's." },
     options:[
-      { branche:'couple',     emoji:'🫂', fr:"Je suis en couple",                                   en:"I'm in a relationship" },
+      /* Choisis pour rester lisibles à 1.3rem sur une carte blanche. 🫂 et 🌫️
+         avaient été essayés et écartés à la relecture navigateur : le premier
+         devient un pâté indistinct à cette taille, le second est un gris si
+         pâle qu'il disparaît sur le blanc. ❤️/💔 se répondent (entier / brisé),
+         et 🪢 dit le noeud non défait tout en restant dans l'univers maritime. */
+      { branche:'couple',     emoji:'❤️', fr:"Je suis en couple",                                   en:"I'm in a relationship" },
       { branche:'celibataire',emoji:'🚶', fr:"Je suis célibataire",                                 en:"I'm single" },
       { branche:'rupture',    emoji:'💔', fr:"Je sors d'une rupture difficile",                     en:"I'm coming out of a hard breakup" },
-      { branche:'flou',       emoji:'🌫️', fr:"C'est flou, ni vraiment ensemble ni vraiment séparés", en:"It's blurry, not really together and not really apart" },
+      { branche:'flou',       emoji:'🪢', fr:"C'est flou, ni vraiment ensemble ni vraiment séparés", en:"It's blurry, not really together and not really apart" },
     ] },
   { id:'C2', chapter:0, kind:'single',
     situation:{

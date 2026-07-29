@@ -153,7 +153,7 @@ function ChoiceButton({ label, active, onClick, emoji }){
       </span>
       {/* Décoratif : aria-hidden pour que le lecteur d'écran lise le libellé seul. */}
       {emoji && (
-        <span aria-hidden="true" style={{ fontSize:'1.2rem', lineHeight:1, flexShrink:0,
+        <span aria-hidden="true" style={{ fontSize:'1.3rem', lineHeight:1, flexShrink:0,
           transform: h ? 'scale(1.14)' : 'none', transition:'transform .16s ease' }}>{emoji}</span>
       )}
       <span>{label}</span>
