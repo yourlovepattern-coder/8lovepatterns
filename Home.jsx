@@ -303,10 +303,10 @@ function Home({ go }) {
         <div className="lp-hm-hero-inner">
           <div className="lp-hm-hero-content">
             <HeroMobileCluster/>
-            <h1 className="lp-hm-title">Stop reliving the<br/>same heartbreak.</h1>
+            <h1 className="lp-hm-title">Attachment Style Test:<br/>Stop Reliving the Same Heartbreak</h1>
             <HeroStats/>
             <p className="lp-hm-sub">
-              Only 5 minutes to get a <span className="lp-hm-coral">"freakishly accurate"</span> description of how your{' '}
+              Only 5 minutes to get a <span className="lp-hm-coral">description many people say hits closer than they expected</span> of how your{' '}
               <br/><span className="lp-hm-coral">attachment pattern works</span> and why you do things the way you do.
             </p>
             <div className="lp-hm-cta-row">

@@ -42,8 +42,8 @@ function routeFromPath(pathname) {
    meta the last real page set, since they're never indexed or shared. */
 const ROUTE_META = {
   home: {
-    title: '8LovePatterns: Free Relationship Pattern Test | Attachment-Inspired Quiz',
-    description: 'Take the free 5-minute 8LovePatterns test to reveal the protection pattern that takes over when love feels unsafe. A science-backed, attachment-inspired relationship quiz for anxious, avoidant, overthinking, and repeating relationship patterns.',
+    title: 'Attachment Style Test | Stop Reliving the Same Heartbreak',
+    description: 'Take the free 5-minute attachment style test. Find which of 8 patterns runs your relationships, built on 50 years of attachment research.',
   },
   science: {
     title: 'The Research Behind 8LovePatterns | Attachment Science Explained',
