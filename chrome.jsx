@@ -66,6 +66,18 @@ function Header({ go, route }) {
   );
 }
 
+/* One entry per network. `href` goes straight to the real profile URL — no
+   custom instagram:// scheme: iOS Safari and Android Chrome/WebView already
+   intercept a plain instagram.com link via Instagram's own universal/app
+   links and offer to open the app straight to this profile when it's
+   installed, falling back to the mobile web profile when it isn't. A custom
+   URI scheme would be LESS reliable (breaks with no app-not-found fallback
+   in several in-app browsers) for no real gain. Add a row here to add a
+   network; nothing else in the footer needs to change. */
+const SOCIALS = [
+  { name:'Instagram', href:'https://www.instagram.com/8lovepatterns/', icon:'instagram' },
+];
+
 function Footer({ go }) {
   const { t } = useLang();
   const cols = [
@@ -85,6 +97,14 @@ function Footer({ go }) {
             <p style={{ marginTop:16, fontSize:'.95rem', lineHeight:1.6, color:'rgba(255,255,255,.82)' }}>
               {t('footer.tagline')}
             </p>
+            <div style={{ display:'flex', gap:'10px', marginTop:20 }}>
+              {SOCIALS.map(s=>(
+                <a key={s.name} href={s.href} target="_blank" rel="noopener noreferrer"
+                  aria-label={s.name} className="lp-footer-social">
+                  <Icon name={s.icon} size={18}/>
+                </a>
+              ))}
+            </div>
           </div>
           {cols.map(c=>(
             <div key={c.h}>

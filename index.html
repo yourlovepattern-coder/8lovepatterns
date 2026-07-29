@@ -429,6 +429,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .lp-footer a:focus-visible, .lp-footer button:focus-visible { outline-color: #fff; }
 
+  /* Footer social row: one circular slot per network. Sized/spaced so a
+     future icon (TikTok, Pinterest…) just drops into the SOCIALS array in
+     chrome.jsx with zero style changes needed here. */
+  .lp-footer-social {
+    width: 38px; height: 38px; border-radius: 50%;
+    display: grid; place-items: center; flex-shrink: 0;
+    background: rgba(255,255,255,.12); color: #fff;
+    transition: background-color .2s ease, transform .2s ease;
+  }
+  .lp-footer-social:hover { background: rgba(255,255,255,.22); transform: translateY(-2px); }
+  .lp-footer-social:active { transform: scale(.94); }
+
   /* ---- Section headings shared by patterns / science / FAQ ---- */
   .lp-hm-h2 {
     font-family: var(--font-display);
