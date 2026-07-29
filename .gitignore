@@ -11,3 +11,13 @@ app.js
 # loads the animated WebP in public/assets/hero/ (each under 500 KB, versus
 # ~38 MB for these). Regenerate the WebP from these if the hero art changes.
 assets/photos/*.gif
+
+# Agent tooling installed locally (Claude Code skill packages). ~123 files,
+# ~19k lines of vendored React Native / Expo / UI reference docs that have
+# nothing to do with this site. .agents/ is a byte-for-byte mirror of
+# .claude/skills/. Reinstallable at any time, so never commit them.
+# NOTE: only .claude/skills/ is ignored, NOT all of .claude/ —
+# .claude/launch.json is a real project file and stays tracked.
+.claude/skills/
+.agents/
+skills-lock.json

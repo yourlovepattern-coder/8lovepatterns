@@ -41,14 +41,31 @@ const LP_TEST_CHAPTERS = [
    BLOC 0 — ON FAIT CONNAISSANCE  (kind: 'single' — single choice, auto-advance)
    sexe + âge sont NON scorés (stockés dans contexte). C1/C2 = personnalisation,
    C3 = garde-fou sécurité (jamais scoré, priorité absolue, comportement inchangé).
+
+   CHAMP `emoji` (optionnel, purement décoratif) — voir SingleScreen/ChoiceButton
+   dans test.jsx. Additif : le moteur ne lit jamais que .palier / .securite /
+   .sexe / .age / .branche / .repetition, et lpFindC0() n'est appelé qu'avec ces
+   quatre derniers noms — `emoji` ne peut donc jamais être sélectionné par
+   `field in o`. Une option sans emoji rend exactement comme avant.
+
+   Trois abstentions DÉLIBÉRÉES, pas des oublis :
+     · AGE — toute famille d'emojis sur des tranches d'âge stéréotype une étape
+       de vie ou encode une croissance/déclin. Rien de neutre n'existe, on laisse
+       vide.
+     · C3  — question garde-fou (peur, rabaissement, isolement). Un emoji à côté
+       de « Yes, several of these things » serait indécent.
+     · Les 6 questions d'Ancre (les 8 variantes) — voir la note en tête de
+       test_data_ancre.jsx : le palier 4 est écrit pour paraître légitime, jamais
+       un aveu. Un emoji y trahit forcément la valence (un 🌿 sur « I just need
+       my space and that's healthy » VALIDE le déni) et corrompt la mesure.
    -------------------------------------------------------------------------- */
 const LP_TEST_C0 = [
   { id:'SEX', chapter:0, kind:'single',
     situation:{ fr:"Pour commencer, tu es…", en:"To start, you are…" },
     options:[
-      { sexe:'woman', fr:"Une femme",               en:"A woman" },
-      { sexe:'man',   fr:"Un homme",                en:"A man" },
-      { sexe:'na',    fr:"Je préfère ne pas dire",  en:"Prefer not to say" },
+      { sexe:'woman', emoji:'👩', fr:"Une femme",               en:"A woman" },
+      { sexe:'man',   emoji:'👨', fr:"Un homme",                en:"A man" },
+      { sexe:'na',    emoji:'🤍', fr:"Je préfère ne pas dire",  en:"Prefer not to say" },
     ] },
   { id:'AGE', chapter:0, kind:'single',
     situation:{ fr:"Quel âge as-tu ?", en:"How old are you?" },
@@ -64,19 +81,21 @@ const LP_TEST_C0 = [
       fr:"Dis-moi où tu en es en ce moment. Il n'y a pas de bonne réponse, ça nous sert juste à te parler de ta vie à toi, pas de celle d'un autre.",
       en:"Tell me where you are right now. There is no right answer, it just lets us talk about your life, not someone else's." },
     options:[
-      { branche:'couple',     fr:"Je suis en couple",                                   en:"I'm in a relationship" },
-      { branche:'celibataire',fr:"Je suis célibataire",                                 en:"I'm single" },
-      { branche:'rupture',    fr:"Je sors d'une rupture difficile",                     en:"I'm coming out of a hard breakup" },
-      { branche:'flou',       fr:"C'est flou, ni vraiment ensemble ni vraiment séparés", en:"It's blurry, not really together and not really apart" },
+      { branche:'couple',     emoji:'🫂', fr:"Je suis en couple",                                   en:"I'm in a relationship" },
+      { branche:'celibataire',emoji:'🚶', fr:"Je suis célibataire",                                 en:"I'm single" },
+      { branche:'rupture',    emoji:'💔', fr:"Je sors d'une rupture difficile",                     en:"I'm coming out of a hard breakup" },
+      { branche:'flou',       emoji:'🌫️', fr:"C'est flou, ni vraiment ensemble ni vraiment séparés", en:"It's blurry, not really together and not really apart" },
     ] },
   { id:'C2', chapter:0, kind:'single',
     situation:{
       fr:"Quand tu repenses à tes histoires, est-ce que tu as l'impression de revivre un peu toujours la même chose ?",
       en:"When you look back on your relationships, do you feel like you keep living through a little of the same thing?" },
     options:[
-      { repetition:'forte',     fr:"Oui, presque à chaque fois, les mêmes scénarios reviennent", en:"Yes, almost every time, the same scenarios come back" },
-      { repetition:'partielle', fr:"Parfois, sur certains points seulement",                     en:"Sometimes, on certain points only" },
-      { repetition:'faible',    fr:"Non, mes histoires sont assez différentes",                  en:"No, my relationships are quite different from each other" },
+      /* Trois symboles abstraits de la même famille (boucle / partiel / dispersé) :
+         aucun ne « fait envie », donc aucune réponse ne paraît la bonne. */
+      { repetition:'forte',     emoji:'🔁', fr:"Oui, presque à chaque fois, les mêmes scénarios reviennent", en:"Yes, almost every time, the same scenarios come back" },
+      { repetition:'partielle', emoji:'🌗', fr:"Parfois, sur certains points seulement",                     en:"Sometimes, on certain points only" },
+      { repetition:'faible',    emoji:'🔀', fr:"Non, mes histoires sont assez différentes",                  en:"No, my relationships are quite different from each other" },
     ] },
   { id:'C3', chapter:0, kind:'single', safety:true,
     situation:{
