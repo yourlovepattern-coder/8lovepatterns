@@ -76,6 +76,10 @@ function Header({ go, route }) {
    network; nothing else in the footer needs to change. */
 const SOCIALS = [
   { name:'Instagram', href:'https://www.instagram.com/8lovepatterns/', icon:'instagram' },
+  /* Pinterest's mark is a solid glyph, not a stroke-drawn outline like the
+     rest of ICONS — `filled` swaps the <Icon> to fill:currentColor/stroke:none
+     so it doesn't render as an empty outline. */
+  { name:'Pinterest', href:'https://fr.pinterest.com/8LovePatterns/', icon:'pinterest', filled:true },
 ];
 
 function Footer({ go }) {
@@ -101,7 +105,7 @@ function Footer({ go }) {
               {SOCIALS.map(s=>(
                 <a key={s.name} href={s.href} target="_blank" rel="noopener noreferrer"
                   aria-label={s.name} className="lp-footer-social">
-                  <Icon name={s.icon} size={18}/>
+                  <Icon name={s.icon} size={18} style={s.filled ? { fill:'currentColor', stroke:'none' } : {}}/>
                 </a>
               ))}
             </div>
