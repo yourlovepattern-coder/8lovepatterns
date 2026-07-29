@@ -299,7 +299,7 @@ function LoveTest({ go }){
   const tx = useTx();
   const narrow = useWidth() < 620;                 // fold-sensitive spacing on mobile
 
-  const [phase,setPhase] = useState('intro');      // 'intro' | 'test' | 'result'
+  const [phase,setPhase] = useState('test');       // 'test' | 'result' (intro merged into Q1)
   const [index,setIndex] = useState(0);
   const [answers,setAnswers] = useState({});
 
@@ -354,13 +354,14 @@ function LoveTest({ go }){
   /* Dev hook (read-only). */
   useEffect(()=>{ window.__lpState = { answers, frozen }; }, [answers, frozen]);
 
-  /* Analytics : quiz_started (le questionnaire commence) / quiz_completed
-     (dernière réponse validée, passage au résultat). Inchangés. */
+  /* Analytics : quiz_started (le questionnaire commence, dès le montage
+     puisque l'intro est fusionnée dans la Q1) / quiz_completed (dernière
+     réponse validée, passage au résultat). */
+  React.useEffect(()=>{ window.LP_PH && window.LP_PH('quiz_started', { test_type:'love_test' }); }, []);
   const phasePrevRef = React.useRef(phase);
   React.useEffect(()=>{
     if(phase !== phasePrevRef.current){
-      if(phase==='test'){ window.LP_PH && window.LP_PH('quiz_started', { test_type:'love_test' }); }
-      else if(phase==='result'){ window.LP_PH && window.LP_PH('quiz_completed', { questions_answered: Object.keys(answers).length }); }
+      if(phase==='result'){ window.LP_PH && window.LP_PH('quiz_completed', { questions_answered: Object.keys(answers).length }); }
       phasePrevRef.current = phase;
     }
   }, [phase]);
@@ -395,7 +396,7 @@ function LoveTest({ go }){
     window.scrollTo(0,0);
   }
   function goBack(){
-    if(index===0){ setPhase('intro'); return; }
+    if(index===0){ go('home'); return; }
     setIndex(index-1);
     window.scrollTo(0,0);
   }
@@ -406,17 +407,12 @@ function LoveTest({ go }){
     goForward(next);
   }
 
-  /* ---- intro splash ---- */
-  if(phase==='intro'){
-    return <TestShell go={go} stage="intake"><TestIntro onStart={()=>{ setPhase('test'); setIndex(0); window.scrollTo(0,0); }}/></TestShell>;
-  }
-
   /* ---- result ---- */
   if(phase==='result'){
     return <TestShell go={go} stage="reveal">
       <TestResult answers={answers} frozen={frozen}
         onRestart={()=>{ setAnswers({}); setFrozen(null); setIndex(0); revealFiredRef.current=false;
-          shuffleRef.current = { axes: lpShuffle(T.axes), phaseB: lpShuffle(T.c1) }; setPhase('intro'); window.scrollTo(0,0); }}
+          shuffleRef.current = { axes: lpShuffle(T.axes), phaseB: lpShuffle(T.c1) }; setPhase('test'); window.scrollTo(0,0); }}
         go={go}/>
     </TestShell>;
   }
@@ -427,14 +423,37 @@ function LoveTest({ go }){
   let body = null;
   if(card.type==='q'){
     const q = card.q;
+    let questionBody;
     if(card.phaseB){
       const v = answers[q.id] ? answers[q.id][0] : undefined;
-      body = <StatementScreen q={q} value={v} onPick={(val)=>answerQuestion(card, val)}/>;
+      questionBody = <StatementScreen q={q} value={v} onPick={(val)=>answerQuestion(card, val)}/>;
     } else if(q.kind==='single'){
-      body = <SingleScreen q={q} value={answers[q.id]} onPick={(i)=>answerQuestion(card, i)}/>;
+      questionBody = <SingleScreen q={q} value={answers[q.id]} onPick={(i)=>answerQuestion(card, i)}/>;
     } else {
-      body = <StatementScreen q={q} value={answers[q.id]} onPick={(val)=>answerQuestion(card, val)}/>;
+      questionBody = <StatementScreen q={q} value={answers[q.id]} onPick={(val)=>answerQuestion(card, val)}/>;
     }
+
+    /* Index 0 fusionne l'ancienne intro splash (titre + ligne d'instructions +
+       mention vie privée) directement au-dessus/dessous de la 1re question,
+       plutôt que sur un écran "Begin" séparé. */
+    body = index===0 ? (
+      <div>
+        <h1 className="lp-h1" style={{ fontFamily:'var(--font-display)', fontWeight:800, letterSpacing:'-.02em',
+          lineHeight:1.15, textWrap:'balance', marginBottom:14,
+          fontSize: narrow ? 'clamp(1.5rem,1.2rem+1.3vw,1.9rem)' : 'clamp(1.8rem,1.3rem+1.8vw,2.5rem)' }}>
+          {tx({ fr:"Cinq minutes. Découvre comment fonctionne ton schéma d'attachement, et pourquoi tu continues à faire ça.",
+                en:'Five minutes. See how your attachment pattern works, and why you keep doing this.' })}
+        </h1>
+        <p style={{ margin: narrow ? '0 0 22px' : '0 0 clamp(26px,3.4vw,36px)', fontSize:'.92rem', fontWeight:600, color:'var(--ink-3)' }}>
+          {tx({ fr:"Une question à la fois. Réponds avec ton instinct, il n'y a pas de bonne réponse.",
+                en:'One question at a time. Answer with your gut, there is no right answer.' })}
+        </p>
+        {questionBody}
+        <div style={{ display:'inline-flex', alignItems:'center', gap:'8px', marginTop:'clamp(22px,3.4vw,30px)', color:'var(--ink-3)', fontSize:'.9rem' }}>
+          <Icon name="lock" size={15}/> {tx({ fr:'Tes réponses restent privées, sans inscription.', en:'Your answers stay private, no sign-up.' })}
+        </div>
+      </div>
+    ) : questionBody;
   } else if(card.type==='framing'){
     body = <div>
       <HalteProse data={T.haltes.framing}/>
@@ -561,27 +580,6 @@ function TestShell({ children, go, stage }){
       </header>
       <div style={{ position:'relative', zIndex:1, flex:1, width:'100%', maxWidth:'var(--maxw)', margin:'0 auto', padding:'clamp(22px,4vw,40px) clamp(20px,5vw,48px)' }}>
         {children}
-      </div>
-    </div>
-  );
-}
-
-/* ---- intro splash ------------------------------------------------------- */
-function TestIntro({ onStart }){
-  const tx = useTx();
-  return (
-    <div style={{ maxWidth:620, margin:'clamp(20px,6vw,80px) auto 0', textAlign:'center' }}>
-      <Avatar code="anc" size={84}/>
-      <h1 className="lp-h1" style={{ marginTop:18, fontFamily:'var(--font-display)', fontWeight:800, letterSpacing:'-0.02em' }}>{tx({ fr:'On commence en douceur.', en:'Free Love pattern test' })}</h1>
-      <p className="lp-lead" style={{ marginTop:14, maxWidth:520, marginInline:'auto' }}>
-        {tx({ fr:"Une question à la fois. Réponds avec ton instinct, il n'y a pas de bonne réponse. On parle de ta vie à toi, telle qu'elle est aujourd'hui.",
-              en:"One question at a time. Answer with your gut, there is no right answer. We're talking about your life, as it is today." })}
-      </p>
-      <div style={{ marginTop:'clamp(28px,4vw,40px)' }}>
-        <Button size="lg" icon="arrow-right" onClick={onStart}>{tx({ fr:'Commencer', en:'Begin' })}</Button>
-        <div style={{ display:'inline-flex', alignItems:'center', gap:'8px', marginTop:18, color:'var(--ink-3)', fontSize:'.9rem' }}>
-          <Icon name="lock" size={15}/> {tx({ fr:'Tes réponses restent privées, sans inscription.', en:'Your answers stay private, no sign-up.' })}
-        </div>
       </div>
     </div>
   );
