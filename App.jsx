@@ -15,6 +15,7 @@ function pathForRoute(route, code) {
     case 'science': return '/science';
     case 'methode': return '/method';
     case 'profils': return '/patterns';
+    case 'terms': return '/terms';
     case 'profil': {
       const slug = (window.PATTERN_SLUGS && window.PATTERN_SLUGS[code]) || 'the-bastion';
       return '/patterns/' + slug;
@@ -33,6 +34,7 @@ function routeFromPath(pathname) {
   if (p === '/science') return { route: 'science' };
   if (p === '/method') return { route: 'methode' };
   if (p === '/patterns') return { route: 'profils' };
+  if (p === '/terms') return { route: 'terms' };
   if (p.indexOf('/patterns/') === 0) {
     const slug = p.slice('/patterns/'.length);
     const code = window.SLUG_TO_PATTERN && window.SLUG_TO_PATTERN[slug];
@@ -60,6 +62,10 @@ const ROUTE_META = {
   profils: {
     title: 'The 8 Relationship Protection Patterns | 8LovePatterns',
     description: "Meet the eight protection patterns, from the Arsonist who intensifies at the first sign of distance to the Bastion who keeps love at arm's length. Find out which one runs your relationships.",
+  },
+  terms: {
+    title: 'Terms and Conditions of Sale | 8LovePatterns',
+    description: 'Terms and conditions of sale for the 8LovePatterns Anchor Map report: seller identity, pricing, delivery, payment, and right of withdrawal.',
   },
 };
 
@@ -196,6 +202,7 @@ function App() {
     case 'vente': page = <SalesPage go={go} code={code}/>; break;
     case 'methode': page = <Method go={go}/>; break;
     case 'science': page = <Science go={go}/>; break;
+    case 'terms': page = <Terms go={go}/>; break;
     default: page = <Home go={go}/>;
   }
 

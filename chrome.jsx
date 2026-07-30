@@ -102,7 +102,7 @@ function Footer({ go }) {
   const nav = testNav(go); // real <a href="/test">, see Home.jsx
   const cols = [
     { h:t('footer.test'), items:[[t('cta.reveal'),'/test'],[t('footer.p8'),'profils'],[t('nav.science'),'science'],[t('nav.method'),'methode']] },
-    { h:t('footer.brand'), items:[[t('footer.about'),'methode'],[t('footer.privacy'),'/legal.html#privacy'],['Legal','/legal.html'],[t('footer.contact'),'mailto:support@8lovepatterns.com']] },
+    { h:t('footer.brand'), items:[[t('footer.about'),'methode'],['Terms','terms'],[t('footer.privacy'),'/legal.html#privacy'],['Legal','/legal.html'],[t('footer.contact'),'mailto:support@8lovepatterns.com']] },
   ];
   const supportEmail = 'support@8lovepatterns.com';
   /* Dark-blue -> blue vertical gradient with white text (see --footer-grad in

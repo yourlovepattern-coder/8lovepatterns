@@ -143,4 +143,46 @@ function Science({ go }) {
   );
 }
 
-Object.assign(window, { Method, Science });
+function Terms({ go }) {
+  const sections = [
+    ['1. Seller identity', 'This website (8lovepatterns.com) is operated by ROWV AND CO, a French sole proprietorship (micro-entrepreneur / auto-entrepreneur), registered in France. VAT is not applicable, article 293 B of the French General Tax Code (VAT exemption for micro-entrepreneurs, "franchise en base de TVA").'],
+    ['2. Product', '8LovePatterns sells a one-time digital report ("Anchor Map") priced at $29 USD, generated from your answers to a free self-assessment test. This is a single purchase with no subscription and no recurring charge.'],
+    ['3. Delivery', 'The report is delivered digitally, immediately after payment, by email and/or on-screen access. There is no physical shipment.'],
+    ['4. Payment', 'Payment is processed securely by Stripe. ROWV AND CO does not store your card details.'],
+    ['5. Right of withdrawal, digital content', 'In accordance with Article L221-28 13° of the French Consumer Code, the right of withdrawal does not apply to digital content supplied on a non-material medium, once performance has begun with your prior explicit consent and your acknowledgment that you thereby lose your right of withdrawal. By checking the box at checkout, you provide this consent and acknowledgment, and immediate access to your report begins right after payment.'],
+    ['6. Nature of the content', '8LovePatterns is a self-reflection tool based on attachment research. It is not a medical, psychological, or diagnostic service, and does not replace professional advice.'],
+    ['8. Governing law', 'These terms are governed by French law. Any dispute will be submitted to the competent French courts.'],
+  ];
+  const supportEmail = 'support@8lovepatterns.com';
+  return (
+    <div>
+      <Module>
+        <Container narrow style={{ textAlign:'center' }}>
+          <Eyebrow color="var(--cta)">Legal</Eyebrow>
+          <h1 className="lp-h1" style={{ marginTop:12, color:'var(--head)' }}>Terms and Conditions of Sale</h1>
+          <p className="lp-caption" style={{ marginTop:10 }}>Last updated: July 30, 2026</p>
+        </Container>
+        <Container narrow style={{ marginTop:28 }}>
+          <div className="lp-prose" style={{ background:'#fff', border:'1px solid var(--hairline)', borderRadius:'var(--r-card)', padding:'clamp(28px,4vw,44px)', boxShadow:'var(--sh-1)' }}>
+            {sections.slice(0,6).map(([h,body])=>(
+              <div key={h}>
+                <h3>{h}</h3>
+                <p>{body}</p>
+              </div>
+            ))}
+            <h3>7. Support</h3>
+            <p>For any question about your order, contact: <a href={`mailto:${supportEmail}`}>{supportEmail}</a></p>
+            {sections.slice(6).map(([h,body])=>(
+              <div key={h}>
+                <h3>{h}</h3>
+                <p>{body}</p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </Module>
+    </div>
+  );
+}
+
+Object.assign(window, { Method, Science, Terms });

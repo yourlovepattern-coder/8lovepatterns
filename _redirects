@@ -40,3 +40,7 @@
 /patterns/the-chameleon       /                         200
 /patterns/the-bastion/        /patterns/the-bastion     301
 /patterns/the-bastion         /                         200
+
+# Terms of Sale — same rewrite pattern as above.
+/terms/   /terms   301
+/terms    /        200
