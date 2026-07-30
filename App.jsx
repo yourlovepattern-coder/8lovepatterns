@@ -1,11 +1,14 @@
 /* 8LovePatterns — App + routeur simple */
 
 /* Routes that get a real, shareable URL. Everything else (quiz, analyse,
-   intro, vente) is a flow step: no SEO value, and giving it a URL would let
-   the browser's Back button land mid-flow with half-built state. go() only
-   calls pushState for a route listed here; routeFromPath() only ever
-   resolves TO a route listed here (plus the special-cased /test -> intro).
-   Keep in sync with the exact-path rules in _redirects. */
+   vente) is a mid-flow step: no SEO value, and giving it a URL would let the
+   browser's Back button land mid-flow with half-built state. intro is the
+   one flow step that DOES get a URL (/test) — every "reveal my pattern" CTA
+   site-wide (header, hero, footer...) calls go('intro'), so they all need to
+   resolve to the same shareable link rather than leaving the address bar on
+   whatever page the visitor clicked from. go() only calls pushState for a
+   route listed here; routeFromPath() only ever resolves TO a route listed
+   here. Keep in sync with the exact-path rules in _redirects. */
 function pathForRoute(route, code) {
   switch (route) {
     case 'home': return '/';
@@ -16,7 +19,8 @@ function pathForRoute(route, code) {
       const slug = (window.PATTERN_SLUGS && window.PATTERN_SLUGS[code]) || 'the-bastion';
       return '/patterns/' + slug;
     }
-    default: return null; // quiz, analyse, intro, vente: never touch the URL
+    case 'intro': return '/test'; // matches the legacy /test special case in routeFromPath()
+    default: return null; // quiz, analyse, vente: never touch the URL
   }
 }
 

@@ -19,6 +19,7 @@ function CredibilityStrip() {
 
 /* ---- Science / research foundation (4 cards) ---- */
 function ScienceSection({ go, band='var(--paper-2)' }) {
+  const nav = testNav(go); // real <a href="/test">, see Home.jsx
   const cards = [
     { ic:'anchor',  c:'#2C7E91', soft:'#E4F0F2', t:'Adult attachment',
       d:'Attachment research measures two things, and neither of them is a category. How much reassurance you need to feel safe, and how much closeness costs you. Fraley and Waller showed in 1998 that these run as continuous dimensions rather than four boxes, which is why nobody is fully one type. You’re a position on a map, and the position moves.' },
@@ -55,7 +56,7 @@ function ScienceSection({ go, band='var(--paper-2)' }) {
           8LovePatterns does not reduce you to a label. It translates complex psychological mechanisms into clear, human patterns you can actually recognize.
         </p>
         <div style={{ marginTop:28, display:'flex', justifyContent:'center' }}>
-          <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>Reveal My Pattern</Button>
+          <Button size="lg" icon="arrow-right" href="/test" onClick={nav}>Reveal My Pattern</Button>
         </div>
       </Container>
     </Section>
@@ -182,6 +183,7 @@ function AnchorSection() {
 
 /* ---- Comparison: 8LovePatterns vs other tools ---- */
 function Comparison({ go }) {
+  const nav = testNav(go); // real <a href="/test">, see Home.jsx
   const rows = [
     ['Attachment style quiz','How you relate to closeness, distance, dependence, and rejection','The specific protection role you fall into under emotional pressure', false],
     ['Love language test','How you give and receive affection','What you do when affection feels uncertain or threatened', false],
@@ -223,7 +225,7 @@ function Comparison({ go }) {
           </table>
         </div>
         <div style={{ marginTop:30, display:'flex', justifyContent:'center' }}>
-          <Button size="lg" variant="secondary" icon="arrow-right" onClick={()=>go('intro')}>Discover My Protection Pattern</Button>
+          <Button size="lg" variant="secondary" icon="arrow-right" href="/test" onClick={nav}>Discover My Protection Pattern</Button>
         </div>
       </Container>
     </Section>
@@ -254,6 +256,7 @@ function AccordionItem({ q, a, open, onToggle, accent='var(--violet)' }) {
 
 /* ---- SEO emotional question mirror ---- */
 function SearchedThis({ go }) {
+  const nav = testNav(go); // real <a href="/test">, see Home.jsx
   const items = [
     "Why do I get anxious when they don't text back?",
     'Why do I pull away when someone gets close?',
@@ -294,7 +297,7 @@ function SearchedThis({ go }) {
           8LovePatterns helps you name the automatic pattern that appears when connection starts to feel unsafe, without reducing you to a diagnosis.
         </p>
         <div style={{ marginTop:28, display:'flex', justifyContent:'center' }}>
-          <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>Take the Free Test</Button>
+          <Button size="lg" icon="arrow-right" href="/test" onClick={nav}>Take the Free Test</Button>
         </div>
       </Container>
     </Section>

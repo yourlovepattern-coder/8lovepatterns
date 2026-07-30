@@ -1,6 +1,7 @@
 /* 8LovePatterns, Method (English) */
 
 function Method({ go }) {
+  const nav = testNav(go); // real <a href="/test">, see Home.jsx
   const principles = [
     ['heart','A mirror, not a verdict',"We don't tell you who you are. We reflect a strategy you use, one you can change."],
     ['shield','No judgment','A protection pattern is never a flaw. It made sense once. We treat it that way.'],
@@ -72,7 +73,7 @@ function Method({ go }) {
             </p>
           </div>
           <div style={{ textAlign:'center', marginTop:32 }}>
-            <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>Reveal My Pattern</Button>
+            <Button size="lg" icon="arrow-right" href="/test" onClick={nav}>Reveal My Pattern</Button>
           </div>
         </Container>
       </Module>
@@ -81,6 +82,7 @@ function Method({ go }) {
 }
 
 function Science({ go }) {
+  const nav = testNav(go); // real <a href="/test">, see Home.jsx
   return (
     <div>
       <Module>
@@ -129,7 +131,7 @@ function Science({ go }) {
             </div>
           </div>
           <div style={{ textAlign:'center', marginTop:32 }}>
-            <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>Reveal My Pattern</Button>
+            <Button size="lg" icon="arrow-right" href="/test" onClick={nav}>Reveal My Pattern</Button>
           </div>
         </Container>
       </Module>

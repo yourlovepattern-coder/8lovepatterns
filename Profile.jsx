@@ -95,6 +95,7 @@ function AnchorTierScale({ accent }) {
 }
 
 function Profile({ go, code='bas' }) {
+  const nav = testNav(go); // real <a href="/test">, see Home.jsx
   const arch = code==='anc' ? window.ANCRE : (window.ARCHETYPES.find(a=>a.code===code)||window.ARCHETYPES[7]);
   const isAnchor = arch.code === 'anc';
   const fam = isAnchor ? null : window.FAMILIES[arch.family];
@@ -138,7 +139,7 @@ function Profile({ go, code='bas' }) {
               Take the test for free and find out which mechanism takes over when love gets uncertain.
             </p>
             <div style={{ marginTop:24, display:'flex', justifyContent:'center' }}>
-              <Button size="lg" icon="arrow-right" onClick={()=>go('intro')}>Take the free test</Button>
+              <Button size="lg" icon="arrow-right" href="/test" onClick={nav}>Take the free test</Button>
             </div>
           </div>
         </Container>

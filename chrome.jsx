@@ -20,6 +20,7 @@ const SOCIALS = [
 function Header({ go, route }) {
   const [open, setOpen] = useState(false);
   const { t } = useLang();
+  const nav = testNav(go); // real <a href="/test"> everywhere, see Home.jsx
   const links = [
     { k:'profils', label:t('nav.patterns') },
     { k:'science', label:t('nav.science') },
@@ -46,7 +47,7 @@ function Header({ go, route }) {
               <LanguageWidget/>
               <div style={{ width:6 }}></div>
             </>)}
-            <Button size="sm" onClick={()=>go('intro')}>{t('cta.reveal')}</Button>
+            <Button size="sm" href="/test" onClick={nav}>{t('cta.reveal')}</Button>
           </nav>
           <div style={{ display:'none', alignItems:'center', gap:'6px' }} className="lp-burger-wrap">
             {/* Shortened label + a dedicated size override (see .lp-nav-mobile-cta
@@ -55,7 +56,7 @@ function Header({ go, route }) {
                 are also in the row — Button's own size/variant presets always
                 win over an inline style prop, so the override has to live in
                 a stylesheet rule with !important. */}
-            <Button className="lp-nav-mobile-cta" onClick={()=>go('intro')}>Take the test</Button>
+            <Button className="lp-nav-mobile-cta" href="/test" onClick={nav}>Take the test</Button>
             <LanguageWidget compact/>
             <button onClick={()=>setOpen(o=>!o)} className="lp-icon-btn" style={{ background:'none', border:'none', cursor:'pointer', color:'var(--encre)' }}
               aria-label={open?'Close menu':'Open menu'}>
@@ -74,7 +75,7 @@ function Header({ go, route }) {
                       fontFamily:'var(--font-body)', fontWeight:600, fontSize:'1.05rem', padding:'12px 4px', color:'var(--ink-2)', borderRadius:'var(--r-sm)' }}>{l.label}</button>
               ))}
               <div style={{ height:8 }}></div>
-              <Button full onClick={()=>{go('intro');setOpen(false);}}>{t('cta.reveal')}</Button>
+              <Button full href="/test" onClick={(e)=>{nav(e);setOpen(false);}}>{t('cta.reveal')}</Button>
               {/* Same SOCIALS array as the footer (chrome.jsx, above) — one
                   network, one line, no duplicated list to keep in sync.
                   .lp-icon-btn (not .lp-footer-social) because this pill is
@@ -98,8 +99,9 @@ function Header({ go, route }) {
 
 function Footer({ go }) {
   const { t } = useLang();
+  const nav = testNav(go); // real <a href="/test">, see Home.jsx
   const cols = [
-    { h:t('footer.test'), items:[[t('cta.reveal'),'intro'],[t('footer.p8'),'profils'],[t('nav.science'),'science'],[t('nav.method'),'methode']] },
+    { h:t('footer.test'), items:[[t('cta.reveal'),'/test'],[t('footer.p8'),'profils'],[t('nav.science'),'science'],[t('nav.method'),'methode']] },
     { h:t('footer.brand'), items:[[t('footer.about'),'methode'],[t('footer.privacy'),'/legal.html#privacy'],['Legal','/legal.html'],[t('footer.contact'),'mailto:support@8lovepatterns.com']] },
   ];
   const supportEmail = 'support@8lovepatterns.com';
@@ -130,7 +132,7 @@ function Footer({ go }) {
               <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
                 {c.items.map(([label,k])=>(
                   (k.charAt(0)==='/' || k.startsWith('mailto:'))
-                    ? <a key={label} href={k} style={{ textAlign:'left', color:'rgba(255,255,255,.82)', textDecoration:'none',
+                    ? <a key={label} href={k} onClick={k==='/test' ? nav : undefined} style={{ textAlign:'left', color:'rgba(255,255,255,.82)', textDecoration:'none',
                         fontFamily:'var(--font-body)', fontSize:'.92rem', padding:0, width:'fit-content' }}>{label}</a>
                     : <button key={label} onClick={()=>go(k)} style={{ textAlign:'left', background:'none', border:'none', cursor:'pointer',
                         color:'rgba(255,255,255,.82)', fontFamily:'var(--font-body)', fontSize:'.92rem', padding:0 }}>{label}</button>
